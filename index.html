@@ -166,7 +166,7 @@ button{width:100%;border:0;border-radius:10px;padding:14px;font-size:15px;font-w
 <div class="grid2">
 <div>
 <label>Год исследования</label>
-<select id="researchYear" onchange="refreshAvailableNumbers()">
+<select id="researchYear" onchange="syncOccupiedIdsForSelectedYear()">
 <option value="2026">2026</option>
 <option value="2027">2027</option>
 <option value="2028">2028</option>
@@ -222,7 +222,7 @@ button{width:100%;border:0;border-radius:10px;padding:14px;font-size:15px;font-w
 
 <button class="muted" onclick="openJournal()">Открыть журнал</button>
 
-<div class="footer"><b>Александр Янпольский</b><br>Арбузология v4.1</div>
+<div class="footer"><b>Александр Янпольский</b><br>Арбузология v4.3</div>
 </div>
 
 
@@ -362,7 +362,7 @@ button{width:100%;border:0;border-radius:10px;padding:14px;font-size:15px;font-w
 
 <script>
 const GOOGLE_SCRIPT_URL="https://script.google.com/macros/s/AKfycbyauxicHpvPdcvDJgqQmet2Hwrhd8d_-2gQ-DUZU5ekOMaao5VccteQ0MF9oTaoyU23/exec";
-const STORAGE="arbuzologyRecordsV1",APP_VERSION="4.1";
+const STORAGE="arbuzologyRecordsV1",APP_VERSION="4.3";
 const ARCHIVED_IDS_STORAGE="arbuzologyArchivedIdsV1";
 const SELLERS_STORAGE="arbuzologySellersV1";
 const ORIGINS_STORAGE="arbuzologyOriginsV1";
@@ -373,6 +373,9 @@ const CITIES_STORAGE="arbuzologyCitiesV1";
 let activeId=null;
 let activeEditId=null;
 let pendingDeleteAction=null;
+let remoteOccupiedIds=new Set();
+let remoteOccupiedYear=null;
+let remoteOccupiedLoaded=false;
 const TYPES={
 oval:{title:"Вытянутый / овальный",volumeCoefficient:1.095,rindCoefficient:.88},
 classic:{title:"Обычный круглый",volumeCoefficient:1,rindCoefficient:.91},
@@ -406,6 +409,7 @@ function getSavedList(key){
     return Array.isArray(value)?value:[];
   }catch{return[]}
 }
+
 function saveUniqueValue(key,value){
   const clean=String(value||"").trim();
   if(!clean)return;
@@ -417,27 +421,40 @@ function saveUniqueValue(key,value){
     localStorage.setItem(key,JSON.stringify(values));
   }
 }
+
 function renderDatalist(storageKey,datalistId){
   document.getElementById(datalistId).innerHTML=getSavedList(storageKey)
     .map(value=>`<option value="${String(value).replace(/"/g,"&quot;")}"></option>`)
     .join("");
 }
+
 function getUsedNumbers(year){
-  const activeNumbers=getRecords()
-    .filter(record=>String(record.researchYear)===String(year))
-    .map(record=>Number(record.watermelonNumber))
-    .filter(number=>Number.isInteger(number)&&number>=1&&number<=100);
+  const used=new Set(
+    getRecords()
+      .filter(record=>String(record.researchYear)===String(year))
+      .map(record=>Number(record.watermelonNumber))
+      .filter(number=>Number.isInteger(number)&&number>=1&&number<=100)
+  );
 
-  const archivedNumbers=getArchivedIds()
-    .map(id=>{
+  if(remoteOccupiedLoaded&&String(remoteOccupiedYear)===String(year)){
+    remoteOccupiedIds.forEach(id=>{
       const match=String(id).match(/^AR-(\d{4})-(\d{3})$/);
-      if(!match||String(match[1])!==String(year))return null;
-      return Number(match[2]);
-    })
-    .filter(number=>Number.isInteger(number)&&number>=1&&number<=100);
+      if(match&&String(match[1])===String(year)){
+        used.add(Number(match[2]));
+      }
+    });
+  }else{
+    getArchivedIds().forEach(id=>{
+      const match=String(id).match(/^AR-(\d{4})-(\d{3})$/);
+      if(match&&String(match[1])===String(year)){
+        used.add(Number(match[2]));
+      }
+    });
+  }
 
-  return new Set([...activeNumbers,...archivedNumbers]);
+  return used;
 }
+
 function refreshAvailableNumbers(){
   const year=Number(document.getElementById("researchYear").value);
   const select=document.getElementById("watermelonNumber");
@@ -458,8 +475,126 @@ function refreshAvailableNumbers(){
   }else if(available.length){
     select.value=String(available[0]);
   }
+
   updateCurrentResearchId();
 }
+
+async function fetchActiveRecords(){
+  const url=
+    `${GOOGLE_SCRIPT_URL}?action=get_active_records&_=${Date.now()}`;
+
+  const response=await fetch(url,{method:"GET",cache:"no-store"});
+
+  if(!response.ok){
+    throw new Error(`HTTP ${response.status}`);
+  }
+
+  const data=await response.json();
+
+  if(!data.ok||!Array.isArray(data.records)){
+    throw new Error(data.error||"Некорректный ответ Google Таблицы.");
+  }
+
+  return data.records;
+}
+
+async function syncJournalFromGoogle(){
+  const status=document.getElementById("status");
+
+  try{
+    const records=await fetchActiveRecords();
+
+    // Google Таблица становится главным источником данных.
+    putRecords(records);
+    render();
+    refreshAvailableNumbers();
+
+    if(status){
+      status.style.display="block";
+      status.textContent=`☁️ Журнал синхронизирован с Google Таблицей. Активных записей: ${records.length}.`;
+    }
+
+    return true;
+  }catch(error){
+    console.error(error);
+
+    if(status){
+      status.style.display="block";
+      status.textContent="⚠️ Не удалось обновить журнал из Google Таблицы. Показаны локально сохранённые данные.";
+    }
+
+    return false;
+  }
+}
+
+async function syncAllCloudData(){
+  await syncJournalFromGoogle();
+  await syncOccupiedIdsForSelectedYear();
+}
+
+async function fetchOccupiedIds(year){
+  const url=
+    `${GOOGLE_SCRIPT_URL}?action=get_occupied_ids&year=${encodeURIComponent(year)}&_=${Date.now()}`;
+
+  const response=await fetch(url,{method:"GET",cache:"no-store"});
+
+  if(!response.ok){
+    throw new Error(`HTTP ${response.status}`);
+  }
+
+  const data=await response.json();
+
+  if(!data.ok||!Array.isArray(data.occupiedIds)){
+    throw new Error(data.error||"Некорректный ответ Google Таблицы.");
+  }
+
+  return data.occupiedIds;
+}
+
+async function syncOccupiedIdsForSelectedYear(){
+  const year=Number(document.getElementById("researchYear").value);
+  const status=document.getElementById("status");
+
+  try{
+    const ids=await fetchOccupiedIds(year);
+
+    remoteOccupiedIds=new Set(ids);
+    remoteOccupiedYear=year;
+    remoteOccupiedLoaded=true;
+
+    localStorage.removeItem(ARCHIVED_IDS_STORAGE);
+    refreshAvailableNumbers();
+
+    if(status){
+      status.style.display="block";
+      status.textContent=`☁️ Номера синхронизированы с Google Таблицей. Занято: ${ids.length}.`;
+    }
+  }catch(error){
+    console.error(error);
+    remoteOccupiedLoaded=false;
+    remoteOccupiedYear=year;
+    refreshAvailableNumbers();
+
+    if(status){
+      status.style.display="block";
+      status.textContent="⚠️ Не удалось проверить номера в Google Таблице. Используются локальные данные.";
+    }
+  }
+}
+
+async function ensureResearchIdIsFree(researchId,year){
+  try{
+    const ids=await fetchOccupiedIds(year);
+    remoteOccupiedIds=new Set(ids);
+    remoteOccupiedYear=year;
+    remoteOccupiedLoaded=true;
+    return !remoteOccupiedIds.has(researchId);
+  }catch(error){
+    console.error(error);
+    return true;
+  }
+}
+
 function updateCurrentResearchId(){const el=document.getElementById("currentResearchId");if(el)el.textContent=selectedResearchId()||"Нет свободных номеров"}
 function selectedResearchId(){
   const year=Number(document.getElementById("researchYear").value);
@@ -533,7 +668,17 @@ const researchId=selectedResearchId();
 const originPlace=document.getElementById("originPlace").value.trim();
 const cultivar=document.getElementById("cultivar").value.trim();
 if(!researchId)return alert("В выбранном году не осталось свободных номеров.");
-if(getRecords().some(record=>record.researchId===researchId))return alert("Этот номер уже использован. Выберите другой.");
+if(getRecords().some(record=>record.researchId===researchId)){
+  alert("Этот номер уже использован на данном устройстве. Выберите другой.");
+  return;
+}
+
+const idIsFree=await ensureResearchIdIsFree(researchId,researchYear);
+if(!idIsFree){
+  alert("Этот номер уже занят в Google Таблице. Список номеров будет обновлён.");
+  await syncOccupiedIdsForSelectedYear();
+  return;
+}
 if(!Number.isFinite(c1)||c1<25||c1>180)return alert("Поперечный обхват: 25–180 см.");
 if(!Number.isFinite(c2)||c2<25||c2>220)return alert("Продольный обхват: 25–220 см.");
 if(!Number.isFinite(w)||w<.5||w>30)return alert("Масса: 0,5–30 кг.");
@@ -582,6 +727,9 @@ renderDatalist(ORIGINS_STORAGE,"originOptions");
 renderDatalist(CULTIVARS_STORAGE,"cultivarOptions");
 
 const records=getRecords();records.push(record);putRecords(records);
+remoteOccupiedIds.add(record.researchId);
+remoteOccupiedYear=record.researchYear;
+remoteOccupiedLoaded=true;
 const r=document.getElementById("result");r.style.display="block";r.className=`result ${cls.css}`;r.innerHTML=`<span class="badge">Класс ${cls.code}</span><h3>${cls.title}</h3>ID: <b>${record.researchId}</b><br>Геометрический объём: <b>${record.calculatedVolumeLiters.toFixed(3)} л</b><br>Плотность целого плода: <b>${record.wholeFruitDensityKgL.toFixed(4)} кг/л</b><br>Скорректированный индекс: <b>${record.correctedDensityIndex.toFixed(4)}</b><p>${cls.text}</p>`;
 document.getElementById("status").style.display="block";document.getElementById("status").textContent=(!GOOGLE_SCRIPT_URL||GOOGLE_SCRIPT_URL.includes("ВСТАВЬТЕ_СЮДА"))?"✅ Сохранено локально.":"⏳ Сохраняем локально и отправляем в Google Таблицу…";
 const cloudResult=await post({action:"save_screening",...record});
@@ -592,8 +740,7 @@ document.getElementById("circ").value="";
 document.getElementById("circLong").value="";
 document.getElementById("weight").value="";
 updateWeightRangeHint();
-render();
-refreshAvailableNumbers();
+await syncAllCloudData();
   updateWeightRangeHint();
 }
 function getRindAssessment(meanRind){
@@ -881,7 +1028,12 @@ async function saveFullStudy(){
       fullStudy:record.fullStudy
     });
 
-    render();
+    if(cloudResult.ok){
+      await syncJournalFromGoogle();
+    }else{
+      render();
+    }
+
     showStudyMessage(
       cloudResult.ok
         ?"Полное исследование сохранено и отправлено в Google Таблицу."
@@ -1022,7 +1174,12 @@ renderDatalist(CULTIVARS_STORAGE,"cultivarOptions");
   });
 
   closeEditScreening();
-  render();
+
+  if(cloudResult.ok){
+    await syncJournalFromGoogle();
+  }else{
+    render();
+  }
 
   const status=document.getElementById("status");
   if(status){
@@ -1083,6 +1240,7 @@ function archiveRecord(id){
       }
 
       addArchivedId(id);
+      remoteOccupiedIds.add(id);
       putRecords(records.filter(item=>item.researchId!==id));
 
       const cloudResult=await post({
@@ -1091,8 +1249,12 @@ function archiveRecord(id){
         archivedAt:new Date().toISOString()
       });
 
-      render();
-      refreshAvailableNumbers();
+      if(cloudResult.ok){
+        await syncAllCloudData();
+      }else{
+        render();
+        refreshAvailableNumbers();
+      }
 
       const status=document.getElementById("status");
       if(status){
@@ -1237,7 +1399,7 @@ function initializeApplication(){
 renderDatalist(ORIGINS_STORAGE,"originOptions");
 renderDatalist(CULTIVARS_STORAGE,"cultivarOptions");
   render();
-  refreshAvailableNumbers();
+  syncAllCloudData();
 }
 initializeApplication();
 </script>
