@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Арбузология</title>
+<script src="https://st.max.ru/js/max-web-app.js"></script>
+<style>
+:root{--g:#2f855a;--gd:#14532d;--bg:#eef4ef;--mut:#6f7f75;--bd:#c8d5cc;--red:#9f2d2d;--gold:#9a6200}
+*{box-sizing:border-box}body{margin:0;padding:14px;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#24332a}
+.card,.dialog{max-width:480px;margin:10px auto;background:#fff;border-radius:20px;padding:22px;box-shadow:0 10px 30px #00000012}
+h1{text-align:center;color:var(--gd);margin:0;font-size:27px}h2{color:var(--gd);font-size:19px}.sub{text-align:center;font-weight:700;color:#365244;margin:6px 0}.motto{background:#f4faf5;color:#2b6d43;text-align:center;border-radius:10px;padding:10px;font-size:12px;font-weight:700;margin:10px 0 20px}
+.section{font-size:17px;font-weight:800;color:var(--gd);margin:22px 0 8px}label{display:block;font-weight:700;margin:14px 0 6px;font-size:14px}
+input,select,textarea{width:100%;padding:13px;border:2px solid var(--bd);border-radius:10px;font-size:16px;background:#fff}textarea{min-height:85px}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--g)}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+button{width:100%;border:0;border-radius:10px;padding:14px;font-size:15px;font-weight:800;cursor:pointer}.main{background:var(--g);color:#fff;margin-top:18px}.secondary{background:#fff;color:var(--gd);border:2px solid #86c79a;margin-top:10px}.muted{background:#edf2ee;color:#52665a;margin-top:10px}.danger{background:#fff4f4;color:var(--red);border:2px solid #e6b4b4;margin-top:10px}
+.hint,.summary{background:#f4faf5;border-left:4px solid var(--g);border-radius:6px;padding:11px 13px;font-size:13px;line-height:1.5}.summary{border:2px solid #cce6d3;margin:10px 0}
+.result{display:none;margin-top:18px;padding:16px;border-radius:14px;line-height:1.55}.a{background:#fff2f2;color:#8d2424;border:2px solid #df9696}.b{background:#edf8f0;color:#14532d;border:2px solid #8dcc9f}.c{background:#fff8e7;color:#8a5600;border:2px solid #e7c36e}
+.badge{display:inline-block;background:#ffffffcc;border-radius:999px;padding:5px 11px;font-size:18px;font-weight:900}.status{display:none;margin-top:10px;padding:10px;border-radius:9px;text-align:center;background:#f2f7f3;color:#2e6b43;font-size:12px}
+.record{background:#fff;border-radius:15px;padding:15px;margin:10px 0;box-shadow:0 6px 18px #0000000f;border-left:6px solid var(--bd)}.record.A{border-color:#c85454}.record.B{border-color:#43a064}.record.C{border-color:#d6a332}.rid{font-size:16px;font-weight:900;color:var(--gd)}.meta{font-size:12px;color:var(--mut);line-height:1.5}.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.actions button{font-size:12px;padding:10px}
+.overlay{display:none;position:fixed;inset:0;background:#122619a6;z-index:1000;overflow:auto;padding:14px}.check{display:flex;gap:10px;align-items:center;background:#f7faf8;padding:10px;border-radius:10px;margin-top:12px}.check input{width:22px;height:22px}.small{font-size:11px;color:var(--mut);line-height:1.45}.footer{text-align:center;font-size:12px;color:var(--mut);border-top:1px dashed var(--bd);padding-top:14px;margin-top:24px}
+@media(max-width:390px){.grid2,.grid3,.actions{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="card">
+<h1>🍉 Арбузология</h1>
+<div class="sub">Частный исследовательский журнал качества арбузов</div>
+<div class="motto">Максимум информации из минимума измерений.</div>
+
+<div class="section">① Паспорт наблюдения</div>
+<div class="grid2">
+<div>
+<label>Год исследования</label>
+<select id="researchYear" onchange="refreshAvailableNumbers()">
+<option value="2026">2026</option>
+<option value="2027">2027</option>
+<option value="2028">2028</option>
+<option value="2029">2029</option>
+<option value="2030">2030</option>
+</select>
+</div>
+<div>
+<label>Номер арбуза</label>
+<select id="watermelonNumber" onchange="updateCurrentResearchId()"></select>
+</div>
+</div>
+
+<div class="hint" style="text-align:center">ID исследования: <b id="currentResearchId">AR-2026-001</b></div>
+<label>Город</label>
+<input id="city" list="cityOptions" maxlength="100" placeholder="Например: Астрахань">
+<datalist id="cityOptions"></datalist>
+
+<label>Место исследования</label>
+<input id="place" list="placeOptions" maxlength="120" placeholder="Рынок или торговая точка">
+<datalist id="placeOptions"></datalist>
+
+<label>Продавец</label>
+<input id="seller" list="sellerOptions" maxlength="100" placeholder="Например: Махмуд">
+<datalist id="sellerOptions"></datalist>
+
+<label>Тип арбуза</label>
+<select id="type">
+<option value="oval" selected>Вытянутый / овальный</option>
+<option value="classic">Обычный круглый</option>
+<option value="yellow">Жёлтый</option>
+<option value="seedless">Без семечек</option>
+</select>
+
+<div class="section">② Неразрушающее измерение</div>
+<div class="hint">Единый протокол: два обхвата до 0,1 см и точный вес желательно до 0,001 кг.</div>
+<label>Поперечный обхват по экватору, см</label><input id="circ" type="number" min="25" max="180" step="0.1" inputmode="decimal" placeholder="75.0">
+<label>Продольный обхват, см</label><input id="circLong" type="number" min="25" max="220" step="0.1" inputmode="decimal" placeholder="81.7">
+<label>Масса арбуза, кг</label><input id="weight" type="number" min="0.5" max="30" step="0.001" inputmode="decimal" placeholder="7.690">
+<button class="main" id="calcBtn" onclick="saveScreening()">Рассчитать и сохранить скрининг</button>
+<div id="result" class="result"></div><div id="status" class="status"></div>
+<button class="secondary" onclick="exportCSV()">Скачать резервную копию CSV</button>
+<button class="muted" onclick="document.getElementById('journal').scrollIntoView({behavior:'smooth'})">Открыть журнал</button>
+<p class="small">До подключения нового Google Apps Script данные сохраняются в памяти этого браузера. CSV позволяет сделать резервную копию.</p>
+<div class="footer"><b>Александр Янпольский</b><br>Арбузология v1.2</div>
+</div>
+
+<div class="card" id="journal">
+<h2>📚 Журнал наблюдений</h2>
+<div id="stats" class="summary"></div>
+<div id="records"></div>
+<button class="danger" onclick="clearAll()">Удалить все локальные записи</button>
+</div>
+
+<div class="overlay" id="overlay">
+<div class="dialog">
+<h2>🔬 Полное исследование</h2>
+<div id="studySummary" class="summary"></div>
+<div class="section">Физический объём</div>
+<label>Объём по водоизмещению, л</label><input id="physicalVolume" type="number" min="0.5" max="40" step="0.001" placeholder="Необязательно">
+<p class="small">Оставьте пустым, если водоизмещение не проводилось.</p>
+<div class="section">Толщина корки</div>
+<div class="grid3">
+<div><label>У плодоножки, мм</label><input id="r1" type="number" min="1" max="80" step="0.1"></div>
+<div><label>Сбоку, мм</label><input id="r2" type="number" min="1" max="80" step="0.1"></div>
+<div><label>У полюса, мм</label><input id="r3" type="number" min="1" max="80" step="0.1"></div>
+</div>
+<div class="section">Сахаристость</div>
+<div class="grid3">
+<div><label>Центр, °Brix</label><input id="b1" type="number" min="0" max="25" step="0.1"></div>
+<div><label>Средняя зона</label><input id="b2" type="number" min="0" max="25" step="0.1"></div>
+<div><label>Другая сторона</label><input id="b3" type="number" min="0" max="25" step="0.1"></div>
+</div>
+<div class="section">Фактическое качество</div>
+<label>Общая оценка вкуса, 1–10</label><input id="taste" type="number" min="1" max="10" step="1">
+<label>Структура мякоти</label>
+<select id="structure"><option value="">Выберите</option><option>Недозрелая</option><option>Очень плотная</option><option>Хрустящая</option><option>Нормальная</option><option>Рыхлая</option><option>Ватная</option><option>Повреждённая</option></select>
+<label>Внутренние пустоты</label>
+<select id="hollows"><option>Нет</option><option>Небольшие</option><option>Выраженные</option></select>
+<div class="check"><input id="photo" type="checkbox"><label for="photo" style="margin:0">Фото разреза сделано с видимым ID</label></div>
+<label>Комментарий исследователя</label><textarea id="comment" maxlength="800"></textarea>
+<button class="main" id="studyBtn" onclick="saveFullStudy()">Сохранить полное исследование</button>
+<button class="muted" onclick="closeStudy()">Закрыть без сохранения</button>
+<div id="studyStatus" class="status"></div>
+</div>
+</div>
+
+<script>
+const GOOGLE_SCRIPT_URL="";
+const STORAGE="arbuzologyRecordsV1",APP_VERSION="1.2";
+const SELLERS_STORAGE="arbuzologySellersV1";
+const PLACES_STORAGE="arbuzologyPlacesV1";
+const CITY_STORAGE="arbuzologyCityV1";
+const CITIES_STORAGE="arbuzologyCitiesV1";
+let activeId=null;
+const TYPES={
+oval:{title:"Вытянутый / овальный",volumeCoefficient:1.095,rindCoefficient:.88},
+classic:{title:"Обычный круглый",volumeCoefficient:1,rindCoefficient:.91},
+yellow:{title:"Жёлтый",volumeCoefficient:1,rindCoefficient:.94},
+seedless:{title:"Без семечек",volumeCoefficient:1,rindCoefficient:.94}
+};
+const num=id=>{const v=document.getElementById(id).value;return v===""?NaN:Number(String(v).replace(",","."))};
+const round=(v,d)=>Number.isFinite(v)?Math.round((v+Number.EPSILON)*10**d)/10**d:"";
+function getRecords(){try{return JSON.parse(localStorage.getItem(STORAGE)||"[]")}catch{return[]}}
+function putRecords(r){localStorage.setItem(STORAGE,JSON.stringify(r))}
+function getSavedList(key){
+  try{
+    const value=JSON.parse(localStorage.getItem(key)||"[]");
+    return Array.isArray(value)?value:[];
+  }catch{return[]}
+}
+function saveUniqueValue(key,value){
+  const clean=String(value||"").trim();
+  if(!clean)return;
+  const values=getSavedList(key);
+  const exists=values.some(item=>item.toLocaleLowerCase("ru-RU")===clean.toLocaleLowerCase("ru-RU"));
+  if(!exists){
+    values.push(clean);
+    values.sort((a,b)=>a.localeCompare(b,"ru"));
+    localStorage.setItem(key,JSON.stringify(values));
+  }
+}
+function renderDatalist(storageKey,datalistId){
+  document.getElementById(datalistId).innerHTML=getSavedList(storageKey)
+    .map(value=>`<option value="${String(value).replace(/"/g,"&quot;")}"></option>`)
+    .join("");
+}
+function getUsedNumbers(year){
+  return new Set(
+    getRecords()
+      .filter(record=>String(record.researchYear)===String(year))
+      .map(record=>Number(record.watermelonNumber))
+      .filter(number=>Number.isInteger(number)&&number>=1&&number<=100)
+  );
+}
+function refreshAvailableNumbers(){
+  const year=Number(document.getElementById("researchYear").value);
+  const select=document.getElementById("watermelonNumber");
+  const previous=Number(select.value);
+  const used=getUsedNumbers(year);
+  const available=[];
+
+  for(let number=1;number<=100;number++){
+    if(!used.has(number))available.push(number);
+  }
+
+  select.innerHTML=available.length
+    ? available.map(number=>`<option value="${number}">${String(number).padStart(3,"0")}</option>`).join("")
+    : '<option value="">Все номера использованы</option>';
+
+  if(available.includes(previous)){
+    select.value=String(previous);
+  }else if(available.length){
+    select.value=String(available[0]);
+  }
+  updateCurrentResearchId();
+}
+function updateCurrentResearchId(){const el=document.getElementById("currentResearchId");if(el)el.textContent=selectedResearchId()||"Нет свободных номеров"}
+function selectedResearchId(){
+  const year=Number(document.getElementById("researchYear").value);
+  const number=Number(document.getElementById("watermelonNumber").value);
+  if(!Number.isInteger(year)||!Number.isInteger(number))return "";
+  return `AR-${year}-${String(number).padStart(3,"0")}`;
+}
+function volume(c1,c2,t){const a=c1/(2*Math.PI),c=c2/(2*Math.PI);return ((4/3)*Math.PI*a*a*c/1000)*t.volumeCoefficient}
+function densityClass(v){if(v>.950)return{code:"A",title:"Высокий индекс плотности",css:"a",text:"Гипотеза: возможна чрезмерно плотная или недозрелая мякоть."};if(v>=.890)return{code:"B",title:"Центральный исследуемый диапазон",css:"b",text:"Гипотеза: наиболее вероятен хороший баланс плотности, сочности и хруста."};return{code:"C",title:"Низкий индекс плотности",css:"c",text:"Гипотеза: возможны рыхлость, ватность, пустоты или повреждение структуры."}}
+function brixClass(v){return v>=12?{code:"A",title:"Высокая сахаристость"}:v>=10?{code:"B",title:"Средняя сахаристость"}:{code:"C",title:"Низкая сахаристость"}}
+async function post(payload){if(!GOOGLE_SCRIPT_URL)return{skip:true};try{await fetch(GOOGLE_SCRIPT_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)});return{ok:true}}catch{return{ok:false}}}
+async function saveScreening(){
+const type=TYPES[document.getElementById("type").value],c1=num("circ"),c2=num("circLong"),w=num("weight"),v=volume(c1,c2,type),whole=w/v,index=whole*type.rindCoefficient;
+const researchYear=Number(document.getElementById("researchYear").value);
+const watermelonNumber=Number(document.getElementById("watermelonNumber").value);
+const researchId=selectedResearchId();
+if(!researchId)return alert("В выбранном году не осталось свободных номеров.");
+if(getRecords().some(record=>record.researchId===researchId))return alert("Этот номер уже использован. Выберите другой.");
+if(!Number.isFinite(c1)||c1<25||c1>180)return alert("Поперечный обхват: 25–180 см.");
+if(!Number.isFinite(c2)||c2<25||c2>220)return alert("Продольный обхват: 25–220 см.");
+if(!Number.isFinite(w)||w<.5||w>30)return alert("Масса: 0,5–30 кг.");
+if(!Number.isFinite(whole)||whole<.60||whole>1.25)return alert("Масса не соответствует размерам. Проверьте измерения.");
+const cls=densityClass(index),record={
+researchId,researchYear,watermelonNumber,createdAt:new Date().toISOString(),appVersion:APP_VERSION,
+city:document.getElementById("city").value.trim(),
+place:document.getElementById("place").value.trim(),
+seller:document.getElementById("seller").value.trim(),
+watermelonType:type.title,circumferenceCm:round(c1,1),longitudinalCircumferenceCm:round(c2,1),weightKg:round(w,3),
+calculatedVolumeLiters:round(v,3),wholeFruitDensityKgL:round(whole,4),correctedDensityIndex:round(index,4),
+rindCoefficient:type.rindCoefficient,volumeCoefficient:type.volumeCoefficient,densityClass:cls.code,densityClassTitle:cls.title,fullStudyCompleted:false,fullStudy:null};
+saveUniqueValue(CITIES_STORAGE,record.city);
+saveUniqueValue(PLACES_STORAGE,record.place);
+saveUniqueValue(SELLERS_STORAGE,record.seller);
+renderDatalist(CITIES_STORAGE,"cityOptions");
+renderDatalist(PLACES_STORAGE,"placeOptions");
+renderDatalist(SELLERS_STORAGE,"sellerOptions");
+
+const records=getRecords();records.push(record);putRecords(records);
+const r=document.getElementById("result");r.style.display="block";r.className=`result ${cls.css}`;r.innerHTML=`<span class="badge">Класс ${cls.code}</span><h3>${cls.title}</h3>ID: <b>${record.researchId}</b><br>Геометрический объём: <b>${record.calculatedVolumeLiters.toFixed(3)} л</b><br>Плотность целого плода: <b>${record.wholeFruitDensityKgL.toFixed(4)} кг/л</b><br>Скорректированный индекс: <b>${record.correctedDensityIndex.toFixed(4)}</b><p>${cls.text}</p>`;
+document.getElementById("status").style.display="block";document.getElementById("status").textContent=GOOGLE_SCRIPT_URL?"⏳ Отправляем в таблицу…":"✅ Сохранено локально.";
+await post({action:"save_screening",...record});
+document.getElementById("circ").value="";
+document.getElementById("circLong").value="";
+document.getElementById("weight").value="";
+render();
+refreshAvailableNumbers();
+}
+function openStudy(id){const r=getRecords().find(x=>x.researchId===id);if(!r)return;activeId=id;document.getElementById("studySummary").innerHTML=`<b>${r.researchId}</b><br>${r.watermelonType}<br>Класс: <b>${r.densityClass}</b> · Индекс: <b>${r.correctedDensityIndex.toFixed(4)}</b>`;const f=r.fullStudy||{};for(const [id,key] of [["physicalVolume","physicalVolumeLiters"],["r1","rindStemMm"],["r2","rindSideMm"],["r3","rindPoleMm"],["b1","brixCenter"],["b2","brixMiddle"],["b3","brixOpposite"],["taste","tasteScore"],["comment","comment"]])document.getElementById(id).value=f[key]??"";document.getElementById("structure").value=f.structure??"";document.getElementById("hollows").value=f.hollows??"Нет";document.getElementById("photo").checked=!!f.photoTaken;document.getElementById("overlay").style.display="block";document.body.style.overflow="hidden"}
+function closeStudy(){document.getElementById("overlay").style.display="none";document.body.style.overflow="";activeId=null}
+async function saveFullStudy(){
+if(!activeId)return;const pv=num("physicalVolume"),rv=[num("r1"),num("r2"),num("r3")],bv=[num("b1"),num("b2"),num("b3")],taste=num("taste"),structure=document.getElementById("structure").value;
+if(rv.some(x=>!Number.isFinite(x)||x<1||x>80))return alert("Заполните три измерения корки: 1–80 мм.");
+if(bv.some(x=>!Number.isFinite(x)||x<0||x>25))return alert("Заполните три измерения °Brix: 0–25.");
+if(!Number.isFinite(taste)||taste<1||taste>10)return alert("Оценка вкуса: 1–10.");
+if(!structure)return alert("Выберите структуру мякоти.");
+const records=getRecords(),i=records.findIndex(x=>x.researchId===activeId),r=records[i],meanR=rv.reduce((a,b)=>a+b)/3,meanB=bv.reduce((a,b)=>a+b)/3,bc=brixClass(meanB),pd=Number.isFinite(pv)?r.weightKg/pv:NaN,err=Number.isFinite(pv)?(r.calculatedVolumeLiters-pv)/pv*100:NaN;
+r.fullStudyCompleted=true;r.fullStudy={completedAt:new Date().toISOString(),physicalVolumeLiters:Number.isFinite(pv)?round(pv,3):"",physicalDensityKgL:round(pd,4),geometricVolumeErrorPercent:round(err,2),rindStemMm:round(rv[0],1),rindSideMm:round(rv[1],1),rindPoleMm:round(rv[2],1),meanRindThicknessMm:round(meanR,1),brixCenter:round(bv[0],1),brixMiddle:round(bv[1],1),brixOpposite:round(bv[2],1),meanBrix:round(meanB,1),brixClass:bc.code,brixClassTitle:bc.title,tasteScore:Math.round(taste),structure,hollows:document.getElementById("hollows").value,photoTaken:document.getElementById("photo").checked,comment:document.getElementById("comment").value.trim()};records[i]=r;putRecords(records);await post({action:"save_full_study",researchId:r.researchId,fullStudy:r.fullStudy});render();closeStudy()}
+function del(id){
+  if(confirm(`Удалить ${id}? После удаления номер снова станет доступным.`)){
+    putRecords(getRecords().filter(x=>x.researchId!==id));
+    render();
+    refreshAvailableNumbers();
+  }
+}
+function clearAll(){
+  if(confirm("Удалить все локальные записи? Сначала рекомендуется скачать CSV.")){
+    localStorage.removeItem(STORAGE);
+    render();
+    refreshAvailableNumbers();
+  }
+}
+function render(){const rs=getRecords(),cnt={A:0,B:0,C:0};rs.forEach(r=>cnt[r.densityClass]++);document.getElementById("stats").innerHTML=`Всего скринингов: <b>${rs.length}</b><br>Полных исследований: <b>${rs.filter(r=>r.fullStudyCompleted).length}</b><br>A: <b>${cnt.A}</b> · B: <b>${cnt.B}</b> · C: <b>${cnt.C}</b>`;document.getElementById("records").innerHTML=rs.length?rs.slice().reverse().map(r=>`<div class="record ${r.densityClass}"><div class="rid">${r.researchId}</div><div class="meta">${r.watermelonType} · ${r.weightKg} кг${r.seller?` · продавец: ${r.seller}`:""}<br>${r.place?`Место: ${r.place}<br>`:""}Индекс: <b>${r.correctedDensityIndex.toFixed(4)}</b> · Класс: <b>${r.densityClass}</b>${r.fullStudyCompleted?`<br>°Brix: <b>${r.fullStudy.meanBrix}</b> · Корка: <b>${r.fullStudy.meanRindThicknessMm} мм</b> · Вкус: <b>${r.fullStudy.tasteScore}/10</b>`:"<br>Ожидает полного исследования"}</div><div class="actions"><button class="secondary" onclick="openStudy('${r.researchId}')">${r.fullStudyCompleted?"Изменить":"Полное исследование"}</button><button class="danger" onclick="del('${r.researchId}')">Удалить</button></div></div>`).join(""):'<div class="hint">Наблюдений пока нет.</div>'}
+function esc(v){return `"${String(v??"").replace(/"/g,'""')}"`}
+function exportCSV(){const rs=getRecords();if(!rs.length)return alert("Нет данных.");const h=["researchId","researchYear","watermelonNumber","createdAt","city","place","seller","watermelonType","circumferenceCm","longitudinalCircumferenceCm","weightKg","calculatedVolumeLiters","wholeFruitDensityKgL","correctedDensityIndex","densityClass","fullStudyCompleted","physicalVolumeLiters","physicalDensityKgL","geometricVolumeErrorPercent","rindStemMm","rindSideMm","rindPoleMm","meanRindThicknessMm","brixCenter","brixMiddle","brixOpposite","meanBrix","brixClass","tasteScore","structure","hollows","photoTaken","comment"],rows=rs.map(r=>{const x={...r,...(r.fullStudy||{})};return h.map(k=>esc(x[k])).join(";")});const blob=new Blob(["﻿"+h.map(esc).join(";")+"
+"+rows.join("
+")],{type:"text/csv;charset=utf-8"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`arbuzology_${new Date().toISOString().slice(0,10)}.csv`;a.click();URL.revokeObjectURL(a.href)}
+function initializeApplication(){
+  const currentYear=new Date().getFullYear();
+  const allowedYears=[2026,2027,2028,2029,2030];
+  document.getElementById("researchYear").value=String(
+    allowedYears.includes(currentYear)?currentYear:2026
+  );
+
+  renderDatalist(CITIES_STORAGE,"cityOptions");
+  renderDatalist(PLACES_STORAGE,"placeOptions");
+  renderDatalist(SELLERS_STORAGE,"sellerOptions");
+  render();
+  refreshAvailableNumbers();
+}
+initializeApplication();
+</script>
+</body>
+</html>
