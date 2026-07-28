@@ -220,7 +220,7 @@ button{width:100%;border:0;border-radius:10px;padding:14px;font-size:15px;font-w
 
 <button class="muted" onclick="openJournal()">Открыть журнал</button>
 
-<div class="footer"><b>Александр Янпольский</b><br>Арбузология v2.7</div>
+<div class="footer"><b>Александр Янпольский</b><br>Арбузология v2.8</div>
 </div>
 
 
@@ -284,9 +284,13 @@ button{width:100%;border:0;border-radius:10px;padding:14px;font-size:15px;font-w
 <div id="studySummary" class="summary"></div>
 <div class="section">Толщина корки</div>
 <div class="grid3">
-<div><label>У плодоножки, мм</label><input id="r1" type="number" min="1" max="80" step="0.1"></div>
-<div><label>Сбоку, мм</label><input id="r2" type="number" min="1" max="80" step="0.1"></div>
-<div><label>У полюса, мм</label><input id="r3" type="number" min="1" max="80" step="0.1"></div>
+<div><label>У плодоножки, мм</label><input id="r1" type="number" min="1" max="80" step="0.1" oninput="updateRindAssessment()"></div>
+<div><label>Сбоку, мм</label><input id="r2" type="number" min="1" max="80" step="0.1" oninput="updateRindAssessment()"></div>
+<div><label>У полюса, мм</label><input id="r3" type="number" min="1" max="80" step="0.1" oninput="updateRindAssessment()"></div>
+</div>
+<div class="summary" style="margin-top:10px;text-align:center">
+  Средняя толщина корки: <b id="rindAverageDisplay">— мм</b><br>
+  Характеристика корки: <b id="rindAssessmentDisplay">—</b>
 </div>
 <div class="section">Сахаристость</div>
 <div class="hint">
@@ -357,7 +361,7 @@ button{width:100%;border:0;border-radius:10px;padding:14px;font-size:15px;font-w
 
 <script>
 const GOOGLE_SCRIPT_URL="";
-const STORAGE="arbuzologyRecordsV1",APP_VERSION="2.7";
+const STORAGE="arbuzologyRecordsV1",APP_VERSION="2.8";
 const SELLERS_STORAGE="arbuzologySellersV1";
 const ORIGINS_STORAGE="arbuzologyOriginsV1";
 const CULTIVARS_STORAGE="arbuzologyCultivarsV1";
@@ -484,6 +488,45 @@ document.getElementById("weight").value="";
 render();
 refreshAvailableNumbers();
 }
+function getRindAssessment(meanRind){
+  if(!Number.isFinite(meanRind)){
+    return {code:"",title:""};
+  }
+
+  // Рабочая исследовательская шкала:
+  // менее 10 мм — тонкокорый;
+  // 10–15 мм включительно — среднекорый;
+  // более 15 мм — толстокорый.
+  if(meanRind<10){
+    return {code:"THIN",title:"Тонкокорый"};
+  }
+
+  if(meanRind<=15){
+    return {code:"MEDIUM",title:"Среднекорый"};
+  }
+
+  return {code:"THICK",title:"Толстокорый"};
+}
+
+function updateRindAssessment(){
+  const values=[num("r1"),num("r2"),num("r3")];
+  const averageDisplay=document.getElementById("rindAverageDisplay");
+  const assessmentDisplay=document.getElementById("rindAssessmentDisplay");
+
+  if(!averageDisplay||!assessmentDisplay)return;
+
+  if(values.every(value=>Number.isFinite(value))){
+    const mean=values.reduce((sum,value)=>sum+value,0)/3;
+    const result=getRindAssessment(mean);
+
+    averageDisplay.textContent=mean.toFixed(1)+" мм";
+    assessmentDisplay.textContent=result.title;
+  }else{
+    averageDisplay.textContent="— мм";
+    assessmentDisplay.textContent="—";
+  }
+}
+
 function getSweetnessAssessment(meanBrix){
   if(!Number.isFinite(meanBrix)){
     return {code:"",title:""};
@@ -631,6 +674,7 @@ function openStudy(id){
   }
   document.getElementById("comment").value=full.comment??"";
 
+  updateRindAssessment();
   updateBrixAverage();
 
   document.getElementById("overlay").style.display="block";
@@ -692,6 +736,7 @@ async function saveFullStudy(){
   try{
     const record=records[index];
     const meanRind=rindValues.reduce((sum,value)=>sum+value,0)/3;
+    const rindResult=getRindAssessment(meanRind);
     const meanBrix=brixValues.reduce((sum,value)=>sum+value,0)/2;
     const brixResult=brixClass(meanBrix);
     const sweetnessResult=getSweetnessAssessment(meanBrix);
@@ -703,6 +748,8 @@ async function saveFullStudy(){
       rindSideMm:round(rindValues[1],1),
       rindPoleMm:round(rindValues[2],1),
       meanRindThicknessMm:round(meanRind,1),
+      rindAssessmentCode:rindResult.code,
+      rindAssessmentTitle:rindResult.title,
       brixCenter:round(brixValues[0],1),
       brixMiddleZone:round(brixValues[1],1),
       meanBrix:round(meanBrix,1),
@@ -963,10 +1010,16 @@ function render(){
         full.sweetnessTitle||
         getSweetnessAssessment(Number(full.meanBrix)).title;
 
+      const rindAssessmentTitle=
+        full.rindAssessmentTitle||
+        getRindAssessment(Number(full.meanRindThicknessMm)).title;
+
       const fullStudyLine=record.fullStudyCompleted
         ? `<br>Средний °Brix: <b>${full.meanBrix}</b> · `+
-          `Сладость: <b>${sweetnessTitle}</b> · `+
+          `Сладость: <b>${sweetnessTitle}</b><br>`+
           `Корка: <b>${full.meanRindThicknessMm} мм</b> · `+
+          `Характеристика: <b>${rindAssessmentTitle}</b><br>`+
+          `Структура мякоти: <b>${full.structure||"—"}</b><br>`+
           `Вкус: <b>${full.tasteScore}/10</b> · `+
           `Прогноз: <b>${full.predictionMatch||"—"}</b>`
         : '<br>Ожидает полного исследования';
