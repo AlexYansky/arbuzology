@@ -17,9 +17,143 @@ button{width:100%;border:0;border-radius:10px;padding:14px;font-size:15px;font-w
 .hint,.summary{background:#f4faf5;border-left:4px solid var(--g);border-radius:6px;padding:11px 13px;font-size:13px;line-height:1.5}.summary{border:2px solid #cce6d3;margin:10px 0}
 .result{display:none;margin-top:18px;padding:16px;border-radius:14px;line-height:1.55}.a{background:#fff2f2;color:#8d2424;border:2px solid #df9696}.b{background:#edf8f0;color:#14532d;border:2px solid #8dcc9f}.c{background:#fff8e7;color:#8a5600;border:2px solid #e7c36e}
 .badge{display:inline-block;background:#ffffffcc;border-radius:999px;padding:5px 11px;font-size:18px;font-weight:900}.status{display:none;margin-top:10px;padding:10px;border-radius:9px;text-align:center;background:#f2f7f3;color:#2e6b43;font-size:12px}
-.record{background:#fff;border-radius:15px;padding:15px;margin:10px 0;box-shadow:0 6px 18px #0000000f;border-left:6px solid var(--bd)}.record.A{border-color:#c85454}.record.B{border-color:#43a064}.record.C{border-color:#d6a332}.rid{font-size:16px;font-weight:900;color:var(--gd)}.meta{font-size:12px;color:var(--mut);line-height:1.5}.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.actions button{font-size:12px;padding:10px}
+.record{background:#fff;border-radius:15px;padding:15px;margin:10px 0;box-shadow:0 6px 18px #0000000f;border-left:6px solid var(--bd)}.record.A{border-color:#c85454}.record.B{border-color:#43a064}.record.C{border-color:#d6a332}.rid{font-size:16px;font-weight:900;color:var(--gd)}.meta{font-size:12px;color:var(--mut);line-height:1.5}.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.actions button{font-size:12px;padding:10px}.actions .wide{grid-column:1/-1}
 .overlay{display:none;position:fixed;inset:0;background:#122619a6;z-index:1000;overflow:auto;padding:14px}.check{display:flex;gap:10px;align-items:center;background:#f7faf8;padding:10px;border-radius:10px;margin-top:12px}.check input{width:22px;height:22px}.small{font-size:11px;color:var(--mut);line-height:1.45}.footer{text-align:center;font-size:12px;color:var(--mut);border-top:1px dashed var(--bd);padding-top:14px;margin-top:24px}
-@media(max-width:390px){.grid2,.grid3,.actions{grid-template-columns:1fr}}
+@media(max-width:390px){
+  .grid2,.grid3,.actions{grid-template-columns:1fr}
+  .taste-scale{grid-template-columns:repeat(5,42px);gap:5px}
+  .taste-button{width:42px;height:42px;font-size:13px}
+}
+
+#journalOverlay{z-index:1000}
+#overlay{z-index:1100}
+#editScreeningOverlay{z-index:1200}
+#confirmDeleteOverlay{z-index:1300}
+
+
+.record.A{
+  border-left-color:#c62828;
+  background:#fff4f4;
+  box-shadow:0 6px 18px rgba(198,40,40,.10);
+}
+.record.B{
+  border-left-color:#2e8b57;
+  background:#f2fbf5;
+  box-shadow:0 6px 18px rgba(46,139,87,.10);
+}
+.record.C{
+  border-left-color:#d99a00;
+  background:#fff9e8;
+  box-shadow:0 6px 18px rgba(217,154,0,.12);
+}
+.class-mark{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:38px;
+  height:38px;
+  padding:0 11px;
+  border-radius:999px;
+  font-size:20px;
+  font-weight:900;
+  margin-left:auto;
+}
+.record.A .class-mark{
+  color:#9f1f1f;
+  background:#ffdede;
+  border:2px solid #e58a8a;
+}
+.record.B .class-mark{
+  color:#17683a;
+  background:#dff5e6;
+  border:2px solid #7fc79a;
+}
+.record.C .class-mark{
+  color:#8d5a00;
+  background:#fff0bd;
+  border:2px solid #e4bd4a;
+}
+.record-top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+}
+.measurements-box{
+  margin-top:8px;
+  padding:9px 10px;
+  border-radius:10px;
+  background:rgba(255,255,255,.72);
+  border:1px solid rgba(0,0,0,.07);
+  line-height:1.55;
+}
+
+
+.choice-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:8px;
+  margin-top:8px;
+}
+.choice-button{
+  width:100%;
+  padding:11px 9px;
+  border:2px solid var(--bd);
+  border-radius:11px;
+  background:#fff;
+  color:#344f40;
+  font-size:13px;
+  font-weight:800;
+}
+.choice-button.selected{
+  border-color:var(--g);
+  background:#e9f7ee;
+  color:var(--gd);
+}
+.taste-scale{
+  display:grid;
+  grid-template-columns:repeat(5,48px);
+  justify-content:space-between;
+  gap:6px;
+  margin-top:8px;
+}
+.taste-button{
+  width:48px;
+  height:48px;
+  padding:0;
+  border-radius:50%;
+  border:2px solid transparent;
+  color:#fff;
+  font-size:14px;
+  font-weight:900;
+}
+.taste-button.low{background:#c83c3c}
+.taste-button.medium{background:#d6a11f}
+.taste-button.high{background:#34945d}
+.taste-button.selected{
+  border-color:#173f29;
+  box-shadow:0 0 0 3px rgba(23,63,41,.18);
+  transform:scale(1.06);
+}
+.binary-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:8px;
+}
+.prediction-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  margin-top:8px;
+}
+.optional-label::after{
+  content:" — необязательно";
+  color:var(--mut);
+  font-weight:500;
+  font-size:11px;
+}
+
 </style>
 </head>
 <body>
@@ -59,6 +193,15 @@ button{width:100%;border:0;border-radius:10px;padding:14px;font-size:15px;font-w
 <input id="seller" list="sellerOptions" maxlength="100" placeholder="Введите имя продавца">
 <datalist id="sellerOptions"></datalist>
 
+
+<label class="optional-label">Место произрастания</label>
+<input id="originPlace" list="originOptions" maxlength="120" placeholder="Регион, район или хозяйство">
+<datalist id="originOptions"></datalist>
+
+<label class="optional-label">Сорт</label>
+<input id="cultivar" list="cultivarOptions" maxlength="100" placeholder="Введите сорт, если известен">
+<datalist id="cultivarOptions"></datalist>
+
 <label>Тип арбуза</label>
 <select id="type">
 <option value="oval" selected>Вытянутый / овальный</option>
@@ -77,9 +220,53 @@ button{width:100%;border:0;border-radius:10px;padding:14px;font-size:15px;font-w
 
 <button class="muted" onclick="openJournal()">Открыть журнал</button>
 
-<div class="footer"><b>Александр Янпольский</b><br>Арбузология v1.8</div>
+<div class="footer"><b>Александр Янпольский</b><br>Арбузология v2.7</div>
 </div>
 
+
+
+<div class="overlay" id="editScreeningOverlay">
+  <div class="dialog">
+    <h2>✏️ Изменение скрининга</h2>
+    <div id="editScreeningSummary" class="summary"></div>
+
+    <label for="editCity">Город</label>
+    <input id="editCity" list="cityOptions" maxlength="100">
+
+    <label for="editPlace">Место исследования</label>
+    <input id="editPlace" list="placeOptions" maxlength="120">
+
+    <label for="editSeller">Продавец</label>
+    <input id="editSeller" list="sellerOptions" maxlength="100">
+
+
+    <label class="optional-label" for="editOriginPlace">Место произрастания</label>
+    <input id="editOriginPlace" list="originOptions" maxlength="120">
+
+    <label class="optional-label" for="editCultivar">Сорт</label>
+    <input id="editCultivar" list="cultivarOptions" maxlength="100">
+
+    <label for="editType">Тип арбуза</label>
+    <select id="editType">
+      <option value="oval">Вытянутый / овальный</option>
+      <option value="classic">Обычный круглый</option>
+      <option value="yellow">Жёлтый</option>
+      <option value="seedless">Без семечек</option>
+    </select>
+
+    <label for="editCirc">Поперечный обхват по экватору, см</label>
+    <input id="editCirc" type="number" min="25" max="180" step="0.1">
+
+    <label for="editCircLong">Продольный обхват, см</label>
+    <input id="editCircLong" type="number" min="25" max="220" step="0.1">
+
+    <label for="editWeight">Масса арбуза, кг</label>
+    <input id="editWeight" type="number" min="0.5" max="30" step="0.001">
+
+    <button class="main" type="button" onclick="saveEditedScreening()">Пересчитать и сохранить изменения</button>
+    <button class="muted" type="button" onclick="closeEditScreening()">Отмена</button>
+  </div>
+</div>
 
 <div class="overlay" id="journalOverlay">
   <div class="dialog">
@@ -116,30 +303,69 @@ button{width:100%;border:0;border-radius:10px;padding:14px;font-size:15px;font-w
 </div>
 </div>
 <div class="summary" style="margin-top:10px;text-align:center">
-  Среднее значение: <b id="brixAverageDisplay">— °Brix</b>
+  Среднее значение: <b id="brixAverageDisplay">— °Brix</b><br>
+  Оценка сладости: <b id="sweetnessDisplay">—</b>
 </div>
 <div class="section">Фактическое качество</div>
-<label>Общая оценка вкуса, 1–10</label><input id="taste" type="number" min="1" max="10" step="1">
+
+<label>Общая оценка вкуса, 1–10</label>
+<input id="taste" type="hidden">
+<div class="taste-scale" id="tasteScale">
+  <button class="taste-button low" type="button" data-value="1" onclick="selectTaste(1)">1</button>
+  <button class="taste-button low" type="button" data-value="2" onclick="selectTaste(2)">2</button>
+  <button class="taste-button low" type="button" data-value="3" onclick="selectTaste(3)">3</button>
+  <button class="taste-button medium" type="button" data-value="4" onclick="selectTaste(4)">4</button>
+  <button class="taste-button medium" type="button" data-value="5" onclick="selectTaste(5)">5</button>
+  <button class="taste-button medium" type="button" data-value="6" onclick="selectTaste(6)">6</button>
+  <button class="taste-button high" type="button" data-value="7" onclick="selectTaste(7)">7</button>
+  <button class="taste-button high" type="button" data-value="8" onclick="selectTaste(8)">8</button>
+  <button class="taste-button high" type="button" data-value="9" onclick="selectTaste(9)">9</button>
+  <button class="taste-button high" type="button" data-value="10" onclick="selectTaste(10)">10</button>
+</div>
+
 <label>Структура мякоти</label>
-<select id="structure"><option value="">Выберите</option><option>Недозрелая</option><option>Очень плотная</option><option>Хрустящая</option><option>Нормальная</option><option>Рыхлая</option><option>Ватная</option><option>Повреждённая</option></select>
+<input id="structure" type="hidden">
+<div class="choice-grid" id="structureChoices">
+  <button class="choice-button" type="button" data-value="Очень плотная (с выраженными прожилками)" onclick="selectStructure(this)">Очень плотная<br><small>(с выраженными прожилками)</small></button>
+  <button class="choice-button" type="button" data-value="Плотная" onclick="selectStructure(this)">Плотная</button>
+  <button class="choice-button" type="button" data-value="Средняя" onclick="selectStructure(this)">Средняя</button>
+  <button class="choice-button" type="button" data-value="Рыхлая" onclick="selectStructure(this)">Рыхлая</button>
+  <button class="choice-button" type="button" data-value="Ватная" onclick="selectStructure(this)">Ватная</button>
+</div>
+
 <label>Внутренние пустоты</label>
-<select id="hollows"><option>Нет</option><option>Небольшие</option><option>Выраженные</option></select>
+<input id="hollows" type="hidden" value="Нет">
+<div class="binary-grid" id="hollowsChoices">
+  <button class="choice-button selected" type="button" data-value="Нет" onclick="selectHollows(this)">Нет</button>
+  <button class="choice-button" type="button" data-value="Есть" onclick="selectHollows(this)">Есть</button>
+</div>
+
+<label>Совпадение прогноза с фактическим качеством</label>
+<input id="predictionMatch" type="hidden">
+<div class="prediction-grid" id="predictionChoices">
+  <button class="choice-button" type="button" data-value="Да" onclick="selectPredictionMatch(this)">Да</button>
+  <button class="choice-button" type="button" data-value="Частично" onclick="selectPredictionMatch(this)">Частично</button>
+  <button class="choice-button" type="button" data-value="Нет" onclick="selectPredictionMatch(this)">Нет</button>
+</div>
 
 <label>Комментарий исследователя</label><textarea id="comment" maxlength="800"></textarea>
-<button class="main" id="studyBtn" onclick="saveFullStudy()">Сохранить полное исследование</button>
-<button class="muted" onclick="closeStudy()">Закрыть без сохранения</button>
+<button class="main" id="studyBtn" type="button" onclick="saveFullStudy()">Сохранить полное исследование</button>
+<button class="muted" type="button" onclick="closeStudy()">Закрыть без сохранения</button>
 <div id="studyStatus" class="status"></div>
 </div>
 </div>
 
 <script>
 const GOOGLE_SCRIPT_URL="";
-const STORAGE="arbuzologyRecordsV1",APP_VERSION="1.8";
+const STORAGE="arbuzologyRecordsV1",APP_VERSION="2.7";
 const SELLERS_STORAGE="arbuzologySellersV1";
+const ORIGINS_STORAGE="arbuzologyOriginsV1";
+const CULTIVARS_STORAGE="arbuzologyCultivarsV1";
 const PLACES_STORAGE="arbuzologyPlacesV1";
 const CITY_STORAGE="arbuzologyCityV1";
 const CITIES_STORAGE="arbuzologyCitiesV1";
 let activeId=null;
+let activeEditId=null;
 let pendingDeleteAction=null;
 const TYPES={
 oval:{title:"Вытянутый / овальный",volumeCoefficient:1.095,rindCoefficient:.88},
@@ -219,6 +445,8 @@ const type=TYPES[document.getElementById("type").value],c1=num("circ"),c2=num("c
 const researchYear=Number(document.getElementById("researchYear").value);
 const watermelonNumber=Number(document.getElementById("watermelonNumber").value);
 const researchId=selectedResearchId();
+const originPlace=document.getElementById("originPlace").value.trim();
+const cultivar=document.getElementById("cultivar").value.trim();
 if(!researchId)return alert("В выбранном году не осталось свободных номеров.");
 if(getRecords().some(record=>record.researchId===researchId))return alert("Этот номер уже использован. Выберите другой.");
 if(!Number.isFinite(c1)||c1<25||c1>180)return alert("Поперечный обхват: 25–180 см.");
@@ -230,15 +458,21 @@ researchId,researchYear,watermelonNumber,createdAt:new Date().toISOString(),appV
 city:document.getElementById("city").value.trim(),
 place:document.getElementById("place").value.trim(),
 seller:document.getElementById("seller").value.trim(),
+originPlace,
+cultivar,
 watermelonType:type.title,circumferenceCm:round(c1,1),longitudinalCircumferenceCm:round(c2,1),weightKg:round(w,3),
 calculatedVolumeLiters:round(v,3),wholeFruitDensityKgL:round(whole,4),correctedDensityIndex:round(index,4),
 rindCoefficient:type.rindCoefficient,volumeCoefficient:type.volumeCoefficient,densityClass:cls.code,densityClassTitle:cls.title,fullStudyCompleted:false,fullStudy:null};
 saveUniqueValue(CITIES_STORAGE,record.city);
 saveUniqueValue(PLACES_STORAGE,record.place);
 saveUniqueValue(SELLERS_STORAGE,record.seller);
+saveUniqueValue(ORIGINS_STORAGE,record.originPlace);
+saveUniqueValue(CULTIVARS_STORAGE,record.cultivar);
 renderDatalist(CITIES_STORAGE,"cityOptions");
 renderDatalist(PLACES_STORAGE,"placeOptions");
 renderDatalist(SELLERS_STORAGE,"sellerOptions");
+renderDatalist(ORIGINS_STORAGE,"originOptions");
+renderDatalist(CULTIVARS_STORAGE,"cultivarOptions");
 
 const records=getRecords();records.push(record);putRecords(records);
 const r=document.getElementById("result");r.style.display="block";r.className=`result ${cls.css}`;r.innerHTML=`<span class="badge">Класс ${cls.code}</span><h3>${cls.title}</h3>ID: <b>${record.researchId}</b><br>Геометрический объём: <b>${record.calculatedVolumeLiters.toFixed(3)} л</b><br>Плотность целого плода: <b>${record.wholeFruitDensityKgL.toFixed(4)} кг/л</b><br>Скорректированный индекс: <b>${record.correctedDensityIndex.toFixed(4)}</b><p>${cls.text}</p>`;
@@ -250,23 +484,115 @@ document.getElementById("weight").value="";
 render();
 refreshAvailableNumbers();
 }
+function getSweetnessAssessment(meanBrix){
+  if(!Number.isFinite(meanBrix)){
+    return {code:"",title:""};
+  }
+
+  if(meanBrix>=12){
+    return {code:"VERY_SWEET",title:"Очень сладкий"};
+  }
+
+  if(meanBrix>=10.5){
+    return {code:"SWEET",title:"Сладкий"};
+  }
+
+  if(meanBrix>=9){
+    return {code:"MODERATE",title:"Умеренно сладкий"};
+  }
+
+  return {code:"LOW",title:"Низкая сладость"};
+}
+
+function selectTaste(value){
+  document.getElementById("taste").value=String(value);
+  document.querySelectorAll("#tasteScale .taste-button").forEach(button=>{
+    button.classList.toggle("selected",Number(button.dataset.value)===Number(value));
+  });
+}
+
+function selectStructure(button){
+  const value=button.dataset.value;
+  document.getElementById("structure").value=value;
+  document.querySelectorAll("#structureChoices .choice-button").forEach(item=>{
+    item.classList.toggle("selected",item.dataset.value===value);
+  });
+}
+
+function selectHollows(button){
+  const value=button.dataset.value;
+  document.getElementById("hollows").value=value;
+  document.querySelectorAll("#hollowsChoices .choice-button").forEach(item=>{
+    item.classList.toggle("selected",item.dataset.value===value);
+  });
+}
+
+function selectPredictionMatch(button){
+  const value=button.dataset.value;
+  document.getElementById("predictionMatch").value=value;
+  document.querySelectorAll("#predictionChoices .choice-button").forEach(item=>{
+    item.classList.toggle("selected",item.dataset.value===value);
+  });
+}
+
 function updateBrixAverage(){
   const first=num("b1");
   const second=num("b2");
-  const display=document.getElementById("brixAverageDisplay");
-  if(!display)return;
+  const averageDisplay=document.getElementById("brixAverageDisplay");
+  const sweetnessDisplay=document.getElementById("sweetnessDisplay");
+
+  if(!averageDisplay||!sweetnessDisplay)return;
 
   if(Number.isFinite(first)&&Number.isFinite(second)){
-    display.textContent=((first+second)/2).toFixed(1)+" °Brix";
+    const mean=(first+second)/2;
+    const sweetness=getSweetnessAssessment(mean);
+
+    averageDisplay.textContent=mean.toFixed(1)+" °Brix";
+    sweetnessDisplay.textContent=sweetness.title;
   }else{
-    display.textContent="— °Brix";
+    averageDisplay.textContent="— °Brix";
+    sweetnessDisplay.textContent="—";
   }
 }
+function showStudyMessage(message,isError=true){
+  const status=document.getElementById("studyStatus");
+  if(!status)return;
+
+  status.style.display="block";
+  status.style.background=isError?"#fff1f1":"#edf8f0";
+  status.style.color=isError?"#9f2d2d":"#17683a";
+  status.textContent=message;
+}
+
+function clearStudyMessage(){
+  const status=document.getElementById("studyStatus");
+  if(!status)return;
+  status.style.display="none";
+  status.textContent="";
+}
+
+function normalizeLegacyStructure(value){
+  const map={
+    "Очень плотная":"Очень плотная (с выраженными прожилками)",
+    "Очень плотная (с выраженными прожилками)":"Очень плотная (с выраженными прожилками)",
+    "Плотная":"Плотная",
+    "Хрустящая":"Плотная",
+    "Нормальная":"Средняя",
+    "Средняя":"Средняя",
+    "Рыхлая":"Рыхлая",
+    "Ватная":"Ватная",
+    "Повреждённая":"Ватная"
+  };
+
+  return map[value]||"";
+}
+
 function openStudy(id){
   const record=getRecords().find(item=>item.researchId===id);
   if(!record)return;
 
   activeId=id;
+  clearStudyMessage();
 
   document.getElementById("studySummary").innerHTML=
     `<b>${record.researchId}</b><br>${record.watermelonType}<br>`+
@@ -281,9 +607,28 @@ function openStudy(id){
   document.getElementById("b1").value=full.brixCenter??full.brixCenter1??"";
   document.getElementById("b2").value=
     full.brixMiddleZone??full.brixInnerZone??full.brixCenter2??"";
-  document.getElementById("taste").value=full.tasteScore??"";
-  document.getElementById("structure").value=full.structure??"";
-  document.getElementById("hollows").value=full.hollows??"Нет";
+  selectTaste(full.tasteScore??"");
+  document.getElementById("structure").value="";
+  document.querySelectorAll("#structureChoices .choice-button").forEach(item=>item.classList.remove("selected"));
+  if(full.structure){
+    const normalizedStructure=normalizeLegacyStructure(full.structure);
+    const structureButton=[...document.querySelectorAll("#structureChoices .choice-button")]
+      .find(item=>item.dataset.value===normalizedStructure);
+    if(structureButton)selectStructure(structureButton);
+  }
+
+  const hollowsValue=full.hollows??"Нет";
+  const hollowsButton=[...document.querySelectorAll("#hollowsChoices .choice-button")]
+    .find(item=>item.dataset.value===hollowsValue);
+  if(hollowsButton)selectHollows(hollowsButton);
+
+  document.getElementById("predictionMatch").value="";
+  document.querySelectorAll("#predictionChoices .choice-button").forEach(item=>item.classList.remove("selected"));
+  if(full.predictionMatch){
+    const predictionButton=[...document.querySelectorAll("#predictionChoices .choice-button")]
+      .find(item=>item.dataset.value===full.predictionMatch);
+    if(predictionButton)selectPredictionMatch(predictionButton);
+  }
   document.getElementById("comment").value=full.comment??"";
 
   updateBrixAverage();
@@ -293,30 +638,41 @@ function openStudy(id){
 }
 function closeStudy(){document.getElementById("overlay").style.display="none";document.body.style.overflow="";activeId=null}
 async function saveFullStudy(){
-  if(!activeId)return;
+  clearStudyMessage();
+
+  if(!activeId){
+    showStudyMessage("Не выбрана запись для сохранения.");
+    return;
+  }
 
   const rindValues=[num("r1"),num("r2"),num("r3")];
   const brixValues=[num("b1"),num("b2")];
   const taste=num("taste");
   const structure=document.getElementById("structure").value;
+  const predictionMatch=document.getElementById("predictionMatch").value;
 
   if(rindValues.some(value=>!Number.isFinite(value)||value<1||value>80)){
-    alert("Заполните три измерения корки значениями от 1 до 80 мм.");
+    showStudyMessage("Заполните три измерения корки значениями от 1 до 80 мм.");
     return;
   }
 
   if(brixValues.some(value=>!Number.isFinite(value)||value<0||value>25)){
-    alert("Заполните два измерения °Brix значениями от 0 до 25.");
+    showStudyMessage("Заполните два измерения °Brix значениями от 0 до 25.");
     return;
   }
 
   if(!Number.isFinite(taste)||taste<1||taste>10){
-    alert("Укажите оценку вкуса от 1 до 10.");
+    showStudyMessage("Выберите оценку вкуса от 1 до 10.");
     return;
   }
 
   if(!structure){
-    alert("Выберите структуру мякоти.");
+    showStudyMessage("Выберите структуру мякоти.");
+    return;
+  }
+
+  if(!predictionMatch){
+    showStudyMessage("Укажите, совпал ли прогноз с фактическим качеством.");
     return;
   }
 
@@ -324,46 +680,191 @@ async function saveFullStudy(){
   const index=records.findIndex(item=>item.researchId===activeId);
 
   if(index<0){
-    alert("Исследование не найдено.");
+    showStudyMessage("Исследование не найдено.");
     return;
   }
 
-  const record=records[index];
-  const meanRind=rindValues.reduce((sum,value)=>sum+value,0)/3;
-  const meanBrix=brixValues.reduce((sum,value)=>sum+value,0)/2;
-  const brixResult=brixClass(meanBrix);
+  const button=document.getElementById("studyBtn");
+  const originalText=button.textContent;
+  button.disabled=true;
+  button.textContent="Сохраняем…";
 
-  record.fullStudyCompleted=true;
-  record.fullStudy={
-    completedAt:new Date().toISOString(),
-    rindStemMm:round(rindValues[0],1),
-    rindSideMm:round(rindValues[1],1),
-    rindPoleMm:round(rindValues[2],1),
-    meanRindThicknessMm:round(meanRind,1),
-    brixCenter:round(brixValues[0],1),
-    brixMiddleZone:round(brixValues[1],1),
-    meanBrix:round(meanBrix,1),
-    brixClass:brixResult.code,
-    brixClassTitle:brixResult.title,
-    tasteScore:Math.round(taste),
-    structure,
-    hollows:document.getElementById("hollows").value,
-    
-    comment:document.getElementById("comment").value.trim()
-  };
+  try{
+    const record=records[index];
+    const meanRind=rindValues.reduce((sum,value)=>sum+value,0)/3;
+    const meanBrix=brixValues.reduce((sum,value)=>sum+value,0)/2;
+    const brixResult=brixClass(meanBrix);
+    const sweetnessResult=getSweetnessAssessment(meanBrix);
+
+    record.fullStudyCompleted=true;
+    record.fullStudy={
+      completedAt:new Date().toISOString(),
+      rindStemMm:round(rindValues[0],1),
+      rindSideMm:round(rindValues[1],1),
+      rindPoleMm:round(rindValues[2],1),
+      meanRindThicknessMm:round(meanRind,1),
+      brixCenter:round(brixValues[0],1),
+      brixMiddleZone:round(brixValues[1],1),
+      meanBrix:round(meanBrix,1),
+      brixClass:brixResult.code,
+      brixClassTitle:brixResult.title,
+      sweetnessCode:sweetnessResult.code,
+      sweetnessTitle:sweetnessResult.title,
+      tasteScore:Math.round(taste),
+      structure,
+      hollows:document.getElementById("hollows").value,
+      predictionMatch,
+      comment:document.getElementById("comment").value.trim()
+    };
+
+    records[index]=record;
+    putRecords(records);
+
+    await post({
+      action:"save_full_study",
+      researchId:record.researchId,
+      fullStudy:record.fullStudy
+    });
+
+    render();
+    showStudyMessage("Полное исследование сохранено.",false);
+
+    setTimeout(()=>{
+      closeStudy();
+    },350);
+  }catch(error){
+    console.error(error);
+    showStudyMessage("Не удалось сохранить исследование. Проверьте заполненные поля и повторите.");
+  }finally{
+    button.disabled=false;
+    button.textContent=originalText;
+  }
+}
+
+function openEditScreening(id){
+  const record=getRecords().find(item=>item.researchId===id);
+  if(!record)return;
+
+  activeEditId=id;
+
+  document.getElementById("editScreeningSummary").innerHTML=
+    `Редактирование записи <b>${record.researchId}</b><br>`+
+    `После сохранения объём, плотность, индекс и класс будут пересчитаны.`;
+
+  document.getElementById("editCity").value=record.city||"";
+  document.getElementById("editPlace").value=record.place||"";
+  document.getElementById("editSeller").value=record.seller||"";
+  document.getElementById("editOriginPlace").value=record.originPlace||"";
+  document.getElementById("editCultivar").value=record.cultivar||"";
+  document.getElementById("editType").value=record.watermelonTypeKey||"oval";
+  document.getElementById("editCirc").value=record.circumferenceCm;
+  document.getElementById("editCircLong").value=record.longitudinalCircumferenceCm;
+  document.getElementById("editWeight").value=record.weightKg;
+
+  const overlay=document.getElementById("editScreeningOverlay");
+  overlay.style.display="block";
+  overlay.scrollTop=0;
+  document.body.style.overflow="hidden";
+}
+
+function closeEditScreening(){
+  document.getElementById("editScreeningOverlay").style.display="none";
+  activeEditId=null;
+
+  const journalOpen=
+    document.getElementById("journalOverlay").style.display==="block";
+
+  document.body.style.overflow=journalOpen?"hidden":"";
+}
+
+async function saveEditedScreening(){
+  if(!activeEditId)return;
+
+  const typeKey=document.getElementById("editType").value;
+  const type=TYPES[typeKey]||TYPES.oval;
+  const circumference=Number(String(document.getElementById("editCirc").value).replace(",","."));
+  const longitudinal=Number(String(document.getElementById("editCircLong").value).replace(",","."));
+  const weight=Number(String(document.getElementById("editWeight").value).replace(",","."));
+
+  const calculatedVolume=volume(circumference,longitudinal,type);
+  const wholeDensity=weight/calculatedVolume;
+  const correctedIndex=wholeDensity*type.rindCoefficient;
+
+  if(!Number.isFinite(circumference)||circumference<25||circumference>180){
+    alert("Поперечный обхват должен быть от 25 до 180 см.");
+    return;
+  }
+
+  if(!Number.isFinite(longitudinal)||longitudinal<25||longitudinal>220){
+    alert("Продольный обхват должен быть от 25 до 220 см.");
+    return;
+  }
+
+  if(!Number.isFinite(weight)||weight<0.5||weight>30){
+    alert("Масса должна быть от 0,5 до 30 кг.");
+    return;
+  }
+
+  if(!Number.isFinite(wholeDensity)||wholeDensity<0.60||wholeDensity>1.25){
+    alert("Масса не соответствует указанным размерам. Проверьте введённые данные.");
+    return;
+  }
+
+  const records=getRecords();
+  const index=records.findIndex(item=>item.researchId===activeEditId);
+
+  if(index<0){
+    alert("Запись не найдена.");
+    return;
+  }
+
+  const densityResult=densityClass(correctedIndex);
+  const record=records[index];
+
+  record.city=document.getElementById("editCity").value.trim();
+  record.place=document.getElementById("editPlace").value.trim();
+  record.seller=document.getElementById("editSeller").value.trim();
+  record.originPlace=document.getElementById("editOriginPlace").value.trim();
+  record.cultivar=document.getElementById("editCultivar").value.trim();
+  record.watermelonTypeKey=typeKey;
+  record.watermelonType=type.title;
+  record.circumferenceCm=round(circumference,1);
+  record.longitudinalCircumferenceCm=round(longitudinal,1);
+  record.weightKg=round(weight,3);
+  record.calculatedVolumeLiters=round(calculatedVolume,3);
+  record.wholeFruitDensityKgL=round(wholeDensity,4);
+  record.correctedDensityIndex=round(correctedIndex,4);
+  record.rindCoefficient=type.rindCoefficient;
+  record.volumeCoefficient=type.volumeCoefficient;
+  record.densityClass=densityResult.code;
+  record.densityClassTitle=densityResult.title;
+  record.updatedAt=new Date().toISOString();
+
+  saveUniqueValue(CITIES_STORAGE,record.city);
+  saveUniqueValue(PLACES_STORAGE,record.place);
+  saveUniqueValue(SELLERS_STORAGE,record.seller);
+  saveUniqueValue(ORIGINS_STORAGE,record.originPlace);
+  saveUniqueValue(CULTIVARS_STORAGE,record.cultivar);
+
+  renderDatalist(CITIES_STORAGE,"cityOptions");
+  renderDatalist(PLACES_STORAGE,"placeOptions");
+  renderDatalist(SELLERS_STORAGE,"sellerOptions");
+renderDatalist(ORIGINS_STORAGE,"originOptions");
+renderDatalist(CULTIVARS_STORAGE,"cultivarOptions");
 
   records[index]=record;
   putRecords(records);
 
   await post({
-    action:"save_full_study",
+    action:"update_screening",
     researchId:record.researchId,
-    fullStudy:record.fullStudy
+    ...record
   });
 
+  closeEditScreening();
   render();
-  closeStudy();
 }
+
 function openJournal(){
   render();
   document.getElementById("journalOverlay").style.display="block";
@@ -431,8 +932,119 @@ function clearAll(){
   );
 }
 
-function render(){const rs=getRecords(),cnt={A:0,B:0,C:0};rs.forEach(r=>cnt[r.densityClass]++);document.getElementById("stats").innerHTML=`Всего скринингов: <b>${rs.length}</b><br>Полных исследований: <b>${rs.filter(r=>r.fullStudyCompleted).length}</b><br>A: <b>${cnt.A}</b> · B: <b>${cnt.B}</b> · C: <b>${cnt.C}</b>`;document.getElementById("records").innerHTML=rs.length?rs.slice().reverse().map(r=>`<div class="record ${r.densityClass}"><div class="rid">${r.researchId}</div><div class="meta">${r.watermelonType} · ${r.weightKg} кг${r.seller?` · продавец: ${r.seller}`:""}<br>${r.place?`Место: ${r.place}<br>`:""}Индекс: <b>${r.correctedDensityIndex.toFixed(4)}</b> · Класс: <b>${r.densityClass}</b>${r.fullStudyCompleted?`<br>°Brix: <b>${r.fullStudy.meanBrix}</b> · Корка: <b>${r.fullStudy.meanRindThicknessMm} мм</b> · Вкус: <b>${r.fullStudy.tasteScore}/10</b>`:"<br>Ожидает полного исследования"}</div><div class="actions"><button class="secondary" onclick="openStudy('${r.researchId}')">${r.fullStudyCompleted?"Изменить":"Полное исследование"}</button><button class="danger" onclick="del('${r.researchId}')">Удалить</button></div></div>`).join(""):'<div class="hint">Наблюдений пока нет.</div>'}
-function esc(v){return `"${String(v??"").replace(/"/g,'""')}"`}
+function render(){
+  const records=getRecords();
+  const counts={A:0,B:0,C:0};
+
+  records.forEach(record=>{
+    if(counts[record.densityClass]!==undefined){
+      counts[record.densityClass]+=1;
+    }
+  });
+
+  document.getElementById("stats").innerHTML=
+    `Всего скринингов: <b>${records.length}</b><br>`+
+    `Полных исследований: <b>${records.filter(record=>record.fullStudyCompleted).length}</b><br>`+
+    `A: <b>${counts.A}</b> · B: <b>${counts.B}</b> · C: <b>${counts.C}</b>`;
+
+  if(!records.length){
+    document.getElementById("records").innerHTML=
+      '<div class="hint">Наблюдений пока нет.</div>';
+    return;
+  }
+
+  document.getElementById("records").innerHTML=records
+    .slice()
+    .reverse()
+    .map(record=>{
+      const full=record.fullStudy||{};
+
+      const sweetnessTitle=
+        full.sweetnessTitle||
+        getSweetnessAssessment(Number(full.meanBrix)).title;
+
+      const fullStudyLine=record.fullStudyCompleted
+        ? `<br>Средний °Brix: <b>${full.meanBrix}</b> · `+
+          `Сладость: <b>${sweetnessTitle}</b> · `+
+          `Корка: <b>${full.meanRindThicknessMm} мм</b> · `+
+          `Вкус: <b>${full.tasteScore}/10</b> · `+
+          `Прогноз: <b>${full.predictionMatch||"—"}</b>`
+        : '<br>Ожидает полного исследования';
+
+      return `
+        <div class="record ${record.densityClass}">
+          <div class="record-top">
+            <div>
+              <div class="rid">${record.researchId}</div>
+              <div class="meta">
+                ${record.watermelonType}
+                ${record.seller?` · продавец: ${record.seller}`:""}<br>
+                ${record.place?`Место: ${record.place}<br>`:""}
+                ${record.originPlace?`Произрастание: ${record.originPlace}<br>`:""}
+                ${record.cultivar?`Сорт: ${record.cultivar}`:""}
+              </div>
+            </div>
+
+            <div class="class-mark" title="Класс ${record.densityClass}">
+              ${record.densityClass}
+            </div>
+          </div>
+
+          <div class="measurements-box">
+            Поперечный обхват:
+            <b>${Number(record.circumferenceCm).toFixed(1)} см</b><br>
+
+            Продольный обхват:
+            <b>${Number(record.longitudinalCircumferenceCm).toFixed(1)} см</b><br>
+
+            Масса:
+            <b>${Number(record.weightKg).toFixed(3)} кг</b><br>
+
+            Геометрический объём:
+            <b>${Number(record.calculatedVolumeLiters).toFixed(3)} л</b><br>
+
+            Плотность целого плода:
+            <b>${Number(record.wholeFruitDensityKgL).toFixed(4)} кг/л</b><br>
+
+            Скорректированный индекс:
+            <b>${Number(record.correctedDensityIndex).toFixed(4)}</b><br>
+
+            Класс:
+            <b>${record.densityClass}</b>
+
+            ${fullStudyLine}
+          </div>
+
+          <div class="actions">
+            <button
+              class="secondary wide"
+              type="button"
+              onclick="openEditScreening('${record.researchId}')">
+              Изменить скрининг
+            </button>
+
+            <button
+              class="secondary"
+              type="button"
+              onclick="openStudy('${record.researchId}')">
+              ${record.fullStudyCompleted
+                ?"Изменить полное исследование"
+                :"Полное исследование"}
+            </button>
+
+            <button
+              class="danger"
+              type="button"
+              onclick="del('${record.researchId}')">
+              Удалить
+            </button>
+          </div>
+        </div>
+      `;
+    })
+    .join("");
+}
+
 function initializeApplication(){
   const currentYear=new Date().getFullYear();
   const allowedYears=[2026,2027,2028,2029,2030];
@@ -443,6 +1055,8 @@ function initializeApplication(){
   renderDatalist(CITIES_STORAGE,"cityOptions");
   renderDatalist(PLACES_STORAGE,"placeOptions");
   renderDatalist(SELLERS_STORAGE,"sellerOptions");
+renderDatalist(ORIGINS_STORAGE,"originOptions");
+renderDatalist(CULTIVARS_STORAGE,"cultivarOptions");
   render();
   refreshAvailableNumbers();
 }
