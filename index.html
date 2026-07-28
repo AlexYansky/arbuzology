@@ -222,7 +222,7 @@ button{width:100%;border:0;border-radius:10px;padding:14px;font-size:15px;font-w
 
 <button class="muted" onclick="openJournal()">Открыть журнал</button>
 
-<div class="footer"><b>Александр Янпольский</b><br>Арбузология v3.1</div>
+<div class="footer"><b>Александр Янпольский</b><br>Арбузология v4.0</div>
 </div>
 
 
@@ -362,8 +362,8 @@ button{width:100%;border:0;border-radius:10px;padding:14px;font-size:15px;font-w
 </div>
 
 <script>
-const GOOGLE_SCRIPT_URL="";
-const STORAGE="arbuzologyRecordsV1",APP_VERSION="3.1";
+const GOOGLE_SCRIPT_URL="https://script.google.com/macros/s/AKfycbyauxicHpvPdcvDJgqQmet2Hwrhd8d_-2gQ-DUZU5ekOMaao5VccteQ0MF9oTaoyU23/exec";
+const STORAGE="arbuzologyRecordsV1",APP_VERSION="4.0";
 const SELLERS_STORAGE="arbuzologySellersV1";
 const ORIGINS_STORAGE="arbuzologyOriginsV1";
 const CULTIVARS_STORAGE="arbuzologyCultivarsV1";
@@ -499,7 +499,7 @@ function updateWeightRangeHint(){
 
 function densityClass(v){if(v>.950)return{code:"A",title:"Высокий индекс плотности",css:"a",text:"Гипотеза: возможна чрезмерно плотная или недозрелая мякоть."};if(v>=.890)return{code:"B",title:"Центральный исследуемый диапазон",css:"b",text:"Гипотеза: наиболее вероятен хороший баланс плотности, сочности и хруста."};return{code:"C",title:"Низкий индекс плотности",css:"c",text:"Гипотеза: возможны рыхлость, ватность, пустоты или повреждение структуры."}}
 function brixClass(v){return v>=12?{code:"A",title:"Высокая сахаристость"}:v>=10?{code:"B",title:"Средняя сахаристость"}:{code:"C",title:"Низкая сахаристость"}}
-async function post(payload){if(!GOOGLE_SCRIPT_URL)return{skip:true};try{await fetch(GOOGLE_SCRIPT_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)});return{ok:true}}catch{return{ok:false}}}
+async function post(payload){if(!GOOGLE_SCRIPT_URL||GOOGLE_SCRIPT_URL.includes("ВСТАВЬТЕ_СЮДА"))return{skip:true};try{await fetch(GOOGLE_SCRIPT_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)});return{ok:true}}catch{return{ok:false}}}
 async function saveScreening(){
 const type=TYPES[document.getElementById("type").value],c1=num("circ"),c2=num("circLong"),w=num("weight"),v=volume(c1,c2,type),whole=w/v,index=whole*type.rindCoefficient;
 const researchYear=Number(document.getElementById("researchYear").value);
@@ -558,8 +558,11 @@ renderDatalist(CULTIVARS_STORAGE,"cultivarOptions");
 
 const records=getRecords();records.push(record);putRecords(records);
 const r=document.getElementById("result");r.style.display="block";r.className=`result ${cls.css}`;r.innerHTML=`<span class="badge">Класс ${cls.code}</span><h3>${cls.title}</h3>ID: <b>${record.researchId}</b><br>Геометрический объём: <b>${record.calculatedVolumeLiters.toFixed(3)} л</b><br>Плотность целого плода: <b>${record.wholeFruitDensityKgL.toFixed(4)} кг/л</b><br>Скорректированный индекс: <b>${record.correctedDensityIndex.toFixed(4)}</b><p>${cls.text}</p>`;
-document.getElementById("status").style.display="block";document.getElementById("status").textContent=GOOGLE_SCRIPT_URL?"⏳ Отправляем в таблицу…":"✅ Сохранено локально.";
-await post({action:"save_screening",...record});
+document.getElementById("status").style.display="block";document.getElementById("status").textContent=(!GOOGLE_SCRIPT_URL||GOOGLE_SCRIPT_URL.includes("ВСТАВЬТЕ_СЮДА"))?"✅ Сохранено локально.":"⏳ Сохраняем локально и отправляем в Google Таблицу…";
+const cloudResult=await post({action:"save_screening",...record});
+document.getElementById("status").textContent=cloudResult.ok
+  ?"✅ Сохранено локально и отправлено в Google Таблицу."
+  :"⚠️ Сохранено локально, но отправить в Google Таблицу не удалось.";
 document.getElementById("circ").value="";
 document.getElementById("circLong").value="";
 document.getElementById("weight").value="";
@@ -847,14 +850,19 @@ async function saveFullStudy(){
     records[index]=record;
     putRecords(records);
 
-    await post({
+    const cloudResult=await post({
       action:"save_full_study",
       researchId:record.researchId,
       fullStudy:record.fullStudy
     });
 
     render();
-    showStudyMessage("Полное исследование сохранено.",false);
+    showStudyMessage(
+      cloudResult.ok
+        ?"Полное исследование сохранено и отправлено в Google Таблицу."
+        :"Полное исследование сохранено локально, но отправить его в Google Таблицу не удалось.",
+      !cloudResult.ok
+    );
 
     setTimeout(()=>{
       closeStudy();
@@ -982,7 +990,7 @@ renderDatalist(CULTIVARS_STORAGE,"cultivarOptions");
   records[index]=record;
   putRecords(records);
 
-  await post({
+  const cloudResult=await post({
     action:"update_screening",
     researchId:record.researchId,
     ...record
@@ -990,6 +998,14 @@ renderDatalist(CULTIVARS_STORAGE,"cultivarOptions");
 
   closeEditScreening();
   render();
+
+  const status=document.getElementById("status");
+  if(status){
+    status.style.display="block";
+    status.textContent=cloudResult.ok
+      ?"✅ Изменения сохранены и отправлены в Google Таблицу."
+      :"⚠️ Изменения сохранены локально, но отправить их в Google Таблицу не удалось.";
+  }
 }
 
 function openJournal(){
@@ -1034,6 +1050,7 @@ function del(id){
     `Запись <b>${id}</b> будет удалена.<br><br>После удаления её номер снова станет доступен для выбора.`,
     ()=>{
       putRecords(getRecords().filter(x=>x.researchId!==id));
+      post({action:"delete_record",researchId:id});
       render();
       refreshAvailableNumbers();
     }
@@ -1053,6 +1070,7 @@ function clearAll(){
     `Будут безвозвратно удалены все локальные записи: <b>${count}</b>.<br><br>Восстановить их после удаления будет невозможно.`,
     ()=>{
       localStorage.removeItem(STORAGE);
+      post({action:"delete_all_records"});
       render();
       refreshAvailableNumbers();
     }
