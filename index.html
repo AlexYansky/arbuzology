@@ -12,7 +12,7 @@
 h1{text-align:center;color:var(--gd);margin:0;font-size:27px}h2{color:var(--gd);font-size:19px}.sub{text-align:center;font-weight:700;color:#365244;margin:6px 0}.motto{background:#f4faf5;color:#2b6d43;text-align:center;border-radius:10px;padding:10px;font-size:12px;font-weight:700;margin:10px 0 20px}
 .section{font-size:17px;font-weight:800;color:var(--gd);margin:22px 0 8px}label{display:block;font-weight:700;margin:14px 0 6px;font-size:14px}
 input,select,textarea{width:100%;padding:13px;border:2px solid var(--bd);border-radius:10px;font-size:16px;background:#fff}textarea{min-height:85px}
-input:focus,select:focus,textarea:focus{outline:none;border-color:var(--g)}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.equal-field{display:flex;flex-direction:column}.equal-field label{min-height:42px;display:flex;align-items:flex-end}.equal-field input{margin-top:auto}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--g)}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.equal-field{display:flex;flex-direction:column}.equal-field label{min-height:44px;display:flex;align-items:flex-end}.equal-field input{margin-top:auto}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 button{width:100%;border:0;border-radius:10px;padding:14px;font-size:15px;font-weight:800;cursor:pointer}.main{background:var(--g);color:#fff;margin-top:18px}.secondary{background:#fff;color:var(--gd);border:2px solid #86c79a;margin-top:10px}.muted{background:#edf2ee;color:#52665a;margin-top:10px}.danger{background:#fff4f4;color:var(--red);border:2px solid #e6b4b4;margin-top:10px}
 .hint,.summary{background:#f4faf5;border-left:4px solid var(--g);border-radius:6px;padding:11px 13px;font-size:13px;line-height:1.5}.summary{border:2px solid #cce6d3;margin:10px 0}
 .result{display:none;margin-top:18px;padding:16px;border-radius:14px;line-height:1.55}.a{background:#fff2f2;color:#8d2424;border:2px solid #df9696}.b{background:#edf8f0;color:#14532d;border:2px solid #8dcc9f}.c{background:#fff8e7;color:#8a5600;border:2px solid #e7c36e}
@@ -74,17 +74,21 @@ button{width:100%;border:0;border-radius:10px;padding:14px;font-size:15px;font-w
 <label>Масса арбуза, кг</label><input id="weight" type="number" min="0.5" max="30" step="0.001" inputmode="decimal" placeholder="7.690">
 <button class="main" id="calcBtn" onclick="saveScreening()">Рассчитать и сохранить скрининг</button>
 <div id="result" class="result"></div><div id="status" class="status"></div>
-<button class="secondary" onclick="exportCSV()">Скачать резервную копию CSV</button>
-<button class="muted" onclick="document.getElementById('journal').scrollIntoView({behavior:'smooth'})">Открыть журнал</button>
-<p class="small">До подключения нового Google Apps Script данные сохраняются в памяти этого браузера. CSV позволяет сделать резервную копию.</p>
-<div class="footer"><b>Александр Янпольский</b><br>Арбузология v1.5</div>
+
+<button class="muted" onclick="openJournal()">Открыть журнал</button>
+
+<div class="footer"><b>Александр Янпольский</b><br>Арбузология v1.8</div>
 </div>
 
-<div class="card" id="journal">
-<h2>📚 Журнал наблюдений</h2>
-<div id="stats" class="summary"></div>
-<div id="records"></div>
-<button class="danger" onclick="clearAll()">Удалить все локальные записи</button>
+
+<div class="overlay" id="journalOverlay">
+  <div class="dialog">
+    <h2>📚 Журнал наблюдений</h2>
+    <div id="stats" class="summary"></div>
+    <div id="records"></div>
+    <button class="danger" type="button" onclick="clearAll()">Удалить все локальные записи</button>
+    <button class="muted" type="button" onclick="closeJournal()">Закрыть журнал</button>
+  </div>
 </div>
 
 <div class="overlay" id="overlay">
@@ -120,7 +124,7 @@ button{width:100%;border:0;border-radius:10px;padding:14px;font-size:15px;font-w
 <select id="structure"><option value="">Выберите</option><option>Недозрелая</option><option>Очень плотная</option><option>Хрустящая</option><option>Нормальная</option><option>Рыхлая</option><option>Ватная</option><option>Повреждённая</option></select>
 <label>Внутренние пустоты</label>
 <select id="hollows"><option>Нет</option><option>Небольшие</option><option>Выраженные</option></select>
-<div class="check"><input id="photo" type="checkbox"><label for="photo" style="margin:0">Фото разреза сделано с видимым ID</label></div>
+
 <label>Комментарий исследователя</label><textarea id="comment" maxlength="800"></textarea>
 <button class="main" id="studyBtn" onclick="saveFullStudy()">Сохранить полное исследование</button>
 <button class="muted" onclick="closeStudy()">Закрыть без сохранения</button>
@@ -130,7 +134,7 @@ button{width:100%;border:0;border-radius:10px;padding:14px;font-size:15px;font-w
 
 <script>
 const GOOGLE_SCRIPT_URL="";
-const STORAGE="arbuzologyRecordsV1",APP_VERSION="1.5";
+const STORAGE="arbuzologyRecordsV1",APP_VERSION="1.8";
 const SELLERS_STORAGE="arbuzologySellersV1";
 const PLACES_STORAGE="arbuzologyPlacesV1";
 const CITY_STORAGE="arbuzologyCityV1";
@@ -259,35 +263,28 @@ function updateBrixAverage(){
   }
 }
 function openStudy(id){
-  const r=getRecords().find(x=>x.researchId===id);
-  if(!r)return;
+  const record=getRecords().find(item=>item.researchId===id);
+  if(!record)return;
 
   activeId=id;
+
   document.getElementById("studySummary").innerHTML=
-    `<b>${r.researchId}</b><br>${r.watermelonType}<br>Класс: <b>${r.densityClass}</b> · Индекс: <b>${r.correctedDensityIndex.toFixed(4)}</b>`;
+    `<b>${record.researchId}</b><br>${record.watermelonType}<br>`+
+    `Класс: <b>${record.densityClass}</b> · `+
+    `Индекс: <b>${record.correctedDensityIndex.toFixed(4)}</b>`;
 
-  const f=r.fullStudy||{};
+  const full=record.fullStudy||{};
 
-  for(const [elementId,key] of [
-    
-    ["r1","rindStemMm"],
-    ["r2","rindSideMm"],
-    ["r3","rindPoleMm"],
-    ["taste","tasteScore"],
-    ["comment","comment"]
-  ]){
-    document.getElementById(elementId).value=f[key]??"";
-  }
-
-  document.getElementById("b1").value=
-    f.brixCenter ?? f.brixCenter1 ?? "";
-
+  document.getElementById("r1").value=full.rindStemMm??"";
+  document.getElementById("r2").value=full.rindSideMm??"";
+  document.getElementById("r3").value=full.rindPoleMm??"";
+  document.getElementById("b1").value=full.brixCenter??full.brixCenter1??"";
   document.getElementById("b2").value=
-    f.brixMiddleZone ?? f.brixInnerZone ?? f.brixCenter2 ?? "";
-
-  document.getElementById("structure").value=f.structure??"";
-  document.getElementById("hollows").value=f.hollows??"Нет";
-  document.getElementById("photo").checked=!!f.photoTaken;
+    full.brixMiddleZone??full.brixInnerZone??full.brixCenter2??"";
+  document.getElementById("taste").value=full.tasteScore??"";
+  document.getElementById("structure").value=full.structure??"";
+  document.getElementById("hollows").value=full.hollows??"Нет";
+  document.getElementById("comment").value=full.comment??"";
 
   updateBrixAverage();
 
@@ -296,13 +293,88 @@ function openStudy(id){
 }
 function closeStudy(){document.getElementById("overlay").style.display="none";document.body.style.overflow="";activeId=null}
 async function saveFullStudy(){
-if(!activeId)return;const rv=[num("r1"),num("r2"),num("r3")],bv=[num("b1"),num("b2")],taste=num("taste"),structure=document.getElementById("structure").value;
-if(rv.some(x=>!Number.isFinite(x)||x<1||x>80))return alert("Заполните три измерения корки: 1–80 мм.");
-if(bv.some(x=>!Number.isFinite(x)||x<0||x>25))return alert("Заполните два измерения °Brix значениями от 0 до 25.");
-if(!Number.isFinite(taste)||taste<1||taste>10)return alert("Оценка вкуса: 1–10.");
-if(!structure)return alert("Выберите структуру мякоти.");
-const records=getRecords(),i=records.findIndex(x=>x.researchId===activeId),r=records[i],meanR=rv.reduce((a,b)=>a+b)/3,meanB=bv.reduce((a,b)=>a+b)/2,bc=brixClass(meanB),pd=Number.isFinite(pv)?r.weightKg/pv:NaN,err=Number.isFinite(pv)?(r.calculatedVolumeLiters-pv)/pv*100:NaN;
-r.fullStudyCompleted=true;r.fullStudy={completedAt:new Date().toISOString(),3):"",4),2),rindStemMm:round(rv[0],1),rindSideMm:round(rv[1],1),rindPoleMm:round(rv[2],1),meanRindThicknessMm:round(meanR,1),brixCenter:round(bv[0],1),brixMiddleZone:round(bv[1],1),meanBrix:round(meanB,1),brixClass:bc.code,brixClassTitle:bc.title,tasteScore:Math.round(taste),structure,hollows:document.getElementById("hollows").value,photoTaken:document.getElementById("photo").checked,comment:document.getElementById("comment").value.trim()};records[i]=r;putRecords(records);await post({action:"save_full_study",researchId:r.researchId,fullStudy:r.fullStudy});render();closeStudy()}
+  if(!activeId)return;
+
+  const rindValues=[num("r1"),num("r2"),num("r3")];
+  const brixValues=[num("b1"),num("b2")];
+  const taste=num("taste");
+  const structure=document.getElementById("structure").value;
+
+  if(rindValues.some(value=>!Number.isFinite(value)||value<1||value>80)){
+    alert("Заполните три измерения корки значениями от 1 до 80 мм.");
+    return;
+  }
+
+  if(brixValues.some(value=>!Number.isFinite(value)||value<0||value>25)){
+    alert("Заполните два измерения °Brix значениями от 0 до 25.");
+    return;
+  }
+
+  if(!Number.isFinite(taste)||taste<1||taste>10){
+    alert("Укажите оценку вкуса от 1 до 10.");
+    return;
+  }
+
+  if(!structure){
+    alert("Выберите структуру мякоти.");
+    return;
+  }
+
+  const records=getRecords();
+  const index=records.findIndex(item=>item.researchId===activeId);
+
+  if(index<0){
+    alert("Исследование не найдено.");
+    return;
+  }
+
+  const record=records[index];
+  const meanRind=rindValues.reduce((sum,value)=>sum+value,0)/3;
+  const meanBrix=brixValues.reduce((sum,value)=>sum+value,0)/2;
+  const brixResult=brixClass(meanBrix);
+
+  record.fullStudyCompleted=true;
+  record.fullStudy={
+    completedAt:new Date().toISOString(),
+    rindStemMm:round(rindValues[0],1),
+    rindSideMm:round(rindValues[1],1),
+    rindPoleMm:round(rindValues[2],1),
+    meanRindThicknessMm:round(meanRind,1),
+    brixCenter:round(brixValues[0],1),
+    brixMiddleZone:round(brixValues[1],1),
+    meanBrix:round(meanBrix,1),
+    brixClass:brixResult.code,
+    brixClassTitle:brixResult.title,
+    tasteScore:Math.round(taste),
+    structure,
+    hollows:document.getElementById("hollows").value,
+    
+    comment:document.getElementById("comment").value.trim()
+  };
+
+  records[index]=record;
+  putRecords(records);
+
+  await post({
+    action:"save_full_study",
+    researchId:record.researchId,
+    fullStudy:record.fullStudy
+  });
+
+  render();
+  closeStudy();
+}
+function openJournal(){
+  render();
+  document.getElementById("journalOverlay").style.display="block";
+  document.body.style.overflow="hidden";
+}
+
+function closeJournal(){
+  document.getElementById("journalOverlay").style.display="none";
+  document.body.style.overflow="";
+}
+
 function showDeleteConfirmation(title,text,action){
   pendingDeleteAction=action;
   document.getElementById("confirmDeleteTitle").textContent=title;
@@ -350,7 +422,7 @@ function clearAll(){
 
   showDeleteConfirmation(
     "Удалить все исследования?",
-    `Будут безвозвратно удалены все локальные записи: <b>${count}</b>.<br><br>Перед удалением рекомендуется выгрузить резервную копию CSV.`,
+    `Будут безвозвратно удалены все локальные записи: <b>${count}</b>.<br><br>Восстановить их после удаления будет невозможно.`,
     ()=>{
       localStorage.removeItem(STORAGE);
       render();
@@ -361,46 +433,6 @@ function clearAll(){
 
 function render(){const rs=getRecords(),cnt={A:0,B:0,C:0};rs.forEach(r=>cnt[r.densityClass]++);document.getElementById("stats").innerHTML=`Всего скринингов: <b>${rs.length}</b><br>Полных исследований: <b>${rs.filter(r=>r.fullStudyCompleted).length}</b><br>A: <b>${cnt.A}</b> · B: <b>${cnt.B}</b> · C: <b>${cnt.C}</b>`;document.getElementById("records").innerHTML=rs.length?rs.slice().reverse().map(r=>`<div class="record ${r.densityClass}"><div class="rid">${r.researchId}</div><div class="meta">${r.watermelonType} · ${r.weightKg} кг${r.seller?` · продавец: ${r.seller}`:""}<br>${r.place?`Место: ${r.place}<br>`:""}Индекс: <b>${r.correctedDensityIndex.toFixed(4)}</b> · Класс: <b>${r.densityClass}</b>${r.fullStudyCompleted?`<br>°Brix: <b>${r.fullStudy.meanBrix}</b> · Корка: <b>${r.fullStudy.meanRindThicknessMm} мм</b> · Вкус: <b>${r.fullStudy.tasteScore}/10</b>`:"<br>Ожидает полного исследования"}</div><div class="actions"><button class="secondary" onclick="openStudy('${r.researchId}')">${r.fullStudyCompleted?"Изменить":"Полное исследование"}</button><button class="danger" onclick="del('${r.researchId}')">Удалить</button></div></div>`).join(""):'<div class="hint">Наблюдений пока нет.</div>'}
 function esc(v){return `"${String(v??"").replace(/"/g,'""')}"`}
-function exportCSV(){
-  const records=getRecords();
-
-  if(!records.length){
-    alert("Нет данных для резервной копии.");
-    return;
-  }
-
-  const headers=[
-    "researchId","researchYear","watermelonNumber","createdAt","city","place","seller",
-    "watermelonType","circumferenceCm","longitudinalCircumferenceCm","weightKg",
-    "calculatedVolumeLiters","wholeFruitDensityKgL","correctedDensityIndex",
-    "densityClass","fullStudyCompleted",
-    "rindStemMm","rindSideMm","rindPoleMm","meanRindThicknessMm",
-    "brixCenter","brixMiddleZone","meanBrix","brixClass",
-    "tasteScore","structure","hollows","photoTaken","comment"
-  ];
-
-  const rows=records.map(record=>{
-    const flat={...record,...(record.fullStudy||{})};
-    return headers.map(header=>esc(flat[header])).join(";");
-  });
-
-  const csv="\uFEFF"+headers.map(esc).join(";")+"\r\n"+rows.join("\r\n");
-  const blob=new Blob([csv],{type:"text/csv;charset=utf-8;"});
-  const url=URL.createObjectURL(blob);
-  const link=document.createElement("a");
-
-  link.href=url;
-  link.download=`arbuzology_backup_${new Date().toISOString().slice(0,10)}.csv`;
-  link.style.display="none";
-  document.body.appendChild(link);
-  link.click();
-
-  setTimeout(()=>{
-    URL.revokeObjectURL(url);
-    link.remove();
-  },1000);
-}
-
 function initializeApplication(){
   const currentYear=new Date().getFullYear();
   const allowedYears=[2026,2027,2028,2029,2030];
