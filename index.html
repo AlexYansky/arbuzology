@@ -203,7 +203,7 @@ button{width:100%;border:0;border-radius:10px;padding:14px;font-size:15px;font-w
 <datalist id="cultivarOptions"></datalist>
 
 <label>Тип арбуза</label>
-<select id="type">
+<select id="type" onchange="updateWeightRangeHint()">
 <option value="oval" selected>Вытянутый / овальный</option>
 <option value="classic">Обычный круглый</option>
 <option value="yellow">Жёлтый</option>
@@ -212,15 +212,17 @@ button{width:100%;border:0;border-radius:10px;padding:14px;font-size:15px;font-w
 
 <div class="section">② Неразрушающее измерение</div>
 <div class="hint">Единый протокол: два обхвата до 0,1 см и точный вес желательно до 0,001 кг.</div>
-<label>Поперечный обхват по экватору, см</label><input id="circ" type="number" min="25" max="180" step="0.1" inputmode="decimal" placeholder="75.0">
-<label>Продольный обхват, см</label><input id="circLong" type="number" min="25" max="220" step="0.1" inputmode="decimal" placeholder="81.7">
-<label>Масса арбуза, кг</label><input id="weight" type="number" min="0.5" max="30" step="0.001" inputmode="decimal" placeholder="7.690">
+<label>Поперечный обхват по экватору, см</label><input id="circ" type="number" min="25" max="180" step="0.1" oninput="updateWeightRangeHint()" inputmode="decimal" placeholder="75.0">
+<label>Продольный обхват, см</label><input id="circLong" type="number" min="25" max="220" step="0.1" oninput="updateWeightRangeHint()" inputmode="decimal" placeholder="81.7">
+<label>Масса арбуза, кг</label>
+<input id="weight" type="number" min="0.5" max="30" step="0.001" inputmode="decimal" placeholder="7.690" oninput="updateWeightRangeHint()">
+<div id="weightRangeHint" style="min-height:18px;margin-top:6px;font-size:12px;color:#5f6f66;line-height:1.35"></div>
 <button class="main" id="calcBtn" onclick="saveScreening()">Рассчитать и сохранить скрининг</button>
 <div id="result" class="result"></div><div id="status" class="status"></div>
 
 <button class="muted" onclick="openJournal()">Открыть журнал</button>
 
-<div class="footer"><b>Александр Янпольский</b><br>Арбузология v2.8</div>
+<div class="footer"><b>Александр Янпольский</b><br>Арбузология v3.1</div>
 </div>
 
 
@@ -361,7 +363,7 @@ button{width:100%;border:0;border-radius:10px;padding:14px;font-size:15px;font-w
 
 <script>
 const GOOGLE_SCRIPT_URL="";
-const STORAGE="arbuzologyRecordsV1",APP_VERSION="2.8";
+const STORAGE="arbuzologyRecordsV1",APP_VERSION="3.1";
 const SELLERS_STORAGE="arbuzologySellersV1";
 const ORIGINS_STORAGE="arbuzologyOriginsV1";
 const CULTIVARS_STORAGE="arbuzologyCultivarsV1";
@@ -441,6 +443,60 @@ function selectedResearchId(){
   return `AR-${year}-${String(number).padStart(3,"0")}`;
 }
 function volume(c1,c2,t){const a=c1/(2*Math.PI),c=c2/(2*Math.PI);return ((4/3)*Math.PI*a*a*c/1000)*t.volumeCoefficient}
+function getExpectedWeightRange(calculatedVolume){
+  if(!Number.isFinite(calculatedVolume)||calculatedVolume<=0){
+    return null;
+  }
+
+  const minimumDensity=0.80;
+  const maximumDensity=1.20;
+
+  return {
+    minimum:calculatedVolume*minimumDensity,
+    maximum:calculatedVolume*maximumDensity
+  };
+}
+
+function updateWeightRangeHint(){
+  const hint=document.getElementById("weightRangeHint");
+  if(!hint)return;
+
+  const circumference=num("circ");
+  const longitudinal=num("circLong");
+  const weightRaw=document.getElementById("weight").value.trim();
+  const typeElement=document.getElementById("type");
+  const type=TYPES[typeElement.value]||TYPES.oval;
+
+  if(weightRaw!==""){
+    hint.textContent="";
+    return;
+  }
+
+  if(
+    !Number.isFinite(circumference)||
+    !Number.isFinite(longitudinal)||
+    circumference<25||
+    circumference>180||
+    longitudinal<25||
+    longitudinal>220
+  ){
+    hint.textContent="";
+    return;
+  }
+
+  const calculatedVolume=volume(circumference,longitudinal,type);
+  const range=getExpectedWeightRange(calculatedVolume);
+
+  if(!range){
+    hint.textContent="";
+    return;
+  }
+
+  hint.innerHTML=
+    `Ориентировочная масса для введённых размеров: `+
+    `<b>${range.minimum.toFixed(1)}–${range.maximum.toFixed(1)} кг</b>.`;
+}
+
 function densityClass(v){if(v>.950)return{code:"A",title:"Высокий индекс плотности",css:"a",text:"Гипотеза: возможна чрезмерно плотная или недозрелая мякоть."};if(v>=.890)return{code:"B",title:"Центральный исследуемый диапазон",css:"b",text:"Гипотеза: наиболее вероятен хороший баланс плотности, сочности и хруста."};return{code:"C",title:"Низкий индекс плотности",css:"c",text:"Гипотеза: возможны рыхлость, ватность, пустоты или повреждение структуры."}}
 function brixClass(v){return v>=12?{code:"A",title:"Высокая сахаристость"}:v>=10?{code:"B",title:"Средняя сахаристость"}:{code:"C",title:"Низкая сахаристость"}}
 async function post(payload){if(!GOOGLE_SCRIPT_URL)return{skip:true};try{await fetch(GOOGLE_SCRIPT_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)});return{ok:true}}catch{return{ok:false}}}
@@ -456,7 +512,29 @@ if(getRecords().some(record=>record.researchId===researchId))return alert("Эт�
 if(!Number.isFinite(c1)||c1<25||c1>180)return alert("Поперечный обхват: 25–180 см.");
 if(!Number.isFinite(c2)||c2<25||c2>220)return alert("Продольный обхват: 25–220 см.");
 if(!Number.isFinite(w)||w<.5||w>30)return alert("Масса: 0,5–30 кг.");
-if(!Number.isFinite(whole)||whole<.60||whole>1.25)return alert("Масса не соответствует размерам. Проверьте измерения.");
+if(!Number.isFinite(whole)){
+  alert("Не удалось рассчитать плотность. Проверьте введённые данные.");
+  return;
+}
+
+if(whole<0.60||whole>1.25){
+  const expectedRange=getExpectedWeightRange(v);
+  const rangeText=expectedRange
+    ? `${expectedRange.minimum.toFixed(1)}–${expectedRange.maximum.toFixed(1)} кг`
+    : "не рассчитан";
+
+  const confirmed=confirm(
+    `Получена необычная расчётная плотность: ${whole.toFixed(4)} кг/л.
+
+`+
+    `Ориентировочная масса для этих размеров: ${rangeText}.
+
+`+
+    `Проверьте обхваты и вес. Сохранить наблюдение несмотря на предупреждение?`
+  );
+
+  if(!confirmed)return;
+}
 const cls=densityClass(index),record={
 researchId,researchYear,watermelonNumber,createdAt:new Date().toISOString(),appVersion:APP_VERSION,
 city:document.getElementById("city").value.trim(),
@@ -485,8 +563,10 @@ await post({action:"save_screening",...record});
 document.getElementById("circ").value="";
 document.getElementById("circLong").value="";
 document.getElementById("weight").value="";
+updateWeightRangeHint();
 render();
 refreshAvailableNumbers();
+  updateWeightRangeHint();
 }
 function getRindAssessment(meanRind){
   if(!Number.isFinite(meanRind)){
