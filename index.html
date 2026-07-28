@@ -222,7 +222,7 @@ button{width:100%;border:0;border-radius:10px;padding:14px;font-size:15px;font-w
 
 <button class="muted" onclick="openJournal()">Открыть журнал</button>
 
-<div class="footer"><b>Александр Янпольский</b><br>Арбузология v4.0</div>
+<div class="footer"><b>Александр Янпольский</b><br>Арбузология v4.1</div>
 </div>
 
 
@@ -275,7 +275,6 @@ button{width:100%;border:0;border-radius:10px;padding:14px;font-size:15px;font-w
     <h2>📚 Журнал наблюдений</h2>
     <div id="stats" class="summary"></div>
     <div id="records"></div>
-    <button class="danger" type="button" onclick="clearAll()">Удалить все локальные записи</button>
     <button class="muted" type="button" onclick="closeJournal()">Закрыть журнал</button>
   </div>
 </div>
@@ -363,7 +362,8 @@ button{width:100%;border:0;border-radius:10px;padding:14px;font-size:15px;font-w
 
 <script>
 const GOOGLE_SCRIPT_URL="https://script.google.com/macros/s/AKfycbyauxicHpvPdcvDJgqQmet2Hwrhd8d_-2gQ-DUZU5ekOMaao5VccteQ0MF9oTaoyU23/exec";
-const STORAGE="arbuzologyRecordsV1",APP_VERSION="4.0";
+const STORAGE="arbuzologyRecordsV1",APP_VERSION="4.1";
+const ARCHIVED_IDS_STORAGE="arbuzologyArchivedIdsV1";
 const SELLERS_STORAGE="arbuzologySellersV1";
 const ORIGINS_STORAGE="arbuzologyOriginsV1";
 const CULTIVARS_STORAGE="arbuzologyCultivarsV1";
@@ -383,6 +383,23 @@ const num=id=>{const v=document.getElementById(id).value;return v===""?NaN:Numbe
 const round=(v,d)=>Number.isFinite(v)?Math.round((v+Number.EPSILON)*10**d)/10**d:"";
 function getRecords(){try{return JSON.parse(localStorage.getItem(STORAGE)||"[]")}catch{return[]}}
 function putRecords(r){localStorage.setItem(STORAGE,JSON.stringify(r))}
+function getArchivedIds(){
+  try{
+    const value=JSON.parse(localStorage.getItem(ARCHIVED_IDS_STORAGE)||"[]");
+    return Array.isArray(value)?value:[];
+  }catch{
+    return [];
+  }
+}
+
+function addArchivedId(id){
+  const ids=getArchivedIds();
+  if(!ids.includes(id)){
+    ids.push(id);
+    localStorage.setItem(ARCHIVED_IDS_STORAGE,JSON.stringify(ids));
+  }
+}
+
 function getSavedList(key){
   try{
     const value=JSON.parse(localStorage.getItem(key)||"[]");
@@ -406,12 +423,20 @@ function renderDatalist(storageKey,datalistId){
     .join("");
 }
 function getUsedNumbers(year){
-  return new Set(
-    getRecords()
-      .filter(record=>String(record.researchYear)===String(year))
-      .map(record=>Number(record.watermelonNumber))
-      .filter(number=>Number.isInteger(number)&&number>=1&&number<=100)
-  );
+  const activeNumbers=getRecords()
+    .filter(record=>String(record.researchYear)===String(year))
+    .map(record=>Number(record.watermelonNumber))
+    .filter(number=>Number.isInteger(number)&&number>=1&&number<=100);
+
+  const archivedNumbers=getArchivedIds()
+    .map(id=>{
+      const match=String(id).match(/^AR-(\d{4})-(\d{3})$/);
+      if(!match||String(match[1])!==String(year))return null;
+      return Number(match[2]);
+    })
+    .filter(number=>Number.isInteger(number)&&number>=1&&number<=100);
+
+  return new Set([...activeNumbers,...archivedNumbers]);
 }
 function refreshAvailableNumbers(){
   const year=Number(document.getElementById("researchYear").value);
@@ -1044,35 +1069,38 @@ function executeConfirmedDeletion(){
   document.body.style.overflow="";
 }
 
-function del(id){
+function archiveRecord(id){
   showDeleteConfirmation(
-    "Удалить исследование?",
-    `Запись <b>${id}</b> будет удалена.<br><br>После удаления её номер снова станет доступен для выбора.`,
-    ()=>{
-      putRecords(getRecords().filter(x=>x.researchId!==id));
-      post({action:"delete_record",researchId:id});
+    "Архивировать исследование?",
+    `Карточка <b>${id}</b> исчезнет из журнала наблюдений, но запись сохранится в Google Таблице со статусом «Архив».`,
+    async ()=>{
+      const records=getRecords();
+      const record=records.find(item=>item.researchId===id);
+
+      if(!record){
+        alert("Запись не найдена.");
+        return;
+      }
+
+      addArchivedId(id);
+      putRecords(records.filter(item=>item.researchId!==id));
+
+      const cloudResult=await post({
+        action:"archive_record",
+        researchId:id,
+        archivedAt:new Date().toISOString()
+      });
+
       render();
       refreshAvailableNumbers();
-    }
-  );
-}
 
-function clearAll(){
-  const count=getRecords().length;
-
-  if(count===0){
-    alert("Локальных исследований для удаления нет.");
-    return;
-  }
-
-  showDeleteConfirmation(
-    "Удалить все исследования?",
-    `Будут безвозвратно удалены все локальные записи: <b>${count}</b>.<br><br>Восстановить их после удаления будет невозможно.`,
-    ()=>{
-      localStorage.removeItem(STORAGE);
-      post({action:"delete_all_records"});
-      render();
-      refreshAvailableNumbers();
+      const status=document.getElementById("status");
+      if(status){
+        status.style.display="block";
+        status.textContent=cloudResult.ok
+          ?"📦 Запись архивирована и сохранена в Google Таблице."
+          :"⚠️ Карточка убрана из журнала локально, но архивирование в Google Таблице не подтверждено.";
+      }
     }
   );
 }
@@ -1186,8 +1214,8 @@ function render(){
             <button
               class="danger"
               type="button"
-              onclick="del('${record.researchId}')">
-              Удалить
+              onclick="archiveRecord('${record.researchId}')">
+              Архивировать
             </button>
           </div>
         </div>
@@ -1220,7 +1248,7 @@ initializeApplication();
     <div class="summary" id="confirmDeleteText"></div>
     <div class="actions" style="margin-top:14px">
       <button class="muted" type="button" onclick="closeDeleteConfirmation()">Отмена</button>
-      <button class="danger" type="button" onclick="executeConfirmedDeletion()">Удалить</button>
+      <button class="danger" type="button" onclick="executeConfirmedDeletion()">Подтвердить</button>
     </div>
   </div>
 </div>
