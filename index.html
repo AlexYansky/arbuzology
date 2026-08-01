@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>Арбузология</title>
+
 <script src="https://st.max.ru/js/max-web-app.js"></script>
 
 <style>
@@ -14,11 +15,12 @@
   --mut:#6f7f75;
   --bd:#c8d5cc;
   --red:#9f2d2d;
-  --gold:#9a6200
+  --gold:#9a6200;
+  --blue:#1f5f8b;
 }
 
 *{
-  box-sizing:border-box
+  box-sizing:border-box;
 }
 
 body{
@@ -26,7 +28,7 @@ body{
   padding:14px;
   background:var(--bg);
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  color:#24332a
+  color:#24332a;
 }
 
 .card,
@@ -36,26 +38,30 @@ body{
   background:#fff;
   border-radius:20px;
   padding:22px;
-  box-shadow:0 10px 30px #00000012
+  box-shadow:0 10px 30px #00000012;
 }
 
 h1{
   text-align:center;
   color:var(--gd);
   margin:0;
-  font-size:27px
+  font-size:27px;
 }
 
 h2{
   color:var(--gd);
-  font-size:19px
+  font-size:19px;
+}
+
+h3{
+  margin:12px 0 6px;
 }
 
 .sub{
   text-align:center;
   font-weight:700;
   color:#365244;
-  margin:6px 0
+  margin:6px 0;
 }
 
 .motto{
@@ -66,21 +72,21 @@ h2{
   padding:10px;
   font-size:12px;
   font-weight:700;
-  margin:10px 0 20px
+  margin:10px 0 20px;
 }
 
 .section{
   font-size:17px;
   font-weight:800;
   color:var(--gd);
-  margin:22px 0 8px
+  margin:22px 0 8px;
 }
 
 label{
   display:block;
   font-weight:700;
   margin:14px 0 6px;
-  font-size:14px
+  font-size:14px;
 }
 
 input,
@@ -91,45 +97,45 @@ textarea{
   border:2px solid var(--bd);
   border-radius:10px;
   font-size:16px;
-  background:#fff
+  background:#fff;
 }
 
 textarea{
-  min-height:85px
+  min-height:85px;
 }
 
 input:focus,
 select:focus,
 textarea:focus{
   outline:none;
-  border-color:var(--g)
+  border-color:var(--g);
 }
 
 .grid2{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:10px
-}
-
-.equal-field{
-  display:flex;
-  flex-direction:column
-}
-
-.equal-field label{
-  min-height:44px;
-  display:flex;
-  align-items:flex-end
-}
-
-.equal-field input{
-  margin-top:auto
+  gap:10px;
 }
 
 .grid3{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:8px
+  gap:8px;
+}
+
+.equal-field{
+  display:flex;
+  flex-direction:column;
+}
+
+.equal-field label{
+  min-height:44px;
+  display:flex;
+  align-items:flex-end;
+}
+
+.equal-field input{
+  margin-top:auto;
 }
 
 button{
@@ -139,33 +145,38 @@ button{
   padding:14px;
   font-size:15px;
   font-weight:800;
-  cursor:pointer
+  cursor:pointer;
+}
+
+button:disabled{
+  opacity:.65;
+  cursor:wait;
 }
 
 .main{
   background:var(--g);
   color:#fff;
-  margin-top:18px
+  margin-top:18px;
 }
 
 .secondary{
   background:#fff;
   color:var(--gd);
   border:2px solid #86c79a;
-  margin-top:10px
+  margin-top:10px;
 }
 
 .muted{
   background:#edf2ee;
   color:#52665a;
-  margin-top:10px
+  margin-top:10px;
 }
 
 .danger{
   background:#fff4f4;
   color:var(--red);
   border:2px solid #e6b4b4;
-  margin-top:10px
+  margin-top:10px;
 }
 
 .hint,
@@ -175,12 +186,12 @@ button{
   border-radius:6px;
   padding:11px 13px;
   font-size:13px;
-  line-height:1.5
+  line-height:1.5;
 }
 
 .summary{
   border:2px solid #cce6d3;
-  margin:10px 0
+  margin:10px 0;
 }
 
 .result{
@@ -188,25 +199,25 @@ button{
   margin-top:18px;
   padding:16px;
   border-radius:14px;
-  line-height:1.55
+  line-height:1.55;
 }
 
-.a{
+.result.unripe{
   background:#fff2f2;
   color:#8d2424;
-  border:2px solid #df9696
+  border:2px solid #df9696;
 }
 
-.b{
+.result.ripe{
   background:#edf8f0;
   color:#14532d;
-  border:2px solid #8dcc9f
+  border:2px solid #8dcc9f;
 }
 
-.c{
+.result.overripe{
   background:#fff8e7;
   color:#8a5600;
-  border:2px solid #e7c36e
+  border:2px solid #e7c36e;
 }
 
 .badge{
@@ -215,7 +226,15 @@ button{
   border-radius:999px;
   padding:5px 11px;
   font-size:18px;
-  font-weight:900
+  font-weight:900;
+}
+
+.score-badge{
+  display:block;
+  margin:12px 0;
+  font-size:25px;
+  font-weight:900;
+  text-align:center;
 }
 
 .status{
@@ -226,55 +245,7 @@ button{
   text-align:center;
   background:#f2f7f3;
   color:#2e6b43;
-  font-size:12px
-}
-
-.record{
-  background:#fff;
-  border-radius:15px;
-  padding:15px;
-  margin:10px 0;
-  box-shadow:0 6px 18px #0000000f;
-  border-left:6px solid var(--bd)
-}
-
-.record.A{
-  border-color:#c85454
-}
-
-.record.B{
-  border-color:#43a064
-}
-
-.record.C{
-  border-color:#d6a332
-}
-
-.rid{
-  font-size:16px;
-  font-weight:900;
-  color:var(--gd)
-}
-
-.meta{
   font-size:12px;
-  color:var(--mut);
-  line-height:1.5
-}
-
-.actions{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px
-}
-
-.actions button{
-  font-size:12px;
-  padding:10px
-}
-
-.actions .wide{
-  grid-column:1/-1
 }
 
 .overlay{
@@ -284,144 +255,121 @@ button{
   background:#122619a6;
   z-index:1000;
   overflow:auto;
-  padding:14px
+  padding:14px;
 }
 
-.check{
-  display:flex;
-  gap:10px;
-  align-items:center;
-  background:#f7faf8;
-  padding:10px;
-  border-radius:10px;
-  margin-top:12px
+.record{
+  border-radius:15px;
+  padding:15px;
+  margin:10px 0;
+  box-shadow:0 6px 18px #0000000f;
+  border-left:6px solid var(--bd);
 }
 
-.check input{
-  width:22px;
-  height:22px
-}
-
-.small{
-  font-size:11px;
-  color:var(--mut);
-  line-height:1.45
-}
-
-.footer{
-  text-align:center;
-  font-size:12px;
-  color:var(--mut);
-  border-top:1px dashed var(--bd);
-  padding-top:14px;
-  margin-top:24px
-}
-
-@media(max-width:390px){
-  .grid2,
-  .grid3,
-  .actions{
-    grid-template-columns:1fr
-  }
-
-  .taste-scale{
-    grid-template-columns:repeat(5,42px);
-    gap:5px
-  }
-
-  .taste-button{
-    width:42px;
-    height:42px;
-    font-size:13px
-  }
-}
-
-#journalOverlay{
-  z-index:1000
-}
-
-#overlay{
-  z-index:1100
-}
-
-#editScreeningOverlay{
-  z-index:1200
-}
-
-#confirmDeleteOverlay{
-  z-index:1300
-}
-
-.record.A{
+.record.Н{
   border-left-color:#c62828;
   background:#fff4f4;
-  box-shadow:0 6px 18px rgba(198,40,40,.10)
 }
 
-.record.B{
+.record.З{
   border-left-color:#2e8b57;
   background:#f2fbf5;
-  box-shadow:0 6px 18px rgba(46,139,87,.10)
 }
 
-.record.C{
+.record.П{
   border-left-color:#d99a00;
   background:#fff9e8;
-  box-shadow:0 6px 18px rgba(217,154,0,.12)
-}
-
-.class-mark{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  min-width:38px;
-  height:38px;
-  padding:0 11px;
-  border-radius:999px;
-  font-size:20px;
-  font-weight:900;
-  margin-left:auto
-}
-
-.record.A .class-mark{
-  color:#9f1f1f;
-  background:#ffdede;
-  border:2px solid #e58a8a
-}
-
-.record.B .class-mark{
-  color:#17683a;
-  background:#dff5e6;
-  border:2px solid #7fc79a
-}
-
-.record.C .class-mark{
-  color:#8d5a00;
-  background:#fff0bd;
-  border:2px solid #e4bd4a
 }
 
 .record-top{
   display:flex;
   align-items:flex-start;
   justify-content:space-between;
-  gap:12px
+  gap:12px;
+}
+
+.rid{
+  font-size:16px;
+  font-weight:900;
+  color:var(--gd);
+}
+
+.meta{
+  font-size:12px;
+  color:var(--mut);
+  line-height:1.5;
+}
+
+.class-mark{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:42px;
+  height:42px;
+  padding:0 11px;
+  border-radius:999px;
+  font-size:20px;
+  font-weight:900;
+  margin-left:auto;
+}
+
+.record.Н .class-mark{
+  color:#9f1f1f;
+  background:#ffdede;
+  border:2px solid #e58a8a;
+}
+
+.record.З .class-mark{
+  color:#17683a;
+  background:#dff5e6;
+  border:2px solid #7fc79a;
+}
+
+.record.П .class-mark{
+  color:#8d5a00;
+  background:#fff0bd;
+  border:2px solid #e4bd4a;
 }
 
 .measurements-box{
   margin-top:8px;
-  padding:9px 10px;
+  padding:11px;
   border-radius:10px;
-  background:rgba(255,255,255,.72);
+  background:rgba(255,255,255,.74);
   border:1px solid rgba(0,0,0,.07);
-  line-height:1.55
+  line-height:1.58;
+}
+
+.geometry-box{
+  margin-top:10px;
+  padding:11px;
+  border-radius:10px;
+  background:#f4f8fb;
+  border:1px solid #c7dae7;
+  color:#23465e;
+  line-height:1.58;
+}
+
+.actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+
+.actions button{
+  font-size:12px;
+  padding:10px;
+}
+
+.actions .wide{
+  grid-column:1/-1;
 }
 
 .choice-grid{
   display:grid;
   grid-template-columns:repeat(2,1fr);
   gap:8px;
-  margin-top:8px
+  margin-top:8px;
 }
 
 .choice-button{
@@ -432,13 +380,13 @@ button{
   background:#fff;
   color:#344f40;
   font-size:13px;
-  font-weight:800
+  font-weight:800;
 }
 
 .choice-button.selected{
   border-color:var(--g);
   background:#e9f7ee;
-  color:var(--gd)
+  color:var(--gd);
 }
 
 .taste-scale{
@@ -446,7 +394,7 @@ button{
   grid-template-columns:repeat(5,48px);
   justify-content:space-between;
   gap:6px;
-  margin-top:8px
+  margin-top:8px;
 }
 
 .taste-button{
@@ -457,46 +405,96 @@ button{
   border:2px solid transparent;
   color:#fff;
   font-size:14px;
-  font-weight:900
+  font-weight:900;
 }
 
 .taste-button.low{
-  background:#c83c3c
+  background:#c83c3c;
 }
 
 .taste-button.medium{
-  background:#d6a11f
+  background:#d6a11f;
 }
 
 .taste-button.high{
-  background:#34945d
+  background:#34945d;
 }
 
 .taste-button.selected{
   border-color:#173f29;
   box-shadow:0 0 0 3px rgba(23,63,41,.18);
-  transform:scale(1.06)
+  transform:scale(1.06);
 }
 
 .binary-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:10px;
-  margin-top:8px
+  margin-top:8px;
 }
 
 .prediction-grid{
   display:grid;
   grid-template-columns:repeat(3,1fr);
   gap:8px;
-  margin-top:8px
+  margin-top:8px;
 }
 
 .optional-label::after{
   content:" — необязательно";
   color:var(--mut);
   font-weight:500;
-  font-size:11px
+  font-size:11px;
+}
+
+.small{
+  font-size:11px;
+  color:var(--mut);
+  line-height:1.45;
+}
+
+.footer{
+  text-align:center;
+  font-size:12px;
+  color:var(--mut);
+  border-top:1px dashed var(--bd);
+  padding-top:14px;
+  margin-top:24px;
+}
+
+#journalOverlay{
+  z-index:1000;
+}
+
+#overlay{
+  z-index:1100;
+}
+
+#editScreeningOverlay{
+  z-index:1200;
+}
+
+#confirmDeleteOverlay{
+  z-index:1300;
+}
+
+@media(max-width:390px){
+  .grid2,
+  .grid3,
+  .actions{
+    grid-template-columns:1fr;
+  }
+
+  .taste-scale{
+    grid-template-columns:repeat(5,42px);
+    gap:5px;
+  }
+
+  .taste-button{
+    width:42px;
+    height:42px;
+    font-size:13px;
+  }
 }
 </style>
 </head>
@@ -574,9 +572,9 @@ button{
     min="25"
     max="180"
     step="0.1"
-    oninput="updateWeightRangeHint()"
     inputmode="decimal"
     placeholder="75.0"
+    oninput="updateWeightRangeHint()"
   >
 
   <label>Продольный обхват, см</label>
@@ -586,9 +584,9 @@ button{
     min="25"
     max="220"
     step="0.1"
-    oninput="updateWeightRangeHint()"
     inputmode="decimal"
     placeholder="81.7"
+    oninput="updateWeightRangeHint()"
   >
 
   <label>Масса арбуза, кг</label>
@@ -621,7 +619,7 @@ button{
 
   <div class="footer">
     <b>Александр Янпольский</b><br>
-    Арбузология v4.4
+    Арбузология v5.0
   </div>
 </div>
 
@@ -676,6 +674,7 @@ button{
 <div class="overlay" id="journalOverlay">
   <div class="dialog">
     <h2>📚 Журнал наблюдений</h2>
+
     <div id="stats" class="summary"></div>
     <div id="records"></div>
 
@@ -690,6 +689,47 @@ button{
     <h2>🔬 Полное исследование</h2>
 
     <div id="studySummary" class="summary"></div>
+
+    <div class="section">Фактические размеры после разрезания</div>
+
+    <div class="hint">
+      Выполните продольный разрез от плодоножки к противоположному полюсу.
+      Измерьте максимальную длину и ширину полученного среза.
+    </div>
+
+    <div class="grid2">
+      <div class="equal-field">
+        <label>Длина арбуза по срезу, см</label>
+        <input
+          id="cutLength"
+          type="number"
+          min="5"
+          max="100"
+          step="0.1"
+          inputmode="decimal"
+          placeholder="Например: 27.5"
+          oninput="updateGeometryComparison()"
+        >
+      </div>
+
+      <div class="equal-field">
+        <label>Максимальная ширина по срезу, см</label>
+        <input
+          id="cutWidth"
+          type="number"
+          min="5"
+          max="100"
+          step="0.1"
+          inputmode="decimal"
+          placeholder="Например: 23.3"
+          oninput="updateGeometryComparison()"
+        >
+      </div>
+    </div>
+
+    <div class="geometry-box" id="geometryComparison">
+      Расчёт геометрического соответствия появится после ввода длины и ширины.
+    </div>
 
     <div class="section">Толщина корки</div>
 
@@ -760,6 +800,10 @@ button{
       <button class="taste-button high" type="button" data-value="8" onclick="selectTaste(8)">8</button>
       <button class="taste-button high" type="button" data-value="9" onclick="selectTaste(9)">9</button>
       <button class="taste-button high" type="button" data-value="10" onclick="selectTaste(10)">10</button>
+    </div>
+
+    <div class="summary" id="scoreComparison" style="margin-top:10px;text-align:center">
+      Сравнение прогноза и факта появится после выбора оценки вкуса.
     </div>
 
     <label>Структура мякоти</label>
@@ -837,25 +881,43 @@ button{
   </div>
 </div>
 
+<div class="overlay" id="confirmDeleteOverlay">
+  <div class="dialog">
+    <h2 id="confirmDeleteTitle">Подтвердите действие</h2>
+
+    <div class="summary" id="confirmDeleteText"></div>
+
+    <div class="actions" style="margin-top:14px">
+      <button class="muted" type="button" onclick="closeDeleteConfirmation()">
+        Отмена
+      </button>
+
+      <button class="danger" type="button" onclick="executeConfirmedDeletion()">
+        Подтвердить
+      </button>
+    </div>
+  </div>
+</div>
+
 <script>
 const GOOGLE_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbyauxicHpvPdcvDJgqQmet2Hwrhd8d_-2gQ-DUZU5ekOMaao5VccteQ0MF9oTaoyU23/exec";
 
 const STORAGE = "arbuzologyRecordsV1";
-const APP_VERSION = "4.4";
-const CALCULATION_VERSION = "2.0";
+const APP_VERSION = "5.0";
+const CALCULATION_VERSION = "3.0";
 
 const ARCHIVED_IDS_STORAGE = "arbuzologyArchivedIdsV1";
 const SELLERS_STORAGE = "arbuzologySellersV1";
 const ORIGINS_STORAGE = "arbuzologyOriginsV1";
 const CULTIVARS_STORAGE = "arbuzologyCultivarsV1";
 const PLACES_STORAGE = "arbuzologyPlacesV1";
-const CITY_STORAGE = "arbuzologyCityV1";
 const CITIES_STORAGE = "arbuzologyCitiesV1";
 
 let activeId = null;
 let activeEditId = null;
 let pendingDeleteAction = null;
+
 let remoteOccupiedIds = new Set();
 let remoteOccupiedYear = null;
 let remoteOccupiedLoaded = false;
@@ -896,6 +958,20 @@ const round = (value, digits) => {
     ? Math.round((value + Number.EPSILON) * 10 ** digits) / 10 ** digits
     : "";
 };
+
+function formatSignedPercent(value) {
+  if (!Number.isFinite(value)) {
+    return "—";
+  }
+
+  if (Math.abs(value) < 0.05) {
+    return "0.0 %";
+  }
+
+  const prefix = value > 0 ? "+" : "";
+
+  return `${prefix}${value.toFixed(1)} %`;
+}
 
 function getRecords() {
   try {
@@ -988,11 +1064,7 @@ function renderDatalist(storageKey, datalistId) {
 function getUsedNumbers(year) {
   const used = new Set(
     getRecords()
-      .filter(
-        record =>
-          String(record.researchYear) ===
-          String(year)
-      )
+      .filter(record => String(record.researchYear) === String(year))
       .map(record => Number(record.watermelonNumber))
       .filter(
         number =>
@@ -1033,10 +1105,7 @@ function getUsedNumbers(year) {
 }
 
 function refreshAvailableNumbers() {
-  const year = Number(
-    document.getElementById("researchYear").value
-  );
-
+  const year = Number(document.getElementById("researchYear").value);
   const select = document.getElementById("watermelonNumber");
   const previous = Number(select.value);
   const used = getUsedNumbers(year);
@@ -1090,22 +1159,156 @@ async function fetchActiveRecords() {
   return data.records;
 }
 
+async function fetchOccupiedIds(year) {
+  const url =
+    `${GOOGLE_SCRIPT_URL}?action=get_occupied_ids&year=${encodeURIComponent(year)}&_=${Date.now()}`;
+
+  const response = await fetch(url, {
+    method: "GET",
+    cache: "no-store"
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status}`);
+  }
+
+  const data = await response.json();
+
+  if (!data.ok || !Array.isArray(data.occupiedIds)) {
+    throw new Error(
+      data.error || "Некорректный ответ Google Таблицы."
+    );
+  }
+
+  return data.occupiedIds;
+}
+
+async function syncJournalFromGoogle() {
+  const status = document.getElementById("status");
+
+  try {
+    const remoteRecords = await fetchActiveRecords();
+
+    /*
+      Google Таблица остаётся главным источником данных.
+      Локальный журнал полностью заменяется активными записями из таблицы.
+      Поэтому удалённая вручную из таблицы запись после синхронизации
+      также исчезнет из журнала приложения.
+    */
+    putRecords(remoteRecords);
+    render();
+    refreshAvailableNumbers();
+
+    if (status) {
+      status.style.display = "block";
+      status.textContent =
+        `☁️ Журнал синхронизирован с Google Таблицей. Активных записей: ${remoteRecords.length}.`;
+    }
+
+    return true;
+  } catch (error) {
+    console.error(error);
+
+    if (status) {
+      status.style.display = "block";
+      status.textContent =
+        "⚠️ Не удалось обновить журнал из Google Таблицы. Показаны локально сохранённые данные.";
+    }
+
+    return false;
+  }
+}
+
+async function syncOccupiedIdsForSelectedYear() {
+  const year = Number(document.getElementById("researchYear").value);
+  const status = document.getElementById("status");
+
+  try {
+    const ids = await fetchOccupiedIds(year);
+
+    remoteOccupiedIds = new Set(ids);
+    remoteOccupiedYear = year;
+    remoteOccupiedLoaded = true;
+
+    localStorage.removeItem(ARCHIVED_IDS_STORAGE);
+    refreshAvailableNumbers();
+
+    if (status) {
+      status.style.display = "block";
+      status.textContent =
+        `☁️ Номера синхронизированы с Google Таблицей. Занято: ${ids.length}.`;
+    }
+  } catch (error) {
+    console.error(error);
+
+    remoteOccupiedLoaded = false;
+    remoteOccupiedYear = year;
+
+    refreshAvailableNumbers();
+
+    if (status) {
+      status.style.display = "block";
+      status.textContent =
+        "⚠️ Не удалось проверить номера в Google Таблице. Используются локальные данные.";
+    }
+  }
+}
+
+async function syncAllCloudData() {
+  await syncJournalFromGoogle();
+  await syncOccupiedIdsForSelectedYear();
+}
+
+async function ensureResearchIdIsFree(researchId, year) {
+  try {
+    const ids = await fetchOccupiedIds(year);
+
+    remoteOccupiedIds = new Set(ids);
+    remoteOccupiedYear = year;
+    remoteOccupiedLoaded = true;
+
+    return !remoteOccupiedIds.has(researchId);
+  } catch (error) {
+    console.error(error);
+    return true;
+  }
+}
+
+function updateCurrentResearchId() {
+  const element = document.getElementById("currentResearchId");
+
+  if (element) {
+    element.textContent =
+      selectedResearchId() ||
+      "Нет свободных номеров";
+  }
+}
+
+function selectedResearchId() {
+  const year = Number(document.getElementById("researchYear").value);
+  const number = Number(document.getElementById("watermelonNumber").value);
+
+  if (
+    !Number.isInteger(year) ||
+    !Number.isInteger(number)
+  ) {
+    return "";
+  }
+
+  return `AR-${year}-${String(number).padStart(3, "0")}`;
+}
+
 function getWatermelonTypeKey(record) {
-  const savedKey = String(
-    record?.watermelonTypeKey || ""
-  ).trim();
+  const savedKey = String(record?.watermelonTypeKey || "").trim();
 
   if (TYPES[savedKey]) {
     return savedKey;
   }
 
-  const savedTitle = String(
-    record?.watermelonType || ""
-  ).trim();
+  const savedTitle = String(record?.watermelonType || "").trim();
 
   const matchingEntry = Object.entries(TYPES).find(
-    ([key, type]) =>
-      type.title === savedTitle
+    ([key, type]) => type.title === savedTitle
   );
 
   return matchingEntry
@@ -1180,270 +1383,143 @@ function calculateScreeningValues(
   };
 }
 
-function recalculateRecord(record) {
-  const typeKey = getWatermelonTypeKey(record);
-  const type = TYPES[typeKey] || TYPES.oval;
+function getPredictionByDensity(density) {
+  let score = 2;
+  let description = "";
+  let resultClass = "overripe";
+  let maturityCode = "П";
+  let maturityTitle = "Перезрелый";
 
-  const circumference =
-    Number(record.circumferenceCm);
-
-  const longitudinalCircumference =
-    Number(record.longitudinalCircumferenceCm);
-
-  const weight =
-    Number(record.weightKg);
-
-  const values = calculateScreeningValues(
-    circumference,
-    longitudinalCircumference,
-    weight,
-    type
-  );
-
-  if (
-    !Number.isFinite(values.calculatedVolume) ||
-    !Number.isFinite(values.wholeFruitDensity) ||
-    !Number.isFinite(values.correctedDensityIndex)
-  ) {
-    return record;
+  if (density >= 0.935 && density <= 0.950) {
+    score = 10;
+    resultClass = "ripe";
+    maturityCode = "З";
+    maturityTitle = "Зрелый";
+    description =
+      "<b>Эталонный диапазон.</b> Ожидается плотная, сочная и хорошо хрустящая мякоть.";
+  } else if (density >= 0.925 && density < 0.935) {
+    score = 9;
+    resultClass = "ripe";
+    maturityCode = "З";
+    maturityTitle = "Зрелый";
+    description =
+      "<b>Превосходный выбор.</b> Ожидается плотная, сочная мякоть с хорошим хрустом.";
+  } else if (density >= 0.910 && density < 0.925) {
+    score = 8;
+    resultClass = "ripe";
+    maturityCode = "З";
+    maturityTitle = "Зрелый";
+    description =
+      "<b>Очень хороший плод.</b> Ожидается высокая сочность без выраженной рыхлости.";
+  } else if (density >= 0.890 && density < 0.910) {
+    score = 7;
+    resultClass = "ripe";
+    maturityCode = "З";
+    maturityTitle = "Зрелый";
+    description =
+      "<b>Хороший зрелый арбуз.</b> Мякоть должна быть сочной, но может быть несколько мягче.";
+  } else if (density >= 0.850 && density < 0.890) {
+    score = 6;
+    resultClass = "overripe";
+    maturityCode = "П";
+    maturityTitle = "Погранично перезрелый";
+    description =
+      "<b>Пограничный диапазон.</b> Возможны рыхлость и частичная утрата выраженного хруста.";
+  } else if (density >= 0.800 && density < 0.850) {
+    score = 5;
+    resultClass = "overripe";
+    maturityCode = "П";
+    maturityTitle = "Перезрелый";
+    description =
+      "<b>Вероятно перезрелый плод.</b> Возможны выраженная рыхлость или ватность.";
+  } else if (density >= 0.750 && density < 0.800) {
+    score = 4;
+    resultClass = "overripe";
+    maturityCode = "П";
+    maturityTitle = "Перезрелый";
+    description =
+      "<b>Вероятно старый или усыхающий плод.</b> Возможны пустоты и снижение сочности.";
+  } else if (density < 0.750) {
+    score = 2;
+    resultClass = "overripe";
+    maturityCode = "П";
+    maturityTitle = "Выраженно перезрелый";
+    description =
+      "<b>Критически низкий индекс.</b> Возможны крупные пустоты или разрушение структуры мякоти.";
+  } else if (density > 0.950 && density <= 0.980) {
+    score = 4;
+    resultClass = "unripe";
+    maturityCode = "Н";
+    maturityTitle = "Незрелый";
+    description =
+      "<b>Вероятно недостаточно зрелый плод.</b> Мякоть может быть плотной и недостаточно сладкой.";
+  } else if (density > 0.980) {
+    score = 3;
+    resultClass = "unripe";
+    maturityCode = "Н";
+    maturityTitle = "Незрелый";
+    description =
+      "<b>Высокая вероятность незрелого плода.</b> Мякоть может быть бледной, жёсткой и травянистой.";
   }
 
-  const densityResult =
-    densityClass(values.correctedDensityIndex);
-
   return {
-    ...record,
-
-    appVersion:
-      record.appVersion || APP_VERSION,
-
-    calculationVersion:
-      CALCULATION_VERSION,
-
-    watermelonTypeKey:
-      typeKey,
-
-    watermelonType:
-      type.title,
-
-    calculatedVolumeLiters:
-      round(values.calculatedVolume, 3),
-
-    wholeFruitDensityKgL:
-      round(values.wholeFruitDensity, 4),
-
-    correctedDensityIndex:
-      round(values.correctedDensityIndex, 4),
-
-    rindCoefficient:
-      type.rindCoefficient,
-
-    volumeCoefficient:
-      1,
-
-    densityClass:
-      densityResult.code,
-
-    densityClassTitle:
-      densityResult.title
+    score,
+    description,
+    resultClass,
+    maturityCode,
+    maturityTitle
   };
 }
 
-function normalizeRemoteRecords(records) {
-  if (!Array.isArray(records)) {
-    return [];
-  }
-
-  return records.map(record => recalculateRecord(record));
-}
-
-async function syncJournalFromGoogle() {
-  const status = document.getElementById("status");
-
-  try {
-    const remoteRecords =
-      await fetchActiveRecords();
-
-    const normalizedRecords =
-      normalizeRemoteRecords(remoteRecords);
-
-    putRecords(normalizedRecords);
-    render();
-    refreshAvailableNumbers();
-
-    if (status) {
-      status.style.display = "block";
-      status.textContent =
-        `☁️ Журнал синхронизирован с Google Таблицей. Активных записей: ${normalizedRecords.length}.`;
-    }
-
-    return true;
-  } catch (error) {
-    console.error(error);
-
-    if (status) {
-      status.style.display = "block";
-      status.textContent =
-        "⚠️ Не удалось обновить журнал из Google Таблицы. Показаны локально сохранённые данные.";
-    }
-
-    return false;
-  }
-}
-
-async function syncAllCloudData() {
-  await syncJournalFromGoogle();
-  await syncOccupiedIdsForSelectedYear();
-}
-
-async function fetchOccupiedIds(year) {
-  const url =
-    `${GOOGLE_SCRIPT_URL}?action=get_occupied_ids&year=${encodeURIComponent(year)}&_=${Date.now()}`;
-
-  const response = await fetch(url, {
-    method: "GET",
-    cache: "no-store"
-  });
-
-  if (!response.ok) {
-    throw new Error(`HTTP ${response.status}`);
-  }
-
-  const data = await response.json();
-
-  if (
-    !data.ok ||
-    !Array.isArray(data.occupiedIds)
-  ) {
-    throw new Error(
-      data.error ||
-      "Некорректный ответ Google Таблицы."
-    );
-  }
-
-  return data.occupiedIds;
-}
-
-async function syncOccupiedIdsForSelectedYear() {
-  const year = Number(
-    document.getElementById("researchYear").value
-  );
-
-  const status =
-    document.getElementById("status");
-
-  try {
-    const ids =
-      await fetchOccupiedIds(year);
-
-    remoteOccupiedIds =
-      new Set(ids);
-
-    remoteOccupiedYear =
-      year;
-
-    remoteOccupiedLoaded =
-      true;
-
-    localStorage.removeItem(
-      ARCHIVED_IDS_STORAGE
-    );
-
-    refreshAvailableNumbers();
-
-    if (status) {
-      status.style.display = "block";
-      status.textContent =
-        `☁️ Номера синхронизированы с Google Таблицей. Занято: ${ids.length}.`;
-    }
-  } catch (error) {
-    console.error(error);
-
-    remoteOccupiedLoaded =
-      false;
-
-    remoteOccupiedYear =
-      year;
-
-    refreshAvailableNumbers();
-
-    if (status) {
-      status.style.display = "block";
-      status.textContent =
-        "⚠️ Не удалось проверить номера в Google Таблице. Используются локальные данные.";
-    }
-  }
-}
-
-async function ensureResearchIdIsFree(
-  researchId,
-  year
+function calculateGeometryComparison(
+  circumference,
+  longitudinalCircumference,
+  actualLength,
+  actualWidth
 ) {
-  try {
-    const ids =
-      await fetchOccupiedIds(year);
+  const predictedWidth =
+    Number.isFinite(circumference)
+      ? circumference / Math.PI
+      : NaN;
 
-    remoteOccupiedIds =
-      new Set(ids);
+  const predictedLength =
+    Number.isFinite(longitudinalCircumference)
+      ? longitudinalCircumference / Math.PI
+      : NaN;
 
-    remoteOccupiedYear =
-      year;
+  const widthErrorPercent =
+    Number.isFinite(predictedWidth) &&
+    predictedWidth > 0 &&
+    Number.isFinite(actualWidth)
+      ? ((actualWidth - predictedWidth) / predictedWidth) * 100
+      : NaN;
 
-    remoteOccupiedLoaded =
-      true;
+  const lengthErrorPercent =
+    Number.isFinite(predictedLength) &&
+    predictedLength > 0 &&
+    Number.isFinite(actualLength)
+      ? ((actualLength - predictedLength) / predictedLength) * 100
+      : NaN;
 
-    return !remoteOccupiedIds.has(
-      researchId
-    );
-  } catch (error) {
-    console.error(error);
-    return true;
-  }
+  const meanAbsoluteErrorPercent =
+    Number.isFinite(widthErrorPercent) &&
+    Number.isFinite(lengthErrorPercent)
+      ? (
+          Math.abs(widthErrorPercent) +
+          Math.abs(lengthErrorPercent)
+        ) / 2
+      : NaN;
+
+  return {
+    predictedWidth,
+    predictedLength,
+    widthErrorPercent,
+    lengthErrorPercent,
+    meanAbsoluteErrorPercent
+  };
 }
 
-function updateCurrentResearchId() {
-  const element =
-    document.getElementById(
-      "currentResearchId"
-    );
-
-  if (element) {
-    element.textContent =
-      selectedResearchId() ||
-      "Нет свободных номеров";
-  }
-}
-
-function selectedResearchId() {
-  const year = Number(
-    document.getElementById(
-      "researchYear"
-    ).value
-  );
-
-  const number = Number(
-    document.getElementById(
-      "watermelonNumber"
-    ).value
-  );
-
-  if (
-    !Number.isInteger(year) ||
-    !Number.isInteger(number)
-  ) {
-    return "";
-  }
-
-  return (
-    `AR-${year}-` +
-    String(number).padStart(3, "0")
-  );
-}
-
-function getExpectedWeightRange(
-  calculatedVolume,
-  type
-) {
+function getExpectedWeightRange(calculatedVolume, type) {
   if (
     !Number.isFinite(calculatedVolume) ||
     calculatedVolume <= 0
@@ -1451,11 +1527,8 @@ function getExpectedWeightRange(
     return null;
   }
 
-  const minimumCorrectedDensity =
-    0.80;
-
-  const maximumCorrectedDensity =
-    0.98;
+  const minimumCorrectedDensity = 0.80;
+  const maximumCorrectedDensity = 0.98;
 
   return {
     minimum:
@@ -1475,33 +1548,18 @@ function getExpectedWeightRange(
 }
 
 function updateWeightRangeHint() {
-  const hint =
-    document.getElementById(
-      "weightRangeHint"
-    );
+  const hint = document.getElementById("weightRangeHint");
 
   if (!hint) {
     return;
   }
 
-  const circumference =
-    num("circ");
+  const circumference = num("circ");
+  const longitudinal = num("circLong");
+  const weightRaw = document.getElementById("weight").value.trim();
 
-  const longitudinal =
-    num("circLong");
-
-  const weightRaw =
-    document
-      .getElementById("weight")
-      .value
-      .trim();
-
-  const typeElement =
-    document.getElementById("type");
-
-  const type =
-    TYPES[typeElement.value] ||
-    TYPES.oval;
+  const typeKey = document.getElementById("type").value;
+  const type = TYPES[typeKey] || TYPES.oval;
 
   if (weightRaw !== "") {
     hint.textContent = "";
@@ -1520,17 +1578,15 @@ function updateWeightRangeHint() {
     return;
   }
 
-  const calculatedVolume =
-    calculateVolume(
-      circumference,
-      longitudinal
-    );
+  const calculatedVolume = calculateVolume(
+    circumference,
+    longitudinal
+  );
 
-  const range =
-    getExpectedWeightRange(
-      calculatedVolume,
-      type
-    );
+  const range = getExpectedWeightRange(
+    calculatedVolume,
+    type
+  );
 
   if (!range) {
     hint.textContent = "";
@@ -1542,558 +1598,8 @@ function updateWeightRangeHint() {
     `<b>${range.minimum.toFixed(1)}–${range.maximum.toFixed(1)} кг</b>.`;
 }
 
-function densityClass(value) {
-  if (value > 0.950) {
-    return {
-      code: "A",
-      title: "Высокий индекс плотности",
-      css: "a",
-      text:
-        "Гипотеза: возможна чрезмерно плотная или недозрелая мякоть."
-    };
-  }
-
-  if (value >= 0.890) {
-    return {
-      code: "B",
-      title:
-        "Центральный исследуемый диапазон",
-      css: "b",
-      text:
-        "Гипотеза: наиболее вероятен хороший баланс плотности, сочности и хруста."
-    };
-  }
-
-  return {
-    code: "C",
-    title: "Низкий индекс плотности",
-    css: "c",
-    text:
-      "Гипотеза: возможны рыхлость, ватность, пустоты или повреждение структуры."
-  };
-}
-
-function brixClass(value) {
-  if (value >= 12) {
-    return {
-      code: "A",
-      title: "Высокая сахаристость"
-    };
-  }
-
-  if (value >= 10) {
-    return {
-      code: "B",
-      title: "Средняя сахаристость"
-    };
-  }
-
-  return {
-    code: "C",
-    title: "Низкая сахаристость"
-  };
-}
-
-async function post(payload) {
-  if (
-    !GOOGLE_SCRIPT_URL ||
-    GOOGLE_SCRIPT_URL.includes(
-      "ВСТАВЬТЕ_СЮДА"
-    )
-  ) {
-    return {
-      skip: true
-    };
-  }
-
-  try {
-    await fetch(
-      GOOGLE_SCRIPT_URL,
-      {
-        method: "POST",
-        mode: "no-cors",
-
-        headers: {
-          "Content-Type":
-            "text/plain;charset=utf-8"
-        },
-
-        body:
-          JSON.stringify(payload)
-      }
-    );
-
-    return {
-      ok: true
-    };
-  } catch (error) {
-    console.error(
-      "Ошибка отправки данных:",
-      error
-    );
-
-    return {
-      ok: false
-    };
-  }
-}
-
-async function saveScreening() {
-  const typeKey =
-    document
-      .getElementById("type")
-      .value;
-
-  const type =
-    TYPES[typeKey] ||
-    TYPES.oval;
-
-  const circumference =
-    num("circ");
-
-  const longitudinalCircumference =
-    num("circLong");
-
-  const weight =
-    num("weight");
-
-  const values =
-    calculateScreeningValues(
-      circumference,
-      longitudinalCircumference,
-      weight,
-      type
-    );
-
-  const calculatedVolume =
-    values.calculatedVolume;
-
-  const wholeFruitDensity =
-    values.wholeFruitDensity;
-
-  const correctedDensityIndex =
-    values.correctedDensityIndex;
-
-  const researchYear =
-    Number(
-      document
-        .getElementById(
-          "researchYear"
-        )
-        .value
-    );
-
-  const watermelonNumber =
-    Number(
-      document
-        .getElementById(
-          "watermelonNumber"
-        )
-        .value
-    );
-
-  const researchId =
-    selectedResearchId();
-
-  const originPlace =
-    document
-      .getElementById(
-        "originPlace"
-      )
-      .value
-      .trim();
-
-  const cultivar =
-    document
-      .getElementById(
-        "cultivar"
-      )
-      .value
-      .trim();
-
-  if (!researchId) {
-    alert(
-      "В выбранном году не осталось свободных номеров."
-    );
-
-    return;
-  }
-
-  if (
-    getRecords().some(
-      record =>
-        record.researchId ===
-        researchId
-    )
-  ) {
-    alert(
-      "Этот номер уже использован на данном устройстве. Выберите другой."
-    );
-
-    return;
-  }
-
-  const idIsFree =
-    await ensureResearchIdIsFree(
-      researchId,
-      researchYear
-    );
-
-  if (!idIsFree) {
-    alert(
-      "Этот номер уже занят в Google Таблице. Список номеров будет обновлён."
-    );
-
-    await syncOccupiedIdsForSelectedYear();
-    return;
-  }
-
-  if (
-    !Number.isFinite(circumference) ||
-    circumference < 25 ||
-    circumference > 180
-  ) {
-    alert(
-      "Поперечный обхват: 25–180 см."
-    );
-
-    return;
-  }
-
-  if (
-    !Number.isFinite(
-      longitudinalCircumference
-    ) ||
-    longitudinalCircumference < 25 ||
-    longitudinalCircumference > 220
-  ) {
-    alert(
-      "Продольный обхват: 25–220 см."
-    );
-
-    return;
-  }
-
-  if (
-    !Number.isFinite(weight) ||
-    weight < 0.5 ||
-    weight > 30
-  ) {
-    alert(
-      "Масса: 0,5–30 кг."
-    );
-
-    return;
-  }
-
-  if (
-    !Number.isFinite(
-      calculatedVolume
-    ) ||
-    calculatedVolume <= 0
-  ) {
-    alert(
-      "Не удалось рассчитать объём. Проверьте введённые обхваты."
-    );
-
-    return;
-  }
-
-  if (
-    !Number.isFinite(
-      wholeFruitDensity
-    )
-  ) {
-    alert(
-      "Не удалось рассчитать плотность. Проверьте введённые данные."
-    );
-
-    return;
-  }
-
-  if (
-    wholeFruitDensity < 0.60 ||
-    wholeFruitDensity > 1.25
-  ) {
-    const expectedRange =
-      getExpectedWeightRange(
-        calculatedVolume,
-        type
-      );
-
-    const rangeText =
-      expectedRange
-        ? `${expectedRange.minimum.toFixed(1)}–${expectedRange.maximum.toFixed(1)} кг`
-        : "не рассчитан";
-
-    const confirmed =
-      confirm(
-        `Получена необычная расчётная плотность: ${wholeFruitDensity.toFixed(4)} кг/л.\n\n` +
-        `Ориентировочная масса для этих размеров: ${rangeText}.\n\n` +
-        `Проверьте обхваты и вес. Сохранить наблюдение несмотря на предупреждение?`
-      );
-
-    if (!confirmed) {
-      return;
-    }
-  }
-
-  const densityResult =
-    densityClass(
-      correctedDensityIndex
-    );
-
-  const record = {
-    researchId,
-    researchYear,
-    watermelonNumber,
-
-    createdAt:
-      new Date().toISOString(),
-
-    appVersion:
-      APP_VERSION,
-
-    calculationVersion:
-      CALCULATION_VERSION,
-
-    city:
-      document
-        .getElementById("city")
-        .value
-        .trim(),
-
-    place:
-      document
-        .getElementById("place")
-        .value
-        .trim(),
-
-    seller:
-      document
-        .getElementById("seller")
-        .value
-        .trim(),
-
-    originPlace,
-    cultivar,
-
-    watermelonTypeKey:
-      typeKey,
-
-    watermelonType:
-      type.title,
-
-    circumferenceCm:
-      round(
-        circumference,
-        1
-      ),
-
-    longitudinalCircumferenceCm:
-      round(
-        longitudinalCircumference,
-        1
-      ),
-
-    weightKg:
-      round(
-        weight,
-        3
-      ),
-
-    calculatedVolumeLiters:
-      round(
-        calculatedVolume,
-        3
-      ),
-
-    wholeFruitDensityKgL:
-      round(
-        wholeFruitDensity,
-        4
-      ),
-
-    correctedDensityIndex:
-      round(
-        correctedDensityIndex,
-        4
-      ),
-
-    rindCoefficient:
-      type.rindCoefficient,
-
-    volumeCoefficient:
-      1,
-
-    densityClass:
-      densityResult.code,
-
-    densityClassTitle:
-      densityResult.title,
-
-    fullStudyCompleted:
-      false,
-
-    fullStudy:
-      null
-  };
-
-  saveUniqueValue(
-    CITIES_STORAGE,
-    record.city
-  );
-
-  saveUniqueValue(
-    PLACES_STORAGE,
-    record.place
-  );
-
-  saveUniqueValue(
-    SELLERS_STORAGE,
-    record.seller
-  );
-
-  saveUniqueValue(
-    ORIGINS_STORAGE,
-    record.originPlace
-  );
-
-  saveUniqueValue(
-    CULTIVARS_STORAGE,
-    record.cultivar
-  );
-
-  renderDatalist(
-    CITIES_STORAGE,
-    "cityOptions"
-  );
-
-  renderDatalist(
-    PLACES_STORAGE,
-    "placeOptions"
-  );
-
-  renderDatalist(
-    SELLERS_STORAGE,
-    "sellerOptions"
-  );
-
-  renderDatalist(
-    ORIGINS_STORAGE,
-    "originOptions"
-  );
-
-  renderDatalist(
-    CULTIVARS_STORAGE,
-    "cultivarOptions"
-  );
-
-  const records =
-    getRecords();
-
-  records.push(record);
-  putRecords(records);
-
-  remoteOccupiedIds.add(
-    record.researchId
-  );
-
-  remoteOccupiedYear =
-    record.researchYear;
-
-  remoteOccupiedLoaded =
-    true;
-
-  const result =
-    document.getElementById(
-      "result"
-    );
-
-  result.style.display =
-    "block";
-
-  result.className =
-    `result ${densityResult.css}`;
-
-  result.innerHTML = `
-    <span class="badge">
-      Класс ${densityResult.code}
-    </span>
-
-    <h3>${densityResult.title}</h3>
-
-    ID:
-    <b>${record.researchId}</b><br>
-
-    Геометрический объём:
-    <b>${Number(record.calculatedVolumeLiters).toFixed(3)} л</b><br>
-
-    Плотность целого плода:
-    <b>${Number(record.wholeFruitDensityKgL).toFixed(4)} кг/л</b><br>
-
-    Скорректированный индекс:
-    <b>${Number(record.correctedDensityIndex).toFixed(4)}</b>
-
-    <p>${densityResult.text}</p>
-  `;
-
-  const status =
-    document.getElementById(
-      "status"
-    );
-
-  status.style.display =
-    "block";
-
-  status.textContent =
-    (
-      !GOOGLE_SCRIPT_URL ||
-      GOOGLE_SCRIPT_URL.includes(
-        "ВСТАВЬТЕ_СЮДА"
-      )
-    )
-      ? "✅ Сохранено локально."
-      : "⏳ Сохраняем локально и отправляем в Google Таблицу…";
-
-  const cloudResult =
-    await post({
-      action:
-        "save_screening",
-
-      ...record
-    });
-
-  status.textContent =
-    cloudResult.ok
-      ? "✅ Сохранено локально и отправлено в Google Таблицу."
-      : "⚠️ Сохранено локально, но отправить в Google Таблицу не удалось.";
-
-  document
-    .getElementById("circ")
-    .value = "";
-
-  document
-    .getElementById("circLong")
-    .value = "";
-
-  document
-    .getElementById("weight")
-    .value = "";
-
-  updateWeightRangeHint();
-
-  await syncAllCloudData();
-
-  updateWeightRangeHint();
-}
-
-function getRindAssessment(
-  meanRind
-) {
-  if (
-    !Number.isFinite(meanRind)
-  ) {
+function getRindAssessment(meanRind) {
+  if (!Number.isFinite(meanRind)) {
     return {
       code: "",
       title: ""
@@ -2120,67 +1626,8 @@ function getRindAssessment(
   };
 }
 
-function updateRindAssessment() {
-  const values = [
-    num("r1"),
-    num("r2"),
-    num("r3")
-  ];
-
-  const averageDisplay =
-    document.getElementById(
-      "rindAverageDisplay"
-    );
-
-  const assessmentDisplay =
-    document.getElementById(
-      "rindAssessmentDisplay"
-    );
-
-  if (
-    !averageDisplay ||
-    !assessmentDisplay
-  ) {
-    return;
-  }
-
-  if (
-    values.every(
-      value =>
-        Number.isFinite(value)
-    )
-  ) {
-    const mean =
-      values.reduce(
-        (sum, value) =>
-          sum + value,
-        0
-      ) / 3;
-
-    const result =
-      getRindAssessment(mean);
-
-    averageDisplay.textContent =
-      mean.toFixed(1) +
-      " мм";
-
-    assessmentDisplay.textContent =
-      result.title;
-  } else {
-    averageDisplay.textContent =
-      "— мм";
-
-    assessmentDisplay.textContent =
-      "—";
-  }
-}
-
-function getSweetnessAssessment(
-  meanBrix
-) {
-  if (
-    !Number.isFinite(meanBrix)
-  ) {
+function getSweetnessAssessment(meanBrix) {
+  if (!Number.isFinite(meanBrix)) {
     return {
       code: "",
       title: ""
@@ -2214,38 +1661,426 @@ function getSweetnessAssessment(
   };
 }
 
+function brixClass(value) {
+  if (value >= 12) {
+    return {
+      code: "A",
+      title: "Высокая сахаристость"
+    };
+  }
+
+  if (value >= 10) {
+    return {
+      code: "B",
+      title: "Средняя сахаристость"
+    };
+  }
+
+  return {
+    code: "C",
+    title: "Низкая сахаристость"
+  };
+}
+
+async function post(payload) {
+  if (
+    !GOOGLE_SCRIPT_URL ||
+    GOOGLE_SCRIPT_URL.includes("ВСТАВЬТЕ_СЮДА")
+  ) {
+    return {
+      skip: true
+    };
+  }
+
+  try {
+    await fetch(
+      GOOGLE_SCRIPT_URL,
+      {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "text/plain;charset=utf-8"
+        },
+        body: JSON.stringify(payload)
+      }
+    );
+
+    return {
+      ok: true
+    };
+  } catch (error) {
+    console.error("Ошибка отправки данных:", error);
+
+    return {
+      ok: false
+    };
+  }
+}
+
+async function saveScreening() {
+  const typeKey = document.getElementById("type").value;
+  const type = TYPES[typeKey] || TYPES.oval;
+
+  const circumference = num("circ");
+  const longitudinalCircumference = num("circLong");
+  const weight = num("weight");
+
+  const values = calculateScreeningValues(
+    circumference,
+    longitudinalCircumference,
+    weight,
+    type
+  );
+
+  const calculatedVolume = values.calculatedVolume;
+  const wholeFruitDensity = values.wholeFruitDensity;
+  const correctedDensityIndex = values.correctedDensityIndex;
+
+  const prediction = getPredictionByDensity(correctedDensityIndex);
+
+  const researchYear = Number(
+    document.getElementById("researchYear").value
+  );
+
+  const watermelonNumber = Number(
+    document.getElementById("watermelonNumber").value
+  );
+
+  const researchId = selectedResearchId();
+
+  if (!researchId) {
+    alert("В выбранном году не осталось свободных номеров.");
+    return;
+  }
+
+  if (
+    getRecords().some(
+      record => record.researchId === researchId
+    )
+  ) {
+    alert("Этот номер уже использован на данном устройстве. Выберите другой.");
+    return;
+  }
+
+  const idIsFree = await ensureResearchIdIsFree(
+    researchId,
+    researchYear
+  );
+
+  if (!idIsFree) {
+    alert("Этот номер уже занят в Google Таблице. Список номеров будет обновлён.");
+    await syncOccupiedIdsForSelectedYear();
+    return;
+  }
+
+  if (
+    !Number.isFinite(circumference) ||
+    circumference < 25 ||
+    circumference > 180
+  ) {
+    alert("Поперечный обхват должен быть от 25 до 180 см.");
+    return;
+  }
+
+  if (
+    !Number.isFinite(longitudinalCircumference) ||
+    longitudinalCircumference < 25 ||
+    longitudinalCircumference > 220
+  ) {
+    alert("Продольный обхват должен быть от 25 до 220 см.");
+    return;
+  }
+
+  if (
+    !Number.isFinite(weight) ||
+    weight < 0.5 ||
+    weight > 30
+  ) {
+    alert("Масса должна быть от 0,5 до 30 кг.");
+    return;
+  }
+
+  if (
+    !Number.isFinite(calculatedVolume) ||
+    calculatedVolume <= 0
+  ) {
+    alert("Не удалось рассчитать объём. Проверьте введённые обхваты.");
+    return;
+  }
+
+  if (
+    !Number.isFinite(wholeFruitDensity) ||
+    !Number.isFinite(correctedDensityIndex)
+  ) {
+    alert("Не удалось рассчитать плотность. Проверьте введённые данные.");
+    return;
+  }
+
+  if (
+    wholeFruitDensity < 0.60 ||
+    wholeFruitDensity > 1.25
+  ) {
+    const expectedRange = getExpectedWeightRange(
+      calculatedVolume,
+      type
+    );
+
+    const rangeText = expectedRange
+      ? `${expectedRange.minimum.toFixed(1)}–${expectedRange.maximum.toFixed(1)} кг`
+      : "не рассчитан";
+
+    const confirmed = confirm(
+      `Получена необычная расчётная плотность: ${wholeFruitDensity.toFixed(4)} кг/л.\n\n` +
+      `Ориентировочная масса для этих размеров: ${rangeText}.\n\n` +
+      `Проверьте обхваты и вес. Сохранить наблюдение несмотря на предупреждение?`
+    );
+
+    if (!confirmed) {
+      return;
+    }
+  }
+
+  const record = {
+    researchId,
+    researchYear,
+    watermelonNumber,
+
+    createdAt: new Date().toISOString(),
+
+    appVersion: APP_VERSION,
+    calculationVersion: CALCULATION_VERSION,
+
+    city: document.getElementById("city").value.trim(),
+    place: document.getElementById("place").value.trim(),
+    seller: document.getElementById("seller").value.trim(),
+    originPlace: document.getElementById("originPlace").value.trim(),
+    cultivar: document.getElementById("cultivar").value.trim(),
+
+    watermelonTypeKey: typeKey,
+    watermelonType: type.title,
+
+    circumferenceCm: round(circumference, 1),
+    longitudinalCircumferenceCm: round(longitudinalCircumference, 1),
+    weightKg: round(weight, 3),
+
+    calculatedVolumeLiters: round(calculatedVolume, 3),
+    wholeFruitDensityKgL: round(wholeFruitDensity, 4),
+    correctedDensityIndex: round(correctedDensityIndex, 4),
+
+    rindCoefficient: type.rindCoefficient,
+    volumeCoefficient: 1,
+
+    predictedScore: prediction.score,
+    maturityCode: prediction.maturityCode,
+    maturityTitle: prediction.maturityTitle,
+    maturityDescription: prediction.description,
+
+    fullStudyCompleted: false,
+    fullStudy: null
+  };
+
+  saveUniqueValue(CITIES_STORAGE, record.city);
+  saveUniqueValue(PLACES_STORAGE, record.place);
+  saveUniqueValue(SELLERS_STORAGE, record.seller);
+  saveUniqueValue(ORIGINS_STORAGE, record.originPlace);
+  saveUniqueValue(CULTIVARS_STORAGE, record.cultivar);
+
+  renderDatalist(CITIES_STORAGE, "cityOptions");
+  renderDatalist(PLACES_STORAGE, "placeOptions");
+  renderDatalist(SELLERS_STORAGE, "sellerOptions");
+  renderDatalist(ORIGINS_STORAGE, "originOptions");
+  renderDatalist(CULTIVARS_STORAGE, "cultivarOptions");
+
+  const records = getRecords();
+
+  records.push(record);
+  putRecords(records);
+
+  remoteOccupiedIds.add(record.researchId);
+  remoteOccupiedYear = record.researchYear;
+  remoteOccupiedLoaded = true;
+
+  const result = document.getElementById("result");
+
+  result.style.display = "block";
+  result.className = `result ${prediction.resultClass}`;
+
+  result.innerHTML = `
+    <span class="badge">
+      Категория ${prediction.maturityCode} — ${prediction.maturityTitle}
+    </span>
+
+    <div class="score-badge">
+      📊 Предварительная оценка: ${prediction.score}/10
+    </div>
+
+    ID исследования:
+    <b>${record.researchId}</b><br>
+
+    Геометрический объём:
+    <b>${Number(record.calculatedVolumeLiters).toFixed(3)} л</b><br>
+
+    Плотность целого плода:
+    <b>${Number(record.wholeFruitDensityKgL).toFixed(4)} кг/л</b><br>
+
+    Скорректированный индекс:
+    <b>${Number(record.correctedDensityIndex).toFixed(4)}</b>
+
+    <div style="text-align:left;margin-top:12px">
+      ${prediction.description}
+    </div>
+  `;
+
+  const status = document.getElementById("status");
+
+  status.style.display = "block";
+  status.textContent =
+    "⏳ Сохраняем локально и отправляем в Google Таблицу…";
+
+  const cloudResult = await post({
+    action: "save_screening",
+    ...record
+  });
+
+  status.textContent = cloudResult.ok
+    ? "✅ Сохранено локально и отправлено в Google Таблицу."
+    : "⚠️ Сохранено локально, но отправить в Google Таблицу не удалось.";
+
+  document.getElementById("circ").value = "";
+  document.getElementById("circLong").value = "";
+  document.getElementById("weight").value = "";
+
+  updateWeightRangeHint();
+
+  await syncAllCloudData();
+}
+
+function updateGeometryComparison() {
+  const record = getRecords().find(
+    item => item.researchId === activeId
+  );
+
+  const box = document.getElementById("geometryComparison");
+
+  if (!box) {
+    return;
+  }
+
+  if (!record) {
+    box.textContent =
+      "Не удалось определить исследование.";
+    return;
+  }
+
+  const actualLength = num("cutLength");
+  const actualWidth = num("cutWidth");
+
+  const comparison = calculateGeometryComparison(
+    Number(record.circumferenceCm),
+    Number(record.longitudinalCircumferenceCm),
+    actualLength,
+    actualWidth
+  );
+
+  if (
+    !Number.isFinite(actualLength) ||
+    !Number.isFinite(actualWidth)
+  ) {
+    box.innerHTML =
+      `Расчётная ширина по ОЭ: <b>${comparison.predictedWidth.toFixed(1)} см</b><br>` +
+      `Расчётная длина по ОД: <b>${comparison.predictedLength.toFixed(1)} см</b><br><br>` +
+      `Введите фактические размеры после разрезания.`;
+
+    return;
+  }
+
+  box.innerHTML =
+    `<b>Сопоставление размеров</b><br><br>` +
+
+    `Расчётная ширина по ОЭ: ` +
+    `<b>${comparison.predictedWidth.toFixed(1)} см</b><br>` +
+
+    `Фактическая ширина: ` +
+    `<b>${actualWidth.toFixed(1)} см</b><br>` +
+
+    `Отклонение ширины: ` +
+    `<b>${formatSignedPercent(comparison.widthErrorPercent)}</b><br><br>` +
+
+    `Расчётная длина по ОД: ` +
+    `<b>${comparison.predictedLength.toFixed(1)} см</b><br>` +
+
+    `Фактическая длина: ` +
+    `<b>${actualLength.toFixed(1)} см</b><br>` +
+
+    `Отклонение длины: ` +
+    `<b>${formatSignedPercent(comparison.lengthErrorPercent)}</b><br><br>` +
+
+    `Средняя абсолютная ошибка модели: ` +
+    `<b>${comparison.meanAbsoluteErrorPercent.toFixed(1)} %</b>`;
+}
+
+function updateScoreComparison() {
+  const record = getRecords().find(
+    item => item.researchId === activeId
+  );
+
+  const box = document.getElementById("scoreComparison");
+
+  if (!box || !record) {
+    return;
+  }
+
+  const actualScore = num("taste");
+  const predictedScore = Number(record.predictedScore);
+
+  if (!Number.isFinite(actualScore)) {
+    box.innerHTML =
+      `Прогноз приложения: <b>${predictedScore}/10</b><br>` +
+      `Выберите фактическую оценку вкуса.`;
+
+    return;
+  }
+
+  const scoreDifference = actualScore - predictedScore;
+  const absoluteScoreError = Math.abs(scoreDifference);
+
+  let automaticMatch = "Нет";
+
+  if (absoluteScoreError === 0) {
+    automaticMatch = "Да";
+  } else if (absoluteScoreError <= 1) {
+    automaticMatch = "Частично";
+  }
+
+  box.innerHTML =
+    `Прогноз приложения: <b>${predictedScore}/10</b><br>` +
+    `Фактическая оценка: <b>${actualScore}/10</b><br>` +
+    `Разница: <b>${scoreDifference > 0 ? "+" : ""}${scoreDifference} балл.</b><br>` +
+    `Автоматическая оценка совпадения: <b>${automaticMatch}</b>`;
+}
+
 function selectTaste(value) {
-  document
-    .getElementById("taste")
-    .value = String(value);
+  document.getElementById("taste").value = String(value);
 
   document
-    .querySelectorAll(
-      "#tasteScale .taste-button"
-    )
+    .querySelectorAll("#tasteScale .taste-button")
     .forEach(button => {
       button.classList.toggle(
         "selected",
-        Number(button.dataset.value) ===
-          Number(value)
+        Number(button.dataset.value) === Number(value)
       );
     });
+
+  updateScoreComparison();
 }
 
 function selectStructure(button) {
-  const value =
-    button.dataset.value;
+  const value = button.dataset.value;
+
+  document.getElementById("structure").value = value;
 
   document
-    .getElementById(
-      "structure"
-    )
-    .value = value;
-
-  document
-    .querySelectorAll(
-      "#structureChoices .choice-button"
-    )
+    .querySelectorAll("#structureChoices .choice-button")
     .forEach(item => {
       item.classList.toggle(
         "selected",
@@ -2255,19 +2090,12 @@ function selectStructure(button) {
 }
 
 function selectHollows(button) {
-  const value =
-    button.dataset.value;
+  const value = button.dataset.value;
+
+  document.getElementById("hollows").value = value;
 
   document
-    .getElementById(
-      "hollows"
-    )
-    .value = value;
-
-  document
-    .querySelectorAll(
-      "#hollowsChoices .choice-button"
-    )
+    .querySelectorAll("#hollowsChoices .choice-button")
     .forEach(item => {
       item.classList.toggle(
         "selected",
@@ -2276,46 +2104,72 @@ function selectHollows(button) {
     });
 }
 
-function selectPredictionMatch(
-  button
-) {
-  const value =
-    button.dataset.value;
+function selectPredictionMatch(button) {
+  const value = button.dataset.value;
+
+  document.getElementById("predictionMatch").value = value;
 
   document
-    .getElementById(
-      "predictionMatch"
-    )
-    .value = value;
-
-  document
-    .querySelectorAll(
-      "#predictionChoices .choice-button"
-    )
+    .querySelectorAll("#predictionChoices .choice-button")
     .forEach(item => {
       item.classList.toggle(
         "selected",
         item.dataset.value === value
       );
     });
+}
+
+function updateRindAssessment() {
+  const values = [
+    num("r1"),
+    num("r2"),
+    num("r3")
+  ];
+
+  const averageDisplay =
+    document.getElementById("rindAverageDisplay");
+
+  const assessmentDisplay =
+    document.getElementById("rindAssessmentDisplay");
+
+  if (
+    !averageDisplay ||
+    !assessmentDisplay
+  ) {
+    return;
+  }
+
+  if (
+    values.every(value => Number.isFinite(value))
+  ) {
+    const mean =
+      values.reduce(
+        (sum, value) => sum + value,
+        0
+      ) / 3;
+
+    const result = getRindAssessment(mean);
+
+    averageDisplay.textContent =
+      `${mean.toFixed(1)} мм`;
+
+    assessmentDisplay.textContent =
+      result.title;
+  } else {
+    averageDisplay.textContent = "— мм";
+    assessmentDisplay.textContent = "—";
+  }
 }
 
 function updateBrixAverage() {
-  const first =
-    num("b1");
-
-  const second =
-    num("b2");
+  const first = num("b1");
+  const second = num("b2");
 
   const averageDisplay =
-    document.getElementById(
-      "brixAverageDisplay"
-    );
+    document.getElementById("brixAverageDisplay");
 
   const sweetnessDisplay =
-    document.getElementById(
-      "sweetnessDisplay"
-    );
+    document.getElementById("sweetnessDisplay");
 
   if (
     !averageDisplay ||
@@ -2328,77 +2182,47 @@ function updateBrixAverage() {
     Number.isFinite(first) &&
     Number.isFinite(second)
   ) {
-    const mean =
-      (first + second) / 2;
-
-    const sweetness =
-      getSweetnessAssessment(mean);
+    const mean = (first + second) / 2;
+    const sweetness = getSweetnessAssessment(mean);
 
     averageDisplay.textContent =
-      mean.toFixed(1) +
-      " °Brix";
+      `${mean.toFixed(1)} °Brix`;
 
     sweetnessDisplay.textContent =
       sweetness.title;
   } else {
-    averageDisplay.textContent =
-      "— °Brix";
-
-    sweetnessDisplay.textContent =
-      "—";
+    averageDisplay.textContent = "— °Brix";
+    sweetnessDisplay.textContent = "—";
   }
 }
 
-function showStudyMessage(
-  message,
-  isError = true
-) {
-  const status =
-    document.getElementById(
-      "studyStatus"
-    );
+function showStudyMessage(message, isError = true) {
+  const status = document.getElementById("studyStatus");
 
   if (!status) {
     return;
   }
 
-  status.style.display =
-    "block";
-
+  status.style.display = "block";
   status.style.background =
-    isError
-      ? "#fff1f1"
-      : "#edf8f0";
-
+    isError ? "#fff1f1" : "#edf8f0";
   status.style.color =
-    isError
-      ? "#9f2d2d"
-      : "#17683a";
-
-  status.textContent =
-    message;
+    isError ? "#9f2d2d" : "#17683a";
+  status.textContent = message;
 }
 
 function clearStudyMessage() {
-  const status =
-    document.getElementById(
-      "studyStatus"
-    );
+  const status = document.getElementById("studyStatus");
 
   if (!status) {
     return;
   }
 
-  status.style.display =
-    "none";
-
-  status.textContent =
-    "";
+  status.style.display = "none";
+  status.textContent = "";
 }
 
-function normalizeLegacyStructure(
-  value
-) {
+function normalizeLegacyStructure(value) {
   const map = {
     "Очень плотная":
       "Очень плотная (с выраженными прожилками)",
@@ -2432,11 +2256,9 @@ function normalizeLegacyStructure(
 }
 
 function openStudy(id) {
-  const record =
-    getRecords().find(
-      item =>
-        item.researchId === id
-    );
+  const record = getRecords().find(
+    item => item.researchId === id
+  );
 
   if (!record) {
     return;
@@ -2445,194 +2267,153 @@ function openStudy(id) {
   activeId = id;
   clearStudyMessage();
 
-  document
-    .getElementById(
-      "studySummary"
-    )
-    .innerHTML =
-      `<b>${record.researchId}</b><br>` +
-      `${record.watermelonType}<br>` +
-      `Класс: <b>${record.densityClass}</b> · ` +
-      `Индекс: <b>${Number(record.correctedDensityIndex).toFixed(4)}</b>`;
+  document.getElementById("studySummary").innerHTML =
+    `<b>${record.researchId}</b><br>` +
+    `${record.watermelonType}<br>` +
+    `Прогноз: <b>${record.predictedScore}/10</b> · ` +
+    `Категория: <b>${record.maturityCode} — ${record.maturityTitle}</b><br>` +
+    `Индекс: <b>${Number(record.correctedDensityIndex).toFixed(4)}</b>`;
 
-  const full =
-    record.fullStudy || {};
+  const full = record.fullStudy || {};
 
-  document
-    .getElementById("r1")
-    .value =
-      full.rindStemMm ?? "";
+  document.getElementById("cutLength").value =
+    full.cutLengthCm ?? "";
 
-  document
-    .getElementById("r2")
-    .value =
-      full.rindSideMm ?? "";
+  document.getElementById("cutWidth").value =
+    full.cutWidthCm ?? "";
 
-  document
-    .getElementById("r3")
-    .value =
-      full.rindPoleMm ?? "";
+  document.getElementById("r1").value =
+    full.rindStemMm ?? "";
 
-  document
-    .getElementById("b1")
-    .value =
-      full.brixCenter ??
-      full.brixCenter1 ??
-      "";
+  document.getElementById("r2").value =
+    full.rindSideMm ?? "";
 
-  document
-    .getElementById("b2")
-    .value =
-      full.brixMiddleZone ??
-      full.brixInnerZone ??
-      full.brixCenter2 ??
-      "";
+  document.getElementById("r3").value =
+    full.rindPoleMm ?? "";
 
-  selectTaste(
-    full.tasteScore ?? ""
-  );
+  document.getElementById("b1").value =
+    full.brixCenter ??
+    full.brixCenter1 ??
+    "";
+
+  document.getElementById("b2").value =
+    full.brixMiddleZone ??
+    full.brixInnerZone ??
+    full.brixCenter2 ??
+    "";
+
+  document.getElementById("taste").value = "";
 
   document
-    .getElementById(
-      "structure"
-    )
-    .value = "";
+    .querySelectorAll("#tasteScale .taste-button")
+    .forEach(button => {
+      button.classList.remove("selected");
+    });
+
+  if (full.tasteScore) {
+    selectTaste(full.tasteScore);
+  } else {
+    updateScoreComparison();
+  }
+
+  document.getElementById("structure").value = "";
 
   document
-    .querySelectorAll(
-      "#structureChoices .choice-button"
-    )
+    .querySelectorAll("#structureChoices .choice-button")
     .forEach(item => {
-      item.classList.remove(
-        "selected"
-      );
+      item.classList.remove("selected");
     });
 
   if (full.structure) {
     const normalizedStructure =
-      normalizeLegacyStructure(
-        full.structure
-      );
+      normalizeLegacyStructure(full.structure);
 
-    const structureButton =
-      [
-        ...document.querySelectorAll(
-          "#structureChoices .choice-button"
-        )
-      ].find(
-        item =>
-          item.dataset.value ===
-          normalizedStructure
-      );
-
-    if (structureButton) {
-      selectStructure(
-        structureButton
-      );
-    }
-  }
-
-  const hollowsValue =
-    full.hollows ?? "Нет";
-
-  const hollowsButton =
-    [
+    const structureButton = [
       ...document.querySelectorAll(
-        "#hollowsChoices .choice-button"
+        "#structureChoices .choice-button"
       )
     ].find(
       item =>
-        item.dataset.value ===
-        hollowsValue
+        item.dataset.value === normalizedStructure
     );
 
-  if (hollowsButton) {
-    selectHollows(
-      hollowsButton
-    );
-  }
-
-  document
-    .getElementById(
-      "predictionMatch"
-    )
-    .value = "";
-
-  document
-    .querySelectorAll(
-      "#predictionChoices .choice-button"
-    )
-    .forEach(item => {
-      item.classList.remove(
-        "selected"
-      );
-    });
-
-  if (full.predictionMatch) {
-    const predictionButton =
-      [
-        ...document.querySelectorAll(
-          "#predictionChoices .choice-button"
-        )
-      ].find(
-        item =>
-          item.dataset.value ===
-          full.predictionMatch
-      );
-
-    if (predictionButton) {
-      selectPredictionMatch(
-        predictionButton
-      );
+    if (structureButton) {
+      selectStructure(structureButton);
     }
   }
 
-  document
-    .getElementById(
-      "comment"
-    )
-    .value =
-      full.comment ?? "";
+  const hollowsValue = full.hollows ?? "Нет";
 
+  const hollowsButton = [
+    ...document.querySelectorAll(
+      "#hollowsChoices .choice-button"
+    )
+  ].find(
+    item =>
+      item.dataset.value === hollowsValue
+  );
+
+  if (hollowsButton) {
+    selectHollows(hollowsButton);
+  }
+
+  document.getElementById("predictionMatch").value = "";
+
+  document
+    .querySelectorAll("#predictionChoices .choice-button")
+    .forEach(item => {
+      item.classList.remove("selected");
+    });
+
+  if (full.predictionMatch) {
+    const predictionButton = [
+      ...document.querySelectorAll(
+        "#predictionChoices .choice-button"
+      )
+    ].find(
+      item =>
+        item.dataset.value === full.predictionMatch
+    );
+
+    if (predictionButton) {
+      selectPredictionMatch(predictionButton);
+    }
+  }
+
+  document.getElementById("comment").value =
+    full.comment ?? "";
+
+  updateGeometryComparison();
   updateRindAssessment();
   updateBrixAverage();
 
-  document
-    .getElementById(
-      "overlay"
-    )
-    .style.display =
-      "block";
+  document.getElementById("overlay").style.display =
+    "block";
 
   document.body.style.overflow =
     "hidden";
 }
 
 function closeStudy() {
-  document
-    .getElementById(
-      "overlay"
-    )
-    .style.display =
-      "none";
+  document.getElementById("overlay").style.display =
+    "none";
 
   document.body.style.overflow =
     "";
 
-  activeId =
-    null;
+  activeId = null;
 }
 
 async function saveFullStudy() {
   clearStudyMessage();
 
   if (!activeId) {
-    showStudyMessage(
-      "Не выбрана запись для сохранения."
-    );
-
+    showStudyMessage("Не выбрана запись для сохранения.");
     return;
   }
+
+  const cutLength = num("cutLength");
+  const cutWidth = num("cutWidth");
 
   const rindValues = [
     num("r1"),
@@ -2645,22 +2426,35 @@ async function saveFullStudy() {
     num("b2")
   ];
 
-  const taste =
-    num("taste");
+  const taste = num("taste");
 
   const structure =
-    document
-      .getElementById(
-        "structure"
-      )
-      .value;
+    document.getElementById("structure").value;
 
   const predictionMatch =
-    document
-      .getElementById(
-        "predictionMatch"
-      )
-      .value;
+    document.getElementById("predictionMatch").value;
+
+  if (
+    !Number.isFinite(cutLength) ||
+    cutLength < 5 ||
+    cutLength > 100
+  ) {
+    showStudyMessage(
+      "Укажите длину арбуза по срезу от 5 до 100 см."
+    );
+    return;
+  }
+
+  if (
+    !Number.isFinite(cutWidth) ||
+    cutWidth < 5 ||
+    cutWidth > 100
+  ) {
+    showStudyMessage(
+      "Укажите максимальную ширину по срезу от 5 до 100 см."
+    );
+    return;
+  }
 
   if (
     rindValues.some(
@@ -2673,7 +2467,6 @@ async function saveFullStudy() {
     showStudyMessage(
       "Заполните три измерения корки значениями от 1 до 80 мм."
     );
-
     return;
   }
 
@@ -2688,7 +2481,6 @@ async function saveFullStudy() {
     showStudyMessage(
       "Заполните два измерения °Brix значениями от 0 до 25."
     );
-
     return;
   }
 
@@ -2700,7 +2492,6 @@ async function saveFullStudy() {
     showStudyMessage(
       "Выберите оценку вкуса от 1 до 10."
     );
-
     return;
   }
 
@@ -2708,7 +2499,6 @@ async function saveFullStudy() {
     showStudyMessage(
       "Выберите структуру мякоти."
     );
-
     return;
   }
 
@@ -2716,105 +2506,115 @@ async function saveFullStudy() {
     showStudyMessage(
       "Укажите, совпал ли прогноз с фактическим качеством."
     );
-
     return;
   }
 
-  const records =
-    getRecords();
+  const records = getRecords();
 
-  const index =
-    records.findIndex(
-      item =>
-        item.researchId ===
-        activeId
-    );
+  const index = records.findIndex(
+    item => item.researchId === activeId
+  );
 
   if (index < 0) {
-    showStudyMessage(
-      "Исследование не найдено."
-    );
-
+    showStudyMessage("Исследование не найдено.");
     return;
   }
 
-  const button =
-    document.getElementById(
-      "studyBtn"
-    );
+  const button = document.getElementById("studyBtn");
+  const originalText = button.textContent;
 
-  const originalText =
-    button.textContent;
-
-  button.disabled =
-    true;
-
-  button.textContent =
-    "Сохраняем…";
+  button.disabled = true;
+  button.textContent = "Сохраняем…";
 
   try {
-    const record =
-      records[index];
+    const record = records[index];
+
+    const geometry = calculateGeometryComparison(
+      Number(record.circumferenceCm),
+      Number(record.longitudinalCircumferenceCm),
+      cutLength,
+      cutWidth
+    );
 
     const meanRind =
       rindValues.reduce(
-        (sum, value) =>
-          sum + value,
+        (sum, value) => sum + value,
         0
       ) / 3;
 
     const rindResult =
-      getRindAssessment(
-        meanRind
-      );
+      getRindAssessment(meanRind);
 
     const meanBrix =
       brixValues.reduce(
-        (sum, value) =>
-          sum + value,
+        (sum, value) => sum + value,
         0
       ) / 2;
 
     const brixResult =
-      brixClass(
-        meanBrix
-      );
+      brixClass(meanBrix);
 
     const sweetnessResult =
-      getSweetnessAssessment(
-        meanBrix
-      );
+      getSweetnessAssessment(meanBrix);
 
-    record.fullStudyCompleted =
-      true;
+    const predictedScore =
+      Number(record.predictedScore);
+
+    const scoreDifference =
+      taste - predictedScore;
+
+    const absoluteScoreError =
+      Math.abs(scoreDifference);
+
+    let automaticPredictionMatch = "Нет";
+
+    if (absoluteScoreError === 0) {
+      automaticPredictionMatch = "Да";
+    } else if (absoluteScoreError <= 1) {
+      automaticPredictionMatch = "Частично";
+    }
+
+    record.fullStudyCompleted = true;
 
     record.fullStudy = {
-      completedAt:
-        new Date().toISOString(),
+      completedAt: new Date().toISOString(),
 
-      rindStemMm:
-        round(
-          rindValues[0],
-          1
-        ),
+      cutLengthCm: round(cutLength, 1),
+      cutWidthCm: round(cutWidth, 1),
 
-      rindSideMm:
-        round(
-          rindValues[1],
-          1
-        ),
+      predictedLengthCm: round(
+        geometry.predictedLength,
+        2
+      ),
 
-      rindPoleMm:
-        round(
-          rindValues[2],
-          1
-        ),
+      predictedWidthCm: round(
+        geometry.predictedWidth,
+        2
+      ),
 
-      meanRindThicknessMm:
-        round(
-          meanRind,
-          1
-        ),
+      lengthErrorPercent: round(
+        geometry.lengthErrorPercent,
+        2
+      ),
+
+      widthErrorPercent: round(
+        geometry.widthErrorPercent,
+        2
+      ),
+
+      meanAbsoluteGeometryErrorPercent: round(
+        geometry.meanAbsoluteErrorPercent,
+        2
+      ),
+
+      rindStemMm: round(rindValues[0], 1),
+      rindSideMm: round(rindValues[1], 1),
+      rindPoleMm: round(rindValues[2], 1),
+
+      meanRindThicknessMm: round(
+        meanRind,
+        1
+      ),
 
       rindAssessmentCode:
         rindResult.code,
@@ -2822,23 +2622,20 @@ async function saveFullStudy() {
       rindAssessmentTitle:
         rindResult.title,
 
-      brixCenter:
-        round(
-          brixValues[0],
-          1
-        ),
+      brixCenter: round(
+        brixValues[0],
+        1
+      ),
 
-      brixMiddleZone:
-        round(
-          brixValues[1],
-          1
-        ),
+      brixMiddleZone: round(
+        brixValues[1],
+        1
+      ),
 
-      meanBrix:
-        round(
-          meanBrix,
-          1
-        ),
+      meanBrix: round(
+        meanBrix,
+        1
+      ),
 
       brixClass:
         brixResult.code,
@@ -2852,45 +2649,78 @@ async function saveFullStudy() {
       sweetnessTitle:
         sweetnessResult.title,
 
-      tasteScore:
-        Math.round(taste),
+      predictedScore,
+      tasteScore: Math.round(taste),
+
+      scoreDifference: round(
+        scoreDifference,
+        1
+      ),
+
+      absoluteScoreError: round(
+        absoluteScoreError,
+        1
+      ),
+
+      automaticPredictionMatch,
 
       structure,
 
       hollows:
-        document
-          .getElementById(
-            "hollows"
-          )
-          .value,
+        document.getElementById("hollows").value,
 
       predictionMatch,
 
       comment:
-        document
-          .getElementById(
-            "comment"
-          )
-          .value
-          .trim()
+        document.getElementById("comment").value.trim()
     };
 
-    records[index] =
-      record;
-
+    records[index] = record;
     putRecords(records);
 
-    const cloudResult =
-      await post({
-        action:
-          "save_full_study",
+    const cloudResult = await post({
+      action: "save_full_study",
 
-        researchId:
-          record.researchId,
+      researchId: record.researchId,
 
-        fullStudy:
-          record.fullStudy
-      });
+      fullStudy: record.fullStudy,
+
+      cutLengthCm:
+        record.fullStudy.cutLengthCm,
+
+      cutWidthCm:
+        record.fullStudy.cutWidthCm,
+
+      predictedLengthCm:
+        record.fullStudy.predictedLengthCm,
+
+      predictedWidthCm:
+        record.fullStudy.predictedWidthCm,
+
+      lengthErrorPercent:
+        record.fullStudy.lengthErrorPercent,
+
+      widthErrorPercent:
+        record.fullStudy.widthErrorPercent,
+
+      meanAbsoluteGeometryErrorPercent:
+        record.fullStudy.meanAbsoluteGeometryErrorPercent,
+
+      predictedScore:
+        record.fullStudy.predictedScore,
+
+      actualTasteScore:
+        record.fullStudy.tasteScore,
+
+      scoreDifference:
+        record.fullStudy.scoreDifference,
+
+      absoluteScoreError:
+        record.fullStudy.absoluteScoreError,
+
+      automaticPredictionMatch:
+        record.fullStudy.automaticPredictionMatch
+    });
 
     if (cloudResult.ok) {
       await syncJournalFromGoogle();
@@ -2916,139 +2746,74 @@ async function saveFullStudy() {
       "Не удалось сохранить исследование. Проверьте заполненные поля и повторите."
     );
   } finally {
-    button.disabled =
-      false;
-
-    button.textContent =
-      originalText;
+    button.disabled = false;
+    button.textContent = originalText;
   }
 }
 
 function openEditScreening(id) {
-  const record =
-    getRecords().find(
-      item =>
-        item.researchId === id
-    );
+  const record = getRecords().find(
+    item => item.researchId === id
+  );
 
   if (!record) {
     return;
   }
 
-  activeEditId =
-    id;
+  activeEditId = id;
 
-  document
-    .getElementById(
-      "editScreeningSummary"
-    )
-    .innerHTML =
-      `Редактирование записи <b>${record.researchId}</b><br>` +
-      `После сохранения объём, плотность, индекс и класс будут пересчитаны.`;
+  document.getElementById("editScreeningSummary").innerHTML =
+    `Редактирование записи <b>${record.researchId}</b><br>` +
+    `После сохранения объём, плотность, оценка и категория будут пересчитаны.`;
 
-  document
-    .getElementById(
-      "editCity"
-    )
-    .value =
-      record.city || "";
+  document.getElementById("editCity").value =
+    record.city || "";
 
-  document
-    .getElementById(
-      "editPlace"
-    )
-    .value =
-      record.place || "";
+  document.getElementById("editPlace").value =
+    record.place || "";
 
-  document
-    .getElementById(
-      "editSeller"
-    )
-    .value =
-      record.seller || "";
+  document.getElementById("editSeller").value =
+    record.seller || "";
 
-  document
-    .getElementById(
-      "editOriginPlace"
-    )
-    .value =
-      record.originPlace || "";
+  document.getElementById("editOriginPlace").value =
+    record.originPlace || "";
 
-  document
-    .getElementById(
-      "editCultivar"
-    )
-    .value =
-      record.cultivar || "";
+  document.getElementById("editCultivar").value =
+    record.cultivar || "";
 
-  document
-    .getElementById(
-      "editType"
-    )
-    .value =
-      getWatermelonTypeKey(
-        record
-      );
+  document.getElementById("editType").value =
+    getWatermelonTypeKey(record);
 
-  document
-    .getElementById(
-      "editCirc"
-    )
-    .value =
-      record.circumferenceCm;
+  document.getElementById("editCirc").value =
+    record.circumferenceCm;
 
-  document
-    .getElementById(
-      "editCircLong"
-    )
-    .value =
-      record.longitudinalCircumferenceCm;
+  document.getElementById("editCircLong").value =
+    record.longitudinalCircumferenceCm;
 
-  document
-    .getElementById(
-      "editWeight"
-    )
-    .value =
-      record.weightKg;
+  document.getElementById("editWeight").value =
+    record.weightKg;
 
   const overlay =
-    document.getElementById(
-      "editScreeningOverlay"
-    );
+    document.getElementById("editScreeningOverlay");
 
-  overlay.style.display =
-    "block";
+  overlay.style.display = "block";
+  overlay.scrollTop = 0;
 
-  overlay.scrollTop =
-    0;
-
-  document.body.style.overflow =
-    "hidden";
+  document.body.style.overflow = "hidden";
 }
 
 function closeEditScreening() {
-  document
-    .getElementById(
-      "editScreeningOverlay"
-    )
-    .style.display =
-      "none";
+  document.getElementById("editScreeningOverlay").style.display =
+    "none";
 
-  activeEditId =
-    null;
+  activeEditId = null;
 
   const journalOpen =
-    document
-      .getElementById(
-        "journalOverlay"
-      )
-      .style
-      .display === "block";
+    document.getElementById("journalOverlay").style.display ===
+    "block";
 
   document.body.style.overflow =
-    journalOpen
-      ? "hidden"
-      : "";
+    journalOpen ? "hidden" : "";
 }
 
 async function saveEditedScreening() {
@@ -3057,58 +2822,35 @@ async function saveEditedScreening() {
   }
 
   const typeKey =
-    document
-      .getElementById(
-        "editType"
-      )
-      .value;
+    document.getElementById("editType").value;
 
   const type =
-    TYPES[typeKey] ||
-    TYPES.oval;
+    TYPES[typeKey] || TYPES.oval;
 
-  const circumference =
-    Number(
-      String(
-        document
-          .getElementById(
-            "editCirc"
-          )
-          .value
-      ).replace(",", ".")
-    );
+  const circumference = Number(
+    String(
+      document.getElementById("editCirc").value
+    ).replace(",", ".")
+  );
 
-  const longitudinal =
-    Number(
-      String(
-        document
-          .getElementById(
-            "editCircLong"
-          )
-          .value
-      ).replace(",", ".")
-    );
+  const longitudinal = Number(
+    String(
+      document.getElementById("editCircLong").value
+    ).replace(",", ".")
+  );
 
-  const weight =
-    Number(
-      String(
-        document
-          .getElementById(
-            "editWeight"
-          )
-          .value
-      ).replace(",", ".")
-    );
+  const weight = Number(
+    String(
+      document.getElementById("editWeight").value
+    ).replace(",", ".")
+  );
 
   if (
     !Number.isFinite(circumference) ||
     circumference < 25 ||
     circumference > 180
   ) {
-    alert(
-      "Поперечный обхват должен быть от 25 до 180 см."
-    );
-
+    alert("Поперечный обхват должен быть от 25 до 180 см.");
     return;
   }
 
@@ -3117,10 +2859,7 @@ async function saveEditedScreening() {
     longitudinal < 25 ||
     longitudinal > 220
   ) {
-    alert(
-      "Продольный обхват должен быть от 25 до 220 см."
-    );
-
+    alert("Продольный обхват должен быть от 25 до 220 см.");
     return;
   }
 
@@ -3129,161 +2868,103 @@ async function saveEditedScreening() {
     weight < 0.5 ||
     weight > 30
   ) {
-    alert(
-      "Масса должна быть от 0,5 до 30 кг."
-    );
-
+    alert("Масса должна быть от 0,5 до 30 кг.");
     return;
   }
 
-  const values =
-    calculateScreeningValues(
-      circumference,
-      longitudinal,
-      weight,
-      type
-    );
+  const values = calculateScreeningValues(
+    circumference,
+    longitudinal,
+    weight,
+    type
+  );
 
   if (
-    !Number.isFinite(
-      values.calculatedVolume
-    ) ||
+    !Number.isFinite(values.calculatedVolume) ||
     values.calculatedVolume <= 0
   ) {
-    alert(
-      "Не удалось рассчитать объём. Проверьте введённые данные."
-    );
-
+    alert("Не удалось рассчитать объём.");
     return;
   }
 
   if (
-    !Number.isFinite(
-      values.wholeFruitDensity
-    ) ||
+    !Number.isFinite(values.wholeFruitDensity) ||
     values.wholeFruitDensity < 0.60 ||
     values.wholeFruitDensity > 1.25
   ) {
-    alert(
-      "Масса не соответствует указанным размерам. Проверьте введённые данные."
-    );
-
+    alert("Масса не соответствует указанным размерам.");
     return;
   }
 
-  const records =
-    getRecords();
+  const prediction = getPredictionByDensity(
+    values.correctedDensityIndex
+  );
 
-  const index =
-    records.findIndex(
-      item =>
-        item.researchId ===
-        activeEditId
-    );
+  const records = getRecords();
+
+  const index = records.findIndex(
+    item => item.researchId === activeEditId
+  );
 
   if (index < 0) {
-    alert(
-      "Запись не найдена."
-    );
-
+    alert("Запись не найдена.");
     return;
   }
 
-  const densityResult =
-    densityClass(
-      values.correctedDensityIndex
-    );
-
-  const record =
-    records[index];
+  const record = records[index];
 
   record.city =
-    document
-      .getElementById(
-        "editCity"
-      )
-      .value
-      .trim();
+    document.getElementById("editCity").value.trim();
 
   record.place =
-    document
-      .getElementById(
-        "editPlace"
-      )
-      .value
-      .trim();
+    document.getElementById("editPlace").value.trim();
 
   record.seller =
-    document
-      .getElementById(
-        "editSeller"
-      )
-      .value
-      .trim();
+    document.getElementById("editSeller").value.trim();
 
   record.originPlace =
-    document
-      .getElementById(
-        "editOriginPlace"
-      )
-      .value
-      .trim();
+    document.getElementById("editOriginPlace").value.trim();
 
   record.cultivar =
-    document
-      .getElementById(
-        "editCultivar"
-      )
-      .value
-      .trim();
+    document.getElementById("editCultivar").value.trim();
 
-  record.watermelonTypeKey =
-    typeKey;
-
-  record.watermelonType =
-    type.title;
+  record.watermelonTypeKey = typeKey;
+  record.watermelonType = type.title;
 
   record.circumferenceCm =
-    round(
-      circumference,
-      1
-    );
+    round(circumference, 1);
 
   record.longitudinalCircumferenceCm =
-    round(
-      longitudinal,
-      1
-    );
+    round(longitudinal, 1);
 
   record.weightKg =
-    round(
-      weight,
-      3
-    );
+    round(weight, 3);
 
   record.calculatedVolumeLiters =
-    round(
-      values.calculatedVolume,
-      3
-    );
+    round(values.calculatedVolume, 3);
 
   record.wholeFruitDensityKgL =
-    round(
-      values.wholeFruitDensity,
-      4
-    );
+    round(values.wholeFruitDensity, 4);
 
   record.correctedDensityIndex =
-    round(
-      values.correctedDensityIndex,
-      4
-    );
+    round(values.correctedDensityIndex, 4);
 
   record.rindCoefficient =
     type.rindCoefficient;
 
-  record.volumeCoefficient =
-    1;
+  record.volumeCoefficient = 1;
+
+  record.predictedScore =
+    prediction.score;
+
+  record.maturityCode =
+    prediction.maturityCode;
+
+  record.maturityTitle =
+    prediction.maturityTitle;
+
+  record.maturityDescription =
+    prediction.description;
 
   record.calculationVersion =
     CALCULATION_VERSION;
@@ -3291,80 +2972,29 @@ async function saveEditedScreening() {
   record.appVersion =
     APP_VERSION;
 
-  record.densityClass =
-    densityResult.code;
-
-  record.densityClassTitle =
-    densityResult.title;
-
   record.updatedAt =
     new Date().toISOString();
 
-  saveUniqueValue(
-    CITIES_STORAGE,
-    record.city
-  );
+  saveUniqueValue(CITIES_STORAGE, record.city);
+  saveUniqueValue(PLACES_STORAGE, record.place);
+  saveUniqueValue(SELLERS_STORAGE, record.seller);
+  saveUniqueValue(ORIGINS_STORAGE, record.originPlace);
+  saveUniqueValue(CULTIVARS_STORAGE, record.cultivar);
 
-  saveUniqueValue(
-    PLACES_STORAGE,
-    record.place
-  );
+  renderDatalist(CITIES_STORAGE, "cityOptions");
+  renderDatalist(PLACES_STORAGE, "placeOptions");
+  renderDatalist(SELLERS_STORAGE, "sellerOptions");
+  renderDatalist(ORIGINS_STORAGE, "originOptions");
+  renderDatalist(CULTIVARS_STORAGE, "cultivarOptions");
 
-  saveUniqueValue(
-    SELLERS_STORAGE,
-    record.seller
-  );
-
-  saveUniqueValue(
-    ORIGINS_STORAGE,
-    record.originPlace
-  );
-
-  saveUniqueValue(
-    CULTIVARS_STORAGE,
-    record.cultivar
-  );
-
-  renderDatalist(
-    CITIES_STORAGE,
-    "cityOptions"
-  );
-
-  renderDatalist(
-    PLACES_STORAGE,
-    "placeOptions"
-  );
-
-  renderDatalist(
-    SELLERS_STORAGE,
-    "sellerOptions"
-  );
-
-  renderDatalist(
-    ORIGINS_STORAGE,
-    "originOptions"
-  );
-
-  renderDatalist(
-    CULTIVARS_STORAGE,
-    "cultivarOptions"
-  );
-
-  records[index] =
-    record;
-
+  records[index] = record;
   putRecords(records);
 
-  const cloudResult =
-    await post({
-      action:
-        "update_screening",
-
-      researchId:
-        record.researchId,
-
-      ...record
-    });
+  const cloudResult = await post({
+    action: "update_screening",
+    researchId: record.researchId,
+    ...record
+  });
 
   closeEditScreening();
 
@@ -3374,116 +3004,69 @@ async function saveEditedScreening() {
     render();
   }
 
-  const status =
-    document.getElementById(
-      "status"
-    );
+  const status = document.getElementById("status");
 
   if (status) {
-    status.style.display =
-      "block";
-
-    status.textContent =
-      cloudResult.ok
-        ? "✅ Изменения сохранены и отправлены в Google Таблицу."
-        : "⚠️ Изменения сохранены локально, но отправить их в Google Таблицу не удалось.";
+    status.style.display = "block";
+    status.textContent = cloudResult.ok
+      ? "✅ Изменения сохранены и отправлены в Google Таблицу."
+      : "⚠️ Изменения сохранены локально, но отправить их в Google Таблицу не удалось.";
   }
 }
 
 function openJournal() {
   render();
 
-  document
-    .getElementById(
-      "journalOverlay"
-    )
-    .style.display =
-      "block";
+  document.getElementById("journalOverlay").style.display =
+    "block";
 
   document.body.style.overflow =
     "hidden";
 }
 
 function closeJournal() {
-  document
-    .getElementById(
-      "journalOverlay"
-    )
-    .style.display =
-      "none";
+  document.getElementById("journalOverlay").style.display =
+    "none";
 
   document.body.style.overflow =
     "";
 }
 
-function showDeleteConfirmation(
-  title,
-  text,
-  action
-) {
-  pendingDeleteAction =
-    action;
+function showDeleteConfirmation(title, text, action) {
+  pendingDeleteAction = action;
 
-  document
-    .getElementById(
-      "confirmDeleteTitle"
-    )
-    .textContent =
-      title;
+  document.getElementById("confirmDeleteTitle").textContent =
+    title;
 
-  document
-    .getElementById(
-      "confirmDeleteText"
-    )
-    .innerHTML =
-      text;
+  document.getElementById("confirmDeleteText").innerHTML =
+    text;
 
-  document
-    .getElementById(
-      "confirmDeleteOverlay"
-    )
-    .style.display =
-      "block";
+  document.getElementById("confirmDeleteOverlay").style.display =
+    "block";
 
   document.body.style.overflow =
     "hidden";
 }
 
 function closeDeleteConfirmation() {
-  document
-    .getElementById(
-      "confirmDeleteOverlay"
-    )
-    .style.display =
-      "none";
+  document.getElementById("confirmDeleteOverlay").style.display =
+    "none";
 
   document.body.style.overflow =
     "";
 
-  pendingDeleteAction =
-    null;
+  pendingDeleteAction = null;
 }
 
 function executeConfirmedDeletion() {
-  if (
-    typeof pendingDeleteAction ===
-    "function"
-  ) {
-    const action =
-      pendingDeleteAction;
-
-    pendingDeleteAction =
-      null;
-
+  if (typeof pendingDeleteAction === "function") {
+    const action = pendingDeleteAction;
+    pendingDeleteAction = null;
     action();
   }
 
-  document
-    .getElementById(
-      "confirmDeleteOverlay"
-    )
-    .style.display =
-      "none";
+  document.getElementById("confirmDeleteOverlay").style.display =
+    "none";
 
   document.body.style.overflow =
     "";
@@ -3496,20 +3079,14 @@ function archiveRecord(id) {
     `Карточка <b>${id}</b> исчезнет из журнала наблюдений, но запись сохранится в Google Таблице со статусом «Архив».`,
 
     async () => {
-      const records =
-        getRecords();
+      const records = getRecords();
 
-      const record =
-        records.find(
-          item =>
-            item.researchId === id
-        );
+      const record = records.find(
+        item => item.researchId === id
+      );
 
       if (!record) {
-        alert(
-          "Запись не найдена."
-        );
-
+        alert("Запись не найдена.");
         return;
       }
 
@@ -3518,22 +3095,15 @@ function archiveRecord(id) {
 
       putRecords(
         records.filter(
-          item =>
-            item.researchId !== id
+          item => item.researchId !== id
         )
       );
 
-      const cloudResult =
-        await post({
-          action:
-            "archive_record",
-
-          researchId:
-            id,
-
-          archivedAt:
-            new Date().toISOString()
-        });
+      const cloudResult = await post({
+        action: "archive_record",
+        researchId: id,
+        archivedAt: new Date().toISOString()
+      });
 
       if (cloudResult.ok) {
         await syncAllCloudData();
@@ -3542,221 +3112,234 @@ function archiveRecord(id) {
         refreshAvailableNumbers();
       }
 
-      const status =
-        document.getElementById(
-          "status"
-        );
+      const status = document.getElementById("status");
 
       if (status) {
-        status.style.display =
-          "block";
-
-        status.textContent =
-          cloudResult.ok
-            ? "📦 Запись архивирована и сохранена в Google Таблице."
-            : "⚠️ Карточка убрана из журнала локально, но архивирование в Google Таблице не подтверждено.";
+        status.style.display = "block";
+        status.textContent = cloudResult.ok
+          ? "📦 Запись архивирована и сохранена в Google Таблице."
+          : "⚠️ Карточка убрана локально, но архивирование в Google Таблице не подтверждено.";
       }
     }
   );
 }
 
 function render() {
-  const sourceRecords =
-    getRecords();
-
-  const records =
-    sourceRecords.map(
-      record =>
-        recalculateRecord(record)
-    );
-
-  if (
-    JSON.stringify(records) !==
-    JSON.stringify(sourceRecords)
-  ) {
-    putRecords(records);
-  }
+  const records = getRecords();
 
   const counts = {
-    A: 0,
-    B: 0,
-    C: 0
+    Н: 0,
+    З: 0,
+    П: 0
   };
 
   records.forEach(record => {
-    if (
-      counts[record.densityClass] !==
-      undefined
-    ) {
-      counts[
-        record.densityClass
-      ] += 1;
+    if (counts[record.maturityCode] !== undefined) {
+      counts[record.maturityCode] += 1;
     }
   });
 
-  document
-    .getElementById(
-      "stats"
-    )
-    .innerHTML =
-      `Всего скринингов: <b>${records.length}</b><br>` +
-      `Полных исследований: <b>${records.filter(record => record.fullStudyCompleted).length}</b><br>` +
-      `A: <b>${counts.A}</b> · B: <b>${counts.B}</b> · C: <b>${counts.C}</b>`;
+  document.getElementById("stats").innerHTML =
+    `Всего скринингов: <b>${records.length}</b><br>` +
+    `Полных исследований: <b>${records.filter(record => record.fullStudyCompleted).length}</b><br>` +
+    `Н: <b>${counts.Н}</b> · ` +
+    `З: <b>${counts.З}</b> · ` +
+    `П: <b>${counts.П}</b>`;
 
   if (!records.length) {
-    document
-      .getElementById(
-        "records"
-      )
-      .innerHTML =
-        '<div class="hint">Наблюдений пока нет.</div>';
+    document.getElementById("records").innerHTML =
+      '<div class="hint">Наблюдений пока нет.</div>';
 
     return;
   }
 
-  document
-    .getElementById(
-      "records"
-    )
-    .innerHTML =
-      records
-        .slice()
-        .reverse()
-        .map(record => {
-          const full =
-            record.fullStudy || {};
+  document.getElementById("records").innerHTML =
+    records
+      .slice()
+      .reverse()
+      .map(record => {
+        const full = record.fullStudy || {};
 
-          const sweetnessTitle =
-            full.sweetnessTitle ||
-            getSweetnessAssessment(
-              Number(
-                full.meanBrix
-              )
-            ).title;
+        const sweetnessTitle =
+          full.sweetnessTitle ||
+          getSweetnessAssessment(
+            Number(full.meanBrix)
+          ).title;
 
-          const rindAssessmentTitle =
-            full.rindAssessmentTitle ||
-            getRindAssessment(
-              Number(
-                full.meanRindThicknessMm
-              )
-            ).title;
+        const rindAssessmentTitle =
+          full.rindAssessmentTitle ||
+          getRindAssessment(
+            Number(full.meanRindThicknessMm)
+          ).title;
 
-          const fullStudyLine =
-            record.fullStudyCompleted
-              ? `<br>Средний °Brix: <b>${full.meanBrix}</b> · ` +
-                `Сладость: <b>${sweetnessTitle}</b><br>` +
-                `Корка: <b>${full.meanRindThicknessMm} мм</b> · ` +
-                `Характеристика: <b>${rindAssessmentTitle}</b><br>` +
-                `Структура мякоти: <b>${full.structure || "—"}</b><br>` +
-                `Вкус: <b>${full.tasteScore}/10</b> · ` +
-                `Прогноз: <b>${full.predictionMatch || "—"}</b>`
-              : "<br>Ожидает полного исследования";
+        const geometryLine =
+          record.fullStudyCompleted
+            ? `
+              <div class="geometry-box">
+                <b>Геометрическое соответствие</b><br>
 
-          return `
-            <div class="record ${record.densityClass}">
-              <div class="record-top">
-                <div>
-                  <div class="rid">
-                    ${record.researchId}
-                  </div>
+                Расчётная ширина:
+                <b>${Number(full.predictedWidthCm).toFixed(1)} см</b> ·
 
-                  <div class="meta">
-                    ${record.watermelonType}
+                Фактическая:
+                <b>${Number(full.cutWidthCm).toFixed(1)} см</b><br>
 
-                    ${
-                      record.seller
-                        ? ` · продавец: ${record.seller}`
-                        : ""
-                    }<br>
+                Отклонение ширины:
+                <b>${formatSignedPercent(Number(full.widthErrorPercent))}</b><br>
 
-                    ${
-                      record.place
-                        ? `Место: ${record.place}<br>`
-                        : ""
-                    }
+                Расчётная длина:
+                <b>${Number(full.predictedLengthCm).toFixed(1)} см</b> ·
 
-                    ${
-                      record.originPlace
-                        ? `Произрастание: ${record.originPlace}<br>`
-                        : ""
-                    }
+                Фактическая:
+                <b>${Number(full.cutLengthCm).toFixed(1)} см</b><br>
 
-                    ${
-                      record.cultivar
-                        ? `Сорт: ${record.cultivar}`
-                        : ""
-                    }
-                  </div>
+                Отклонение длины:
+                <b>${formatSignedPercent(Number(full.lengthErrorPercent))}</b><br>
+
+                Средняя абсолютная ошибка:
+                <b>${Number(full.meanAbsoluteGeometryErrorPercent).toFixed(1)} %</b>
+              </div>
+            `
+            : "";
+
+        const fullStudyLine =
+          record.fullStudyCompleted
+            ? `
+              <br>
+              Средний °Brix:
+              <b>${full.meanBrix}</b> ·
+
+              Сладость:
+              <b>${sweetnessTitle}</b><br>
+
+              Корка:
+              <b>${full.meanRindThicknessMm} мм</b> ·
+
+              Характеристика:
+              <b>${rindAssessmentTitle}</b><br>
+
+              Структура мякоти:
+              <b>${full.structure || "—"}</b><br>
+
+              Фактический вкус:
+              <b>${full.tasteScore}/10</b><br>
+
+              Разница с прогнозом:
+              <b>${Number(full.scoreDifference) > 0 ? "+" : ""}${full.scoreDifference} балл.</b><br>
+
+              Совпадение:
+              <b>${full.predictionMatch || "—"}</b>
+            `
+            : "<br>Ожидает полного исследования";
+
+        return `
+          <div class="record ${record.maturityCode}">
+            <div class="record-top">
+              <div>
+                <div class="rid">
+                  ${record.researchId}
                 </div>
 
-                <div
-                  class="class-mark"
-                  title="Класс ${record.densityClass}">
-                  ${record.densityClass}
-                </div>
-              </div>
+                <div class="meta">
+                  ${record.watermelonType}
 
-              <div class="measurements-box">
-                Поперечный обхват:
-                <b>${Number(record.circumferenceCm).toFixed(1)} см</b><br>
-
-                Продольный обхват:
-                <b>${Number(record.longitudinalCircumferenceCm).toFixed(1)} см</b><br>
-
-                Масса:
-                <b>${Number(record.weightKg).toFixed(3)} кг</b><br>
-
-                Геометрический объём:
-                <b>${Number(record.calculatedVolumeLiters).toFixed(3)} л</b><br>
-
-                Плотность целого плода:
-                <b>${Number(record.wholeFruitDensityKgL).toFixed(4)} кг/л</b><br>
-
-                Скорректированный индекс:
-                <b>${Number(record.correctedDensityIndex).toFixed(4)}</b><br>
-
-                Класс:
-                <b>${record.densityClass}</b>
-
-                ${fullStudyLine}
-              </div>
-
-              <div class="actions">
-                <button
-                  class="secondary wide"
-                  type="button"
-                  onclick="openEditScreening('${record.researchId}')">
-                  Изменить скрининг
-                </button>
-
-                <button
-                  class="secondary"
-                  type="button"
-                  onclick="openStudy('${record.researchId}')">
                   ${
-                    record.fullStudyCompleted
-                      ? "Изменить полное исследование"
-                      : "Полное исследование"
-                  }
-                </button>
+                    record.seller
+                      ? ` · продавец: ${record.seller}`
+                      : ""
+                  }<br>
 
-                <button
-                  class="danger"
-                  type="button"
-                  onclick="archiveRecord('${record.researchId}')">
-                  Архивировать
-                </button>
+                  ${
+                    record.place
+                      ? `Место: ${record.place}<br>`
+                      : ""
+                  }
+
+                  ${
+                    record.originPlace
+                      ? `Произрастание: ${record.originPlace}<br>`
+                      : ""
+                  }
+
+                  ${
+                    record.cultivar
+                      ? `Сорт: ${record.cultivar}`
+                      : ""
+                  }
+                </div>
+              </div>
+
+              <div
+                class="class-mark"
+                title="${record.maturityTitle}">
+                ${record.maturityCode}
               </div>
             </div>
-          `;
-        })
-        .join("");
+
+            <div class="measurements-box">
+              Предварительная оценка:
+              <b>${record.predictedScore}/10</b><br>
+
+              Категория:
+              <b>${record.maturityCode} — ${record.maturityTitle}</b><br><br>
+
+              Поперечный обхват:
+              <b>${Number(record.circumferenceCm).toFixed(1)} см</b><br>
+
+              Продольный обхват:
+              <b>${Number(record.longitudinalCircumferenceCm).toFixed(1)} см</b><br>
+
+              Масса:
+              <b>${Number(record.weightKg).toFixed(3)} кг</b><br>
+
+              Геометрический объём:
+              <b>${Number(record.calculatedVolumeLiters).toFixed(3)} л</b><br>
+
+              Плотность целого плода:
+              <b>${Number(record.wholeFruitDensityKgL).toFixed(4)} кг/л</b><br>
+
+              Скорректированный индекс:
+              <b>${Number(record.correctedDensityIndex).toFixed(4)}</b>
+
+              ${fullStudyLine}
+            </div>
+
+            ${geometryLine}
+
+            <div class="actions">
+              <button
+                class="secondary wide"
+                type="button"
+                onclick="openEditScreening('${record.researchId}')">
+                Изменить скрининг
+              </button>
+
+              <button
+                class="secondary"
+                type="button"
+                onclick="openStudy('${record.researchId}')">
+                ${
+                  record.fullStudyCompleted
+                    ? "Изменить полное исследование"
+                    : "Полное исследование"
+                }
+              </button>
+
+              <button
+                class="danger"
+                type="button"
+                onclick="archiveRecord('${record.researchId}')">
+                Архивировать
+              </button>
+            </div>
+          </div>
+        `;
+      })
+      .join("");
 }
 
 function initializeApplication() {
-  const currentYear =
-    new Date().getFullYear();
+  const currentYear = new Date().getFullYear();
 
   const allowedYears = [
     2026,
@@ -3766,53 +3349,18 @@ function initializeApplication() {
     2030
   ];
 
-  document
-    .getElementById(
-      "researchYear"
-    )
-    .value =
-      String(
-        allowedYears.includes(
-          currentYear
-        )
-          ? currentYear
-          : 2026
-      );
-
-  renderDatalist(
-    CITIES_STORAGE,
-    "cityOptions"
-  );
-
-  renderDatalist(
-    PLACES_STORAGE,
-    "placeOptions"
-  );
-
-  renderDatalist(
-    SELLERS_STORAGE,
-    "sellerOptions"
-  );
-
-  renderDatalist(
-    ORIGINS_STORAGE,
-    "originOptions"
-  );
-
-  renderDatalist(
-    CULTIVARS_STORAGE,
-    "cultivarOptions"
-  );
-
-  const existingRecords =
-    getRecords().map(
-      record =>
-        recalculateRecord(record)
+  document.getElementById("researchYear").value =
+    String(
+      allowedYears.includes(currentYear)
+        ? currentYear
+        : 2026
     );
 
-  putRecords(
-    existingRecords
-  );
+  renderDatalist(CITIES_STORAGE, "cityOptions");
+  renderDatalist(PLACES_STORAGE, "placeOptions");
+  renderDatalist(SELLERS_STORAGE, "sellerOptions");
+  renderDatalist(ORIGINS_STORAGE, "originOptions");
+  renderDatalist(CULTIVARS_STORAGE, "cultivarOptions");
 
   render();
   syncAllCloudData();
@@ -3820,38 +3368,6 @@ function initializeApplication() {
 
 initializeApplication();
 </script>
-
-<div class="overlay" id="confirmDeleteOverlay">
-  <div class="dialog">
-    <h2 id="confirmDeleteTitle">
-      Подтвердите удаление
-    </h2>
-
-    <div
-      class="summary"
-      id="confirmDeleteText">
-    </div>
-
-    <div
-      class="actions"
-      style="margin-top:14px">
-
-      <button
-        class="muted"
-        type="button"
-        onclick="closeDeleteConfirmation()">
-        Отмена
-      </button>
-
-      <button
-        class="danger"
-        type="button"
-        onclick="executeConfirmedDeletion()">
-        Подтвердить
-      </button>
-    </div>
-  </div>
-</div>
 
 </body>
 </html>
